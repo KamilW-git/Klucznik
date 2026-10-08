@@ -1,0 +1,107 @@
+# Klucznik – stack lokalny. Opis: docs/architecture/infrastructure.md
+#
+# Dev (aplikacje na hoście):  docker compose up -d postgres redis mailpit  &&  pnpm dev
+# Pełny stack (od M2/M10):    docker compose --profile app up --build
+#
+# Zmienne czytane z `.env` (wzór: .env.example). Porty są wystawione tylko na 127.0.0.1.
+
+name: klucznik
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-klucznik}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Ustaw POSTGRES_PASSWORD w .env (wzór w .env.example)}
+      POSTGRES_DB: ${POSTGRES_DB:-klucznik}
+    ports:
+      # Q-25: port na hoście konfigurowalny, gdy 5432 zajmuje lokalny PostgreSQL.
+      - '127.0.0.1:${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # `$$` – zmienna rozwijana w kontenerze, nie przez Compose.
+      test: ['CMD-SHELL', 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:6379:6379'
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:v1.31
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8025:8025' # UI
+      - '127.0.0.1:1025:1025' # SMTP
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:8025/livez']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # --- Aplikacje: szkielety, włączane profilem `app`. ---
+  # Dockerfile `api` powstaje w M2, `web` w M10 (docs/roadmap.md). Do tego czasu usługi są pomijane.
+
+  api:
+    profiles: [app]
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Q-24: w kontenerze hosty usług zamiast localhost z .env.
+      DATABASE_URL: postgresql://${POSTGRES_USER:-klucznik}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-klucznik}
+      REDIS_HOST: redis
+      SMTP_HOST: mailpit
+    ports:
+      - '127.0.0.1:3000:3000'
+    # M5: wolumen `uploads:/data/uploads`.
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/api/v1/health']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
+  web:
+    profiles: [app]
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8080:80'
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost/']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:
+  redisdata:

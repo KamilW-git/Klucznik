@@ -1,11 +1,24 @@
-# Nestjs specific
-/dist
-/node_modules
-/build
-/tmp
+# Zależności
+node_modules/
+.pnpm-store/
 
-# Logs
-logs
+# Wyniki buildów i testów
+dist/
+build/
+coverage/
+*.tsbuildinfo
+.vite/
+
+# Zmienne środowiskowe (wzór: .env.example)
+.env
+.env.*
+!.env.example
+
+# Pliki przesłane przez użytkowników (lokalny StorageService)
+uploads/
+
+# Logi
+logs/
 *.log
 npm-debug.log*
 pnpm-debug.log*
@@ -13,12 +26,22 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# dotenv environment variable files
-.env
-.env.development
-.env.test
-.env.production
+# Pliki tymczasowe
+tmp/
+.tmp/
+.temp/
+.cache/
 
-# temp directory
-.temp
-.tmp
+# IDE i edytory
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+*.sublime-workspace
+
+# System
+.DS_Store
+Thumbs.db
+desktop.ini

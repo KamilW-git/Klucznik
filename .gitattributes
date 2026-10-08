@@ -1,0 +1,11 @@
+# Zawsze LF w repo i w katalogu roboczym (także na Windowsie z core.autocrlf=true),
+# żeby Prettier (`endOfLine: lf`) i skrypty w kontenerach działały identycznie.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.pdf binary

@@ -1,0 +1,139 @@
+# CI: docs/architecture/infrastructure.md#ci
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  quality:
+    name: Lint, format, typecheck, test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      # Wersja pnpm z pola `packageManager` w package.json.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      # Q-23: testy jednostkowe; integracyjne w jobach test-api / test-web.
+      - run: pnpm test
+
+  # --- Szkielety: włączane w kolejnych etapach (usuń `if: false`). ---
+
+  test-api:
+    name: API – testy integracyjne (M2)
+    if: false
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: klucznik
+          POSTGRES_PASSWORD: klucznik-ci
+          POSTGRES_DB: klucznik_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U klucznik -d klucznik_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://klucznik:klucznik-ci@localhost:5432/klucznik_test
+      TEST_DATABASE_URL: postgresql://klucznik:klucznik-ci@localhost:5432/klucznik_test
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      # Jawna wartość testowa, nie sekret produkcyjny.
+      JWT_ACCESS_SECRET: ci-test-secret-not-used-in-production-000000
+      SCHEDULER_ENABLED: false
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @klucznik/api prisma:deploy
+      - run: pnpm --filter @klucznik/api test:int
+
+  test-web:
+    name: Web – testy (M10)
+    if: false
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @klucznik/web test
+
+  contract:
+    name: Kontrakt OpenAPI (M2)
+    if: false
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @klucznik/api openapi:export
+      - name: openapi.json aktualny względem kodu API
+        run: git diff --exit-code packages/api-client/openapi.json
+      - run: pnpm --filter @klucznik/api-client generate
+      - run: pnpm --filter @klucznik/web typecheck
+
+  build:
+    name: Build (M14)
+    if: false
+    needs: [quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -r build
+      - name: docker compose build
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cp .env.example .env
+          docker compose --profile app build

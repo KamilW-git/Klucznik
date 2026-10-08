@@ -1,0 +1,15 @@
+node_modules
+dist
+build
+coverage
+pnpm-lock.yaml
+
+# Wygenerowany klient (formatowany przez skrypt generate) i kontrakt z eksportu API.
+packages/api-client/src/generated
+packages/api-client/openapi.json
+
+# Ekrany ze Stitch to wzorce wizualne, nie nasz kod.
+design
+
+# Q-21: dokumentacja używa zwartych tabel `|-|-|`, których Prettier nie zachowuje.
+*.md

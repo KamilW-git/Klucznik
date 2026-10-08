@@ -1,0 +1,16 @@
+{
+  "name": "@klucznik/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Klucznik – kontrakt OpenAPI i wygenerowany klient TypeScript (orval, od M10).",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

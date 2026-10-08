@@ -1,0 +1,8 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Wspólne wersje zależności używanych w wielu pakietach (`"typescript": "catalog:"`).
+catalog:
+  # TS 7 (natywny) nie jest jeszcze wspierany przez typescript-eslint i @nestjs/cli.
+  typescript: ~6.0.3

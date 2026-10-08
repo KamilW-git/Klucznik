@@ -1,0 +1,13 @@
+{
+  "name": "@klucznik/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Klucznik – SPA (React + Vite, od M10).",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}
