@@ -1,10 +1,17 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    // CommonJS (brak "type": "module"); pakiety NestJS 12 (ESM) ładuje require(esm) z Node 24. Q-26
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    // Pola DTO wypełnia class-transformer, nie konstruktor.
+    "strictPropertyInitialization": false,
+    "types": ["node", "jest"],
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "."
   },
-  "include": ["src"]
+  // Typecheck i lint obejmują też testy; build używa tsconfig.build.json.
+  "include": ["src", "test"]
 }
