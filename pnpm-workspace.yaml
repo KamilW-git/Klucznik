@@ -6,3 +6,13 @@ packages:
 catalog:
   # TS 7 (natywny) nie jest jeszcze wspierany przez typescript-eslint i @nestjs/cli.
   typescript: ~6.0.3
+
+# Skrypty instalacyjne zależności (pnpm 11 przerywa `install`, gdy nie są rozstrzygnięte).
+# Żadna z poniższych nie wymaga builda: gotowe binaria, fallback w JS albo telemetria.
+allowBuilds:
+  '@parcel/watcher': false # @nestjs/cli (watch), binaria w optionalDependencies
+  '@scarf/scarf': false # swagger-ui-dist, telemetria instalacji
+  cpu-features: false # ssh2 (Testcontainers), opcjonalne przyspieszenie
+  protobufjs: false # Testcontainers, postinstall bez wpływu na działanie
+  ssh2: false # Testcontainers, natywny crypto opcjonalny (fallback w JS)
+  unrs-resolver: false # jest-resolve, binaria w optionalDependencies
