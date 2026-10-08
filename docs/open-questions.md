@@ -183,5 +183,5 @@ Odrzucona alternatywa: projekt ESM (`"type": "module"`) z Vitestem (wariant `ts-
 Odpowiedź 503 (wskaźnik `down`) przechodzi przez globalny filtr, który w M2 nie ma kodu dla tego statusu (wynik: `INTERNAL_ERROR`).
 **Decyzja (2026-10-08):**
 - M2: health check to sam liveness (`200 { status: 'ok' }`), bez wskaźników.
-- M3: wskaźnik `database` (Prisma ping) oraz kod ogólny `SERVICE_UNAVAILABLE` (503) w `error-http-map.ts` i w [api-conventions.md](architecture/api-conventions.md#metody-i-kody-odpowiedzi); wynik terminusa trafia do `details`. Zadanie w [roadmap.md](roadmap.md#m3-schemat-i-migracje-api).
+- M3 (zrealizowane): wskaźnik `database` (ping bazy) oraz kod ogólny `SERVICE_UNAVAILABLE` (503) w `error-http-map.ts` i w [api-conventions.md](architecture/api-conventions.md#metody-i-kody-odpowiedzi); wynik terminusa trafia do `details`. Zadanie w [roadmap.md](roadmap.md#m3-schemat-i-migracje-api).
 - M9: wskaźnik `redis`.

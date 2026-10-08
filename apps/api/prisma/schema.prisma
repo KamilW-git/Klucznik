@@ -1,0 +1,364 @@
+// Schemat bazy Klucznika. Model logiczny: docs/architecture/data-model.md,
+// konwencje i ręczny SQL (EXCLUDE, CHECK): apps/api/docs/persistence-layer.md.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/infrastructure/prisma/generated"
+  // API jest projektem CommonJS (Q-26): importy bez rozszerzeń rozwiązują tsc i Jest.
+  moduleFormat        = "cjs"
+  importFileExtension = ""
+  runtime             = "nodejs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enumy
+// ---------------------------------------------------------------------------
+
+enum Role {
+  ADMIN
+  OWNER
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+  COMPLETED
+}
+
+enum ReservationSource {
+  ONLINE
+  MANUAL
+}
+
+enum CancelledBy {
+  GUEST
+  OWNER
+  ADMIN
+  SYSTEM
+}
+
+enum ReservationEventType {
+  CREATED
+  UPDATED
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+  COMPLETED
+}
+
+enum ActorType {
+  GUEST
+  OWNER
+  ADMIN
+  SYSTEM
+}
+
+enum EmailStatus {
+  QUEUED
+  SENT
+  FAILED
+}
+
+// ---------------------------------------------------------------------------
+// Użytkownicy i sesje
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  /// Zapisywany małymi literami.
+  email        String   @unique
+  /// argon2id.
+  passwordHash String   @map("password_hash")
+  firstName    String   @map("first_name")
+  lastName     String   @map("last_name")
+  role         Role
+  /// `false` blokuje logowanie i odświeżanie (Q-10).
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  refreshTokens     RefreshToken[]
+  properties        Property[]
+  reservationEvents ReservationEvent[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  /// SHA-256 losowego tokenu; surowy token jest tylko w ciasteczku.
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(3)
+  revokedAt DateTime? @map("revoked_at") @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+// ---------------------------------------------------------------------------
+// Obiekty i pokoje
+// ---------------------------------------------------------------------------
+
+model Property {
+  id                       String    @id @default(uuid()) @db.Uuid
+  /// Podstawa izolacji danych (BR-12).
+  ownerId                  String    @map("owner_id") @db.Uuid
+  name                     String
+  /// `[a-z0-9-]`, 3–60 znaków; unikalny także wśród usuniętych obiektów.
+  slug                     String    @unique
+  description              String?
+  /// Adres (Q-13).
+  street                   String?
+  postalCode               String?   @map("postal_code")
+  city                     String?
+  phone                    String?
+  contactEmail             String?   @map("contact_email")
+  /// `HH:mm`.
+  checkInTime              String    @default("15:00") @map("check_in_time")
+  /// `HH:mm`.
+  checkOutTime             String    @default("11:00") @map("check_out_time")
+  /// BR-08.
+  cancellationDeadlineDays Int       @default(7) @map("cancellation_deadline_days")
+  /// BR-07.
+  pendingExpiryHours       Int       @default(48) @map("pending_expiry_hours")
+  currency                 String    @default("PLN")
+  /// BR-13.
+  isActive                 Boolean   @default(true) @map("is_active")
+  /// Soft delete (BR-10).
+  deletedAt                DateTime? @map("deleted_at") @db.Timestamptz(3)
+  createdAt                DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  owner        User          @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  rooms        Room[]
+  photos       Photo[]
+  guests       Guest[]
+  reservations Reservation[]
+
+  @@index([ownerId])
+  @@map("properties")
+}
+
+model Room {
+  id                String    @id @default(uuid()) @db.Uuid
+  propertyId        String    @map("property_id") @db.Uuid
+  name              String
+  description       String?
+  /// ≥ 1 (CHECK w migracji), BR-02.
+  capacity          Int
+  /// Grosze, BR-05.
+  basePricePerNight Int       @map("base_price_per_night")
+  /// BR-03.
+  minNights         Int       @default(1) @map("min_nights")
+  /// BR-13.
+  isActive          Boolean   @default(true) @map("is_active")
+  /// Soft delete (BR-10).
+  deletedAt         DateTime? @map("deleted_at") @db.Timestamptz(3)
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  property           Property            @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  photos             Photo[]
+  seasonalRates      SeasonalRate[]
+  availabilityBlocks AvailabilityBlock[]
+  reservations       Reservation[]
+
+  @@index([propertyId])
+  @@map("rooms")
+}
+
+model Photo {
+  id         String   @id @default(uuid()) @db.Uuid
+  /// Zawsze ustawione, także dla zdjęć pokoju (izolacja).
+  propertyId String   @map("property_id") @db.Uuid
+  /// `null` = zdjęcie obiektu.
+  roomId     String?  @map("room_id") @db.Uuid
+  /// `<uuid>.<ext>`, klucz w StorageService.
+  storageKey String   @unique @map("storage_key")
+  mimeType   String   @map("mime_type")
+  sizeBytes  Int      @map("size_bytes")
+  /// `0` = zdjęcie główne.
+  sortOrder  Int      @map("sort_order")
+  altText    String?  @map("alt_text")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  room     Room?    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId, roomId, sortOrder])
+  @@map("photos")
+}
+
+// ---------------------------------------------------------------------------
+// Cennik i dostępność
+// ---------------------------------------------------------------------------
+
+/// Noce włącznie `[dateFrom, dateTo]`. Brak nakładania (BR-09): EXCLUDE w migracji.
+model SeasonalRate {
+  id            String   @id @default(uuid()) @db.Uuid
+  roomId        String   @map("room_id") @db.Uuid
+  name          String
+  dateFrom      DateTime @map("date_from") @db.Date
+  dateTo        DateTime @map("date_to") @db.Date
+  /// Grosze.
+  pricePerNight Int      @map("price_per_night")
+  /// Nadpisuje Room.minNights (BR-03).
+  minNights     Int?     @map("min_nights")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+  @@map("seasonal_rates")
+}
+
+/// Noce włącznie `[dateFrom, dateTo]`. Blokady mogą nakładać się na siebie (Q-15).
+model AvailabilityBlock {
+  id        String   @id @default(uuid()) @db.Uuid
+  roomId    String   @map("room_id") @db.Uuid
+  dateFrom  DateTime @map("date_from") @db.Date
+  dateTo    DateTime @map("date_to") @db.Date
+  reason    String?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, dateFrom])
+  @@map("availability_blocks")
+}
+
+// ---------------------------------------------------------------------------
+// Goście i rezerwacje
+// ---------------------------------------------------------------------------
+
+model Guest {
+  id         String   @id @default(uuid()) @db.Uuid
+  propertyId String   @map("property_id") @db.Uuid
+  firstName  String   @map("first_name")
+  lastName   String   @map("last_name")
+  /// Małe litery; opcjonalny dla rezerwacji ręcznej (Q-03). Wiele NULL dozwolonych.
+  email      String?
+  phone      String?
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  property     Property      @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  reservations Reservation[]
+
+  @@unique([propertyId, email])
+  @@index([propertyId, lastName])
+  @@map("guests")
+}
+
+/// Pobyt `[checkIn, checkOut)`. Brak nakładania aktywnych rezerwacji (BR-01): EXCLUDE w migracji.
+model Reservation {
+  id                   String            @id @default(uuid()) @db.Uuid
+  /// `KL-RRRR-NNNNNN` z ReservationCounter (Q-12).
+  number               String            @unique
+  /// Zdenormalizowany (izolacja, filtry).
+  propertyId           String            @map("property_id") @db.Uuid
+  roomId               String            @map("room_id") @db.Uuid
+  guestId              String            @map("guest_id") @db.Uuid
+  checkIn              DateTime          @map("check_in") @db.Date
+  checkOut             DateTime          @map("check_out") @db.Date
+  /// ≥ 1 (CHECK w migracji), BR-02.
+  guestsCount          Int               @map("guests_count")
+  status               ReservationStatus
+  source               ReservationSource
+  /// Grosze, zamrożona przy utworzeniu (BR-05).
+  totalPrice           Int               @map("total_price")
+  currency             String
+  /// `[{ "date": "2026-08-14", "price": 45000 }]`.
+  priceBreakdown       Json              @map("price_breakdown")
+  guestNotes           String?           @map("guest_notes")
+  internalNotes        String?           @map("internal_notes")
+  /// SHA-256; `null`, gdy gość nie ma e-maila.
+  guestAccessTokenHash String?           @unique @map("guest_access_token_hash")
+  /// Tylko dla PENDING (BR-07).
+  expiresAt            DateTime?         @map("expires_at") @db.Timestamptz(3)
+  confirmedAt          DateTime?         @map("confirmed_at") @db.Timestamptz(3)
+  cancelledAt          DateTime?         @map("cancelled_at") @db.Timestamptz(3)
+  cancelledBy          CancelledBy?      @map("cancelled_by")
+  cancellationReason   String?           @map("cancellation_reason")
+  /// Idempotencja przypomnień (Q-09).
+  reminderSentAt       DateTime?         @map("reminder_sent_at") @db.Timestamptz(3)
+  /// Optimistic locking (BR-11).
+  version              Int               @default(1)
+  createdAt            DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  property  Property           @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  room      Room               @relation(fields: [roomId], references: [id], onDelete: Restrict)
+  guest     Guest              @relation(fields: [guestId], references: [id], onDelete: Restrict)
+  events    ReservationEvent[]
+  emailLogs EmailLog[]
+
+  @@index([propertyId, checkIn])
+  @@index([roomId, checkIn])
+  @@index([status, expiresAt])
+  @@index([guestId])
+  @@map("reservations")
+}
+
+/// Historia rezerwacji (Q-05). Wpis w tej samej transakcji co zmiana rezerwacji.
+model ReservationEvent {
+  id            String               @id @default(uuid()) @db.Uuid
+  reservationId String               @map("reservation_id") @db.Uuid
+  type          ReservationEventType
+  actorType     ActorType            @map("actor_type")
+  /// Dla OWNER i ADMIN.
+  actorUserId   String?              @map("actor_user_id") @db.Uuid
+  payload       Json?
+  createdAt     DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  actorUser   User?       @relation(fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@index([reservationId])
+  @@map("reservation_events")
+}
+
+// ---------------------------------------------------------------------------
+// Powiadomienia i liczniki
+// ---------------------------------------------------------------------------
+
+model EmailLog {
+  id             String      @id @default(uuid()) @db.Uuid
+  reservationId  String?     @map("reservation_id") @db.Uuid
+  recipient      String
+  /// Nazwa szablonu (docs/features/notifications.md).
+  template       String
+  /// `<template>:<reservationId>[:<suffix>]`, chroni przed podwójną wysyłką.
+  idempotencyKey String      @unique @map("idempotency_key")
+  status         EmailStatus
+  attempts       Int         @default(0)
+  lastError      String?     @map("last_error")
+  sentAt         DateTime?   @map("sent_at") @db.Timestamptz(3)
+  createdAt      DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  reservation Reservation? @relation(fields: [reservationId], references: [id], onDelete: Restrict)
+
+  @@index([reservationId])
+  @@index([status, createdAt])
+  @@map("email_logs")
+}
+
+/// Licznik numerów rezerwacji per rok (Q-12). Inkrementacja: INSERT … ON CONFLICT … RETURNING.
+model ReservationCounter {
+  year      Int @id
+  lastValue Int @map("last_value")
+
+  @@map("reservation_counters")
+}

@@ -12,6 +12,6 @@
     "outDir": "dist",
     "rootDir": "."
   },
-  // Typecheck i lint obejmują też testy; build używa tsconfig.build.json.
-  "include": ["src", "test"]
+  // Typecheck i lint obejmują też testy, seed i config Prismy; build używa tsconfig.build.json.
+  "include": ["src", "test", "prisma", "prisma.config.ts"]
 }

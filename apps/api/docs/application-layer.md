@@ -59,7 +59,7 @@ where: scope.role === 'ADMIN' ? { id } : { id, property: { ownerId: scope.userId
 
 ## Transakcje
 
-- Abstrakcja `TransactionManager.run(fn)` (implementacja: `prisma.$transaction(async (tx) => …)` z kontekstem przez `AsyncLocalStorage`, np. `@nestjs-cls/transactional` z adapterem Prisma). Repozytoria automatycznie używają bieżącej transakcji.
+- Port `TransactionManager.run(fn)` (`common/transactions/transaction-manager.ts`, token `TRANSACTION_MANAGER`). Implementacja `ClsTransactionManager`: `@nestjs-cls/transactional` z adapterem Prisma (`prisma.$transaction` + kontekst w `AsyncLocalStorage`). Repozytoria automatycznie używają bieżącej transakcji przez `txHost.tx` ([persistence-layer.md](persistence-layer.md#repozytoria)).
 - Poziom izolacji domyślny (`READ COMMITTED`). Spójność rezerwacji zapewnia `SELECT … FOR UPDATE` na wierszu pokoju + `EXCLUDE` constraint ([business-rules.md](../../../docs/architecture/business-rules.md#br-01)).
 - Transakcja obejmuje: blokadę, sprawdzenia, zapis, `ReservationEvent`, numer z licznika. **Nie** obejmuje wysyłki e-maili ani operacji na plikach.
 - Operacje na plikach: zapis pliku przed transakcją z kompensacją przy błędzie; usunięcie pliku po commicie.

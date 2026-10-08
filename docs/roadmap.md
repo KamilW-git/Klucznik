@@ -8,7 +8,7 @@
 | M0 | DOCS | Dokumentacja i wytyczne | gotowe |
 | M1 | INFRA | Szkielet monorepo, lint/format, Docker Compose, CI | gotowe |
 | M2 | API | Bootstrap API | gotowe (API), Docker i CI: INFRA |
-| M3 | API | Schemat Prisma, migracje, seed | – |
+| M3 | API | Schemat Prisma, migracje, seed | gotowe |
 | M4 | API | Auth, role, zarządzanie właścicielami | – |
 | M5 | API | Obiekty, pokoje, zdjęcia, izolacja | – |
 | M6 | API | Cennik, blokady, dostępność, kalendarz | – |
@@ -55,11 +55,11 @@ Spec: [http-layer.md](../apps/api/docs/http-layer.md), [integrations.md](../apps
 
 Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../apps/api/docs/persistence-layer.md).
 
-- [ ] [API] `schema.prisma` (wszystkie encje), migracja `init`
-- [ ] [API] Migracja z ręcznym SQL: `btree_gist`, `EXCLUDE` (BR-01, BR-09), `CHECK`
-- [ ] [API] `PrismaService`, `TransactionManager` (CLS), `resetDatabase()` i fabryki testowe
-- [ ] [API] Wskaźnik `database` w `/health` + kod `SERVICE_UNAVAILABLE` (503, wynik terminusa w `details`) w filtrze i w [api-conventions.md](architecture/api-conventions.md#metody-i-kody-odpowiedzi) ([Q-27](open-questions.md#q-27); zmiana w `docs/architecture` przez handoff do `DOCS`)
-- [ ] [API] Seed danych demo (idempotentny)
+- [x] [API] `schema.prisma` (wszystkie encje), migracja `init`
+- [x] [API] Migracja z ręcznym SQL: `btree_gist`, `EXCLUDE` (BR-01, BR-09), `CHECK`
+- [x] [API] `PrismaService`, `TransactionManager` (CLS), `resetDatabase()` i fabryki testowe
+- [x] [API] Wskaźnik `database` w `/health` + kod `SERVICE_UNAVAILABLE` (503, wynik terminusa w `details`) w filtrze i w [api-conventions.md](architecture/api-conventions.md#metody-i-kody-odpowiedzi) ([Q-27](open-questions.md#q-27))
+- [x] [API] Seed danych demo (idempotentny)
 
 ## M4: Auth i właściciele [API]
 

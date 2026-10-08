@@ -35,6 +35,7 @@
 | `422` | poprawne dane naruszające regułę biznesową | patrz [business-rules.md](business-rules.md#podsumowanie), `PHOTO_LIMIT_REACHED` |
 | `429` | przekroczony limit żądań | `RATE_LIMITED` |
 | `500` | nieoczekiwany błąd (bez szczegółów w odpowiedzi) | `INTERNAL_ERROR` |
+| `503` | usługa zależna niedostępna (`GET /health`); `details` zawiera wynik wskaźników ([Q-27](../open-questions.md#q-27)) | `SERVICE_UNAVAILABLE` |
 
 Rozróżnienie **400 i 422**: 400 oznacza, że dane mają zły kształt (typ, format, brak pola). 422 oznacza, że dane są poprawne, ale łamią regułę biznesową (np. za dużo gości).
 

@@ -13,6 +13,7 @@ import type { Request, Response } from 'express';
 
 import { type Clock, CLOCK } from '../domain/clock';
 import { DomainError } from '../domain/domain-error';
+import { databaseErrorOf, isUnmappedConflict } from '../../infrastructure/prisma/prisma-errors';
 import type { ErrorResponseDto } from '../http/error-response.dto';
 import {
   codeForHttpStatus,
@@ -39,6 +40,7 @@ const DEFAULT_MESSAGES: Record<GenericErrorCode, string> = {
   UNSUPPORTED_FILE_TYPE: 'Niedozwolony typ pliku.',
   RATE_LIMITED: 'Zbyt wiele żądań. Spróbuj ponownie za chwilę.',
   INTERNAL_ERROR: 'Wystąpił nieoczekiwany błąd. Spróbuj ponownie później.',
+  SERVICE_UNAVAILABLE: 'Usługa jest chwilowo niedostępna.',
 };
 
 /**
@@ -106,6 +108,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
       return this.mapHttpException(exception);
     }
 
+    if (isUnmappedConflict(exception)) {
+      // Sygnał, że repozytorium powinno przetłumaczyć ten constraint na błąd domenowy.
+      this.logger.warn(`Unmapped database conflict: ${JSON.stringify(databaseErrorOf(exception))}`);
+      return { status: HttpStatus.CONFLICT, code: 'CONFLICT', message: DEFAULT_MESSAGES.CONFLICT };
+    }
+
     return {
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       code: 'INTERNAL_ERROR',
@@ -116,7 +124,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
   /**
    * `HttpException` Nesta (guardy, throttler, body parser, `ParseUUIDPipe`). Kod według statusu.
    * Wyjątek rzucony z obiektem `{ code, message, details }` (np. `INVALID_CREDENTIALS` w M4)
-   * zachowuje własny kod i komunikat.
+   * zachowuje własny kod i komunikat. 503 z health checku (terminus) przekazuje wynik wskaźników
+   * w `details`, żeby healthcheck Dockera i monitoring widziały, która usługa nie działa.
    */
   private mapHttpException(exception: HttpException): MappedError {
     const status = exception.getStatus();
@@ -132,10 +141,23 @@ export class AllExceptionsFilter implements ExceptionFilter {
       };
     }
 
+    if (fallbackCode === 'SERVICE_UNAVAILABLE' && isRecord(response)) {
+      return {
+        status,
+        code: fallbackCode,
+        message: DEFAULT_MESSAGES[fallbackCode],
+        details: response,
+      };
+    }
+
     const original = typeof response === 'string' ? response : exception.message;
     this.logger.debug(`HttpException ${status}: ${original}`);
     return { status, code: fallbackCode, message: DEFAULT_MESSAGES[fallbackCode] };
   }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function isCustomErrorBody(

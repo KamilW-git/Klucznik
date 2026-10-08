@@ -8,6 +8,9 @@ pnpm-lock.yaml
 packages/api-client/src/generated
 packages/api-client/openapi.json
 
+# Klient Prismy (`prisma generate`).
+apps/api/src/infrastructure/prisma/generated
+
 # Ekrany ze Stitch to wzorce wizualne, nie nasz kod.
 design
 

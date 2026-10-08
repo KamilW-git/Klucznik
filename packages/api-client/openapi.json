@@ -214,7 +214,7 @@
                 }
               }
             },
-            "description": "Co najmniej jedna usługa jest niedostępna"
+            "description": "Co najmniej jedna usługa jest niedostępna (`SERVICE_UNAVAILABLE`, wynik wskaźników w `details`)"
           }
         },
         "summary": "Stan API i usług zależnych (healthcheck Dockera)",

@@ -8,11 +8,15 @@ catalog:
   typescript: ~6.0.3
 
 # Skrypty instalacyjne zależności (pnpm 11 przerywa `install`, gdy nie są rozstrzygnięte).
-# Żadna z poniższych nie wymaga builda: gotowe binaria, fallback w JS albo telemetria.
+# `false`: build niepotrzebny (gotowe binaria, fallback w JS albo telemetria).
 allowBuilds:
   '@parcel/watcher': false # @nestjs/cli (watch), binaria w optionalDependencies
+  '@prisma/engines': true # pobiera schema engine używany przez `prisma migrate`
   '@scarf/scarf': false # swagger-ui-dist, telemetria instalacji
+  argon2: false # gotowe binaria w paczce (prebuilds/), ładowane przez node-gyp-build
   cpu-features: false # ssh2 (Testcontainers), opcjonalne przyspieszenie
+  esbuild: false # tsx (seed), binaria w optionalDependencies
+  prisma: false # preinstall sprawdza tylko wersję Node
   protobufjs: false # Testcontainers, postinstall bez wpływu na działanie
   ssh2: false # Testcontainers, natywny crypto opcjonalny (fallback w JS)
   unrs-resolver: false # jest-resolve, binaria w optionalDependencies

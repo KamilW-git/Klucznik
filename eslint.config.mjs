@@ -12,6 +12,7 @@ export default tseslint.config(
       '**/build/**',
       '**/coverage/**',
       'packages/api-client/src/generated/**',
+      'apps/api/src/infrastructure/prisma/generated/**',
       'design/**',
     ],
   },

@@ -16,7 +16,7 @@
 | Port (token DI) | Interfejs | Adapter MVP | Gdzie |
 |-|-|-|-|
 | `CLOCK` | `now()`, `today()` | `SystemClock` | `common/domain/clock.ts`, `infrastructure/clock/` |
-| `TransactionManager` | `run(fn)` | Prisma + CLS | `infrastructure/prisma/` |
+| `TRANSACTION_MANAGER` | `run(fn)` | `ClsTransactionManager` (Prisma + `@nestjs-cls/transactional`) | `common/transactions/`, `infrastructure/prisma/` |
 | `EVENT_BUS` | `publish(event)` | `EventEmitter2` | `infrastructure/events/` |
 | `MAILER` | `send({ to, subject, html, text, replyTo? })` | `NodemailerMailer` (SMTP) | `infrastructure/mail/` |
 | `TEMPLATE_RENDERER` | `render(template, context) → { subject, html, text }` | Handlebars | `infrastructure/mail/` |
@@ -28,8 +28,8 @@ Moduły domenowe zależą od tokenów, a nie od klas adapterów. Testy podmienia
 
 ## Prisma
 
-- `PrismaService extends PrismaClient implements OnModuleInit` (`$connect`), z `enableShutdownHooks`.
-- Logowanie zapytań tylko w dev (`log: ['warn', 'error']`, a opcjonalnie `query` przez env).
+- `PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy` (`$connect`, `$disconnect`), z driver adapterem `PrismaPg` (wymagany od Prismy 7) i URL z `databaseConfig`. Logi: `warn`, `error`.
+- `PrismaModule` (`infrastructure/prisma/`, globalny) eksportuje `PrismaService`, `TRANSACTION_MANAGER` i `DatabaseHealthIndicator`. Konfiguracja CLI, klient i migracje: [persistence-layer.md](persistence-layer.md).
 
 ## Mail
 
@@ -63,4 +63,4 @@ Moduły domenowe zależą od tokenów, a nie od klas adapterów. Testy podmienia
 
 ## Health check
 
-`GET /api/v1/health` (`@Public`, `@nestjs/terminus`): `database` (Prisma ping, od M3), `redis` (od M9). Zwraca `200 { status: 'ok', info }` lub `503 SERVICE_UNAVAILABLE` w formacie `ErrorResponseDto` z wynikiem terminusa w `details` (od M3). Używany przez healthcheck Dockera. W M2 to sam liveness bez wskaźników ([Q-27](../../../docs/open-questions.md#q-27)).
+`GET /api/v1/health` (`@Public`, `@nestjs/terminus`): `database` (`DatabaseHealthIndicator`: `SELECT 1` z limitem 1 s), `redis` (od M9). Zwraca `200 { status: 'ok', info }` lub `503 SERVICE_UNAVAILABLE` w formacie `ErrorResponseDto` z wynikiem terminusa w `details` ([Q-27](../../../docs/open-questions.md#q-27)). Używany przez healthcheck Dockera. Własny wskaźnik zamiast `PrismaHealthIndicator`, bo ten rozpoznaje bazę SQL po treści błędu `$runCommandRaw`.

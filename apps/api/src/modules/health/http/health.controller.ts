@@ -9,12 +9,16 @@ import { HealthCheck, type HealthCheckResult, HealthCheckService } from '@nestjs
 
 import { Public } from '../../../common/auth/public.decorator';
 import { ErrorResponseDto } from '../../../common/http/error-response.dto';
+import { DatabaseHealthIndicator } from '../../../infrastructure/prisma/prisma.health';
 import { HealthCheckDto } from './dto/health-check.dto';
 
 @ApiTags('health')
 @Controller('health')
 export class HealthController {
-  constructor(private readonly health: HealthCheckService) {}
+  constructor(
+    private readonly health: HealthCheckService,
+    private readonly database: DatabaseHealthIndicator,
+  ) {}
 
   @Get()
   @Public()
@@ -26,11 +30,12 @@ export class HealthController {
   })
   @ApiOkResponse({ description: 'API i usługi zależne działają', type: HealthCheckDto })
   @ApiServiceUnavailableResponse({
-    description: 'Co najmniej jedna usługa jest niedostępna',
+    description:
+      'Co najmniej jedna usługa jest niedostępna (`SERVICE_UNAVAILABLE`, wynik wskaźników w `details`)',
     type: ErrorResponseDto,
   })
   check(): Promise<HealthCheckResult> {
-    // M2: tylko liveness. M3 dodaje `database` (Prisma ping) i kod SERVICE_UNAVAILABLE, M9 `redis`.
-    return this.health.check([]);
+    // M9: wskaźnik `redis`.
+    return this.health.check([() => this.database.pingCheck('database')]);
   }
 }

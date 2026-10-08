@@ -5,6 +5,7 @@ import { Test } from '@nestjs/testing';
 import { AppModule } from '../../../src/app.module';
 import { configureApp } from '../../../src/app.setup';
 import { CLOCK, FixedClock } from '../../../src/common/domain/clock';
+import { PrismaService } from '../../../src/infrastructure/prisma/prisma.service';
 
 /** Domyślne „teraz” testów integracyjnych (docs/architecture/testing-strategy.md#zegar-w-testach). */
 export const TEST_NOW = '2026-08-01T10:00:00+02:00';
@@ -12,6 +13,8 @@ export const TEST_NOW = '2026-08-01T10:00:00+02:00';
 export interface TestApp {
   app: NestExpressApplication;
   clock: FixedClock;
+  /** Do przygotowania danych (fabryki) i asercji na bazie. */
+  prisma: PrismaService;
 }
 
 export interface TestAppOptions {
@@ -39,5 +42,5 @@ export async function createTestApp(options: TestAppOptions = {}): Promise<TestA
   configureApp(app);
   await app.init();
 
-  return { app, clock };
+  return { app, clock, prisma: app.get(PrismaService) };
 }

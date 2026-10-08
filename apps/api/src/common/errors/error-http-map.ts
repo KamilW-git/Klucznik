@@ -32,7 +32,8 @@ export type GenericErrorCode =
   | 'FILE_TOO_LARGE'
   | 'UNSUPPORTED_FILE_TYPE'
   | 'RATE_LIMITED'
-  | 'INTERNAL_ERROR';
+  | 'INTERNAL_ERROR'
+  | 'SERVICE_UNAVAILABLE';
 
 /** Kod dla `HttpException` Nesta (i błędów Expressa) według statusu. */
 const HTTP_STATUS_CODE: Partial<Record<number, GenericErrorCode>> = {
@@ -44,6 +45,7 @@ const HTTP_STATUS_CODE: Partial<Record<number, GenericErrorCode>> = {
   [HttpStatus.PAYLOAD_TOO_LARGE]: 'FILE_TOO_LARGE',
   [HttpStatus.UNSUPPORTED_MEDIA_TYPE]: 'UNSUPPORTED_FILE_TYPE',
   [HttpStatus.TOO_MANY_REQUESTS]: 'RATE_LIMITED',
+  [HttpStatus.SERVICE_UNAVAILABLE]: 'SERVICE_UNAVAILABLE', // Q-27: health check
 };
 
 export function codeForHttpStatus(status: number): GenericErrorCode {
