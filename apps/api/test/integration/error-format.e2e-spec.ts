@@ -10,6 +10,7 @@ import {
 import { IsInt, IsString, Min, MinLength } from 'class-validator';
 import request, { type Response } from 'supertest';
 
+import { Public } from '../../src/common/auth/public.decorator';
 import { DomainError } from '../../src/common/domain/domain-error';
 import { NotFoundError } from '../../src/common/errors/not-found.error';
 import type { ErrorResponseDto } from '../../src/common/http/error-response.dto';
@@ -33,6 +34,7 @@ class ProbeCapacityError extends DomainError {
   readonly code = 'CAPACITY_EXCEEDED';
 }
 
+@Public()
 @Controller('__probe')
 class ProbeController {
   @Post('body')

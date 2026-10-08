@@ -75,7 +75,9 @@ export class ReservationPageDto extends Paginated(ReservationListItemDto) {} // 
 | `@CurrentUser()` | `AuthUser { id, role }` z JWT |
 | `@Throttle({ … })` | nadpisanie limitu ([security.md](../../../docs/architecture/security.md#rate-limiting)) |
 
-Kontroler panelu bez `@Roles` jest błędem. Każdy kontroler deklaruje role jawnie.
+Kontroler panelu bez `@Roles` jest błędem. Każdy kontroler deklaruje role jawnie. `RolesGuard` jest fail-closed: trasa bez `@Roles()` i bez `@Public()` zwraca 403 (z ostrzeżeniem w logu), więc zapomniany dekorator nie otwiera endpointu.
+
+Guardy są globalne (`APP_GUARD` w `AppModule`) w kolejności `ThrottlerGuard` → `JwtAuthGuard` (401) → `RolesGuard` (403). `JwtAuthGuard` weryfikuje token przez port `ACCESS_TOKEN_VERIFIER` (`TokenService` z modułu `auth`). Tworzenie zasobu: `setLocation(res, 'admin/owners', id)` z `common/http/location.ts`.
 
 ## Kody odpowiedzi
 
@@ -90,7 +92,7 @@ Jedyne miejsce tłumaczenia błędów na HTTP: `common/errors/all-exceptions.fil
 | Źródło | Wynik |
 |-|-|
 | `DomainError` (z polem `code`) | status z mapy `DOMAIN_ERROR_HTTP_STATUS` ([business-rules.md](../../../docs/architecture/business-rules.md#podsumowanie)), `message`, `details` z błędu |
-| `NotFoundError` (aplikacyjny) | 404 `NOT_FOUND` |
+| `ApplicationError` (`common/errors/application-error.ts`: `NotFoundError`, `InvalidCredentialsError`, `SessionInvalidError`, `EmailTakenError`, `SlugTakenError`) | status z mapy `APPLICATION_ERROR_HTTP_STATUS`, `message`, `details` z błędu |
 | `ValidationPipe` (`ValidationFailedException`) | 400 `VALIDATION_ERROR`, `details.fields` (ścieżki z kropką, np. `guest.email`) |
 | `HttpException` rzucony z ciałem `{ code, message, details? }` | status wyjątku i **jego** `code` (np. `new UnauthorizedException({ code: 'INVALID_CREDENTIALS', message })`) |
 | `HttpException` Nesta i Expressa (400/401/403/404/409/413/415/429) | kod według statusu (`VALIDATION_ERROR`, `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `CONFLICT`, `FILE_TOO_LARGE`, `UNSUPPORTED_FILE_TYPE`, `RATE_LIMITED`) i polski komunikat domyślny; dotyczy też nieznanej trasy, złego JSON i `ParseUUIDPipe` (bez `details.fields`) |

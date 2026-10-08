@@ -72,7 +72,7 @@ Przy tworzeniu przez admina z `POST /admin/owners` adres może być pusty ([Q-13
 ## 6. Backend: zadania
 
 - [ ] Moduł `properties`: kontroler, `PropertiesService`, `PropertiesRepository` (z `AccessScope`).
-- [ ] `SlugGenerator` (domena: transliteracja `ą→a, ł→l, …`, kebab-case) + obsługa kolizji.
+- [x] `SlugGenerator` (domena: transliteracja `ą→a, ł→l, …`, kebab-case) + obsługa kolizji: `modules/properties/domain/slug.ts` (M4).
 - [ ] `OwnershipPolicy` jako współdzielony serwis używany przez wszystkie moduły panelu ([application-layer.md](../../apps/api/docs/application-layer.md#polityki-dostępu)).
 - [ ] BR-10 przy `DELETE` i `PATCH isActive=false` (`ReservationsQueryPort.countFutureActive(propertyId)`).
 - [ ] Soft delete: `deletedAt`, wykluczenie z list i z `/public/**`.
@@ -109,7 +109,7 @@ Ekrany: O2 (pulpit), O8 (ustawienia obiektu): [screens.md](../../apps/web/docs/s
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Zalążek (M4): slug, tworzenie obiektu z właścicielem, `/admin/properties`; reszta w M5 |
 | UI | Nie rozpoczęto |
 
 Otwarte: [Q-08](../open-questions.md#q-08) (dashboard), [Q-13](../open-questions.md#q-13) (adres).

@@ -9,7 +9,7 @@
 | M1 | INFRA | Szkielet monorepo, lint/format, Docker Compose, CI | gotowe |
 | M2 | API | Bootstrap API | gotowe (API), Docker i CI: INFRA |
 | M3 | API | Schemat Prisma, migracje, seed | gotowe |
-| M4 | API | Auth, role, zarządzanie właścicielami | – |
+| M4 | API | Auth, role, zarządzanie właścicielami | gotowe |
 | M5 | API | Obiekty, pokoje, zdjęcia, izolacja | – |
 | M6 | API | Cennik, blokady, dostępność, kalendarz | – |
 | M7 | API | Rezerwacje: reguły, stany, ręczna, optimistic locking, goście | – |
@@ -63,9 +63,9 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M4: Auth i właściciele [API]
 
-- [ ] [API] Logowanie, refresh z rotacją, wylogowanie, `/auth/me`, guardy, throttling: [auth.md](features/auth.md)
-- [ ] [API] `/admin/owners` (CRUD, dezaktywacja), `/admin/properties`: [admin-owners.md](features/admin-owners.md)
-- [ ] [API] Testy integracyjne: login, refresh, 403 dla `OWNER` na `/admin`
+- [x] [API] Logowanie, refresh z rotacją, wylogowanie, `/auth/me`, guardy, throttling: [auth.md](features/auth.md)
+- [x] [API] `/admin/owners` (CRUD, dezaktywacja), `/admin/properties`: [admin-owners.md](features/admin-owners.md)
+- [x] [API] Testy integracyjne: login, refresh, 403 dla `OWNER` na `/admin`
 
 ## M5: Obiekty, pokoje, zdjęcia [API]
 

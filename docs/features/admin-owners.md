@@ -46,12 +46,12 @@ Wszystkie endpointy: rola `ADMIN`, kontroler z `@Roles('ADMIN')`.
 
 ## 6. Backend: zadania
 
-- [ ] Moduł `admin` (lub `users` z kontrolerem admina): `AdminOwnersController`, `OwnersService`, `UsersRepository`.
-- [ ] Unikalność e-maila (sprawdzenie + mapowanie `P2002` → `EMAIL_TAKEN`).
-- [ ] Tworzenie właściciela z obiektem w jednej transakcji (reużycie `PropertiesService.create`).
-- [ ] Dezaktywacja: `isActive = false` + `revokeAllForUser`.
-- [ ] Liczniki `propertiesCount` i `reservationsLast30Days` jednym zapytaniem (bez N+1).
-- [ ] `AdminPropertiesController` (lista wszystkich obiektów).
+- [x] Moduł `users`: `AdminOwnersController`, `OwnersService`, `OwnersRepository` (tylko konta `OWNER`; konto admina pod `/admin/owners/:id` → 404).
+- [x] Unikalność e-maila (sprawdzenie + mapowanie `P2002` → `EMAIL_TAKEN`).
+- [x] Tworzenie właściciela z obiektem w jednej transakcji (`PropertiesService.createForOwner`; slug z nazwy z sufiksem przy kolizji, jawny zajęty slug → `SLUG_TAKEN`).
+- [x] Dezaktywacja: `isActive = false` + `revokeAllForUser`.
+- [x] Liczniki `propertiesCount` i `reservationsLast30Days` jednym zapytaniem (bez N+1).
+- [x] `AdminPropertiesController` w module `properties` (lista wszystkich obiektów, najnowsze pierwsze).
 - [ ] `AdminEmailLogsController` (M9, po module notifications).
 
 ## 7. Frontend: ekrany i zadania
@@ -86,7 +86,7 @@ Ekrany: A1 i pochodne: [screens.md](../../apps/web/docs/screens.md).
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Właściciele i obiekty gotowe (M4); logi e-maili w M9 |
 | UI | Nie rozpoczęto |
 
 Otwarte: [Q-07](../open-questions.md#q-07) (logi e-maili, obiekt przy zakładaniu), [Q-10](../open-questions.md#q-10) (semantyka `DELETE`).

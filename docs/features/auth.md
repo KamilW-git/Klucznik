@@ -38,14 +38,14 @@ Właściciel i administrator logują się do panelu bezpiecznie i bez częstego 
 
 ## 6. Backend: zadania
 
-- [ ] Moduł `auth`: `AuthController`, `AuthService`, `PasswordHasher` (port + adapter argon2), `TokenService` (JWT + refresh).
-- [ ] `RefreshTokenRepository`: create, findByHash, revoke, revokeAllForUser.
-- [ ] Rotacja refresh tokenu + wykrycie ponownego użycia ([security.md](../architecture/security.md#refresh-token)).
-- [ ] Globalne guardy: `JwtAuthGuard` (z `@Public()`), `RolesGuard` (z `@Roles()`); dekorator `@CurrentUser()`.
-- [ ] Ciasteczko: helper `setRefreshCookie` / `clearRefreshCookie` z konfiguracji (`COOKIE_SECURE`).
-- [ ] Throttling dla `/auth/login` i `/auth/refresh`.
-- [ ] Seed: konto admina z `SEED_ADMIN_EMAIL` i `SEED_ADMIN_PASSWORD` ([persistence-layer.md](../../apps/api/docs/persistence-layer.md#seed)).
-- [ ] Swagger: `@ApiBearerAuth`, opis ciasteczka w `/auth/*`.
+- [x] Moduł `auth`: `AuthController`, `AuthService`, `TokenService` (JWT + refresh, czas z `Clock`), `SessionsService` (eksport: unieważnianie sesji). `PasswordHasher` jako wspólny port `PASSWORD_HASHER` (`common/security`, adapter argon2 w `infrastructure/security`), bo używa go też moduł `users`.
+- [x] `RefreshTokenRepository`: create, findByHash, revoke, revokeAllForUser.
+- [x] Rotacja refresh tokenu + wykrycie ponownego użycia ([security.md](../architecture/security.md#refresh-token)).
+- [x] Globalne guardy: `JwtAuthGuard` (z `@Public()`), `RolesGuard` (z `@Roles()`, fail-closed: trasa bez `@Roles()` i bez `@Public()` → 403); dekorator `@CurrentUser()`.
+- [x] Ciasteczko: helper `setRefreshCookie` / `clearRefreshCookie` z konfiguracji (`COOKIE_SECURE`).
+- [x] Throttling dla `/auth/login` i `/auth/refresh`.
+- [x] Seed: konto admina z `SEED_ADMIN_EMAIL` i `SEED_ADMIN_PASSWORD` ([persistence-layer.md](../../apps/api/docs/persistence-layer.md#seed)).
+- [x] Swagger: `@ApiBearerAuth`, opis ciasteczka w `/auth/*`.
 
 ## 7. Frontend: ekrany i zadania
 
@@ -83,7 +83,7 @@ Ekrany: O1 (logowanie): [screens.md](../../apps/web/docs/screens.md).
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Gotowe (M4) |
 | UI | Nie rozpoczęto |
 
 Otwarte: [Q-06](../open-questions.md#q-06) (reset hasła).

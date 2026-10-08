@@ -22,7 +22,7 @@
 | `TEMPLATE_RENDERER` | `render(template, context) → { subject, html, text }` | Handlebars | `infrastructure/mail/` |
 | `EMAIL_QUEUE` | `enqueue(job, { jobId })` | BullMQ `Queue('emails')` | `infrastructure/queue/` |
 | `STORAGE` | `put(key, buffer, mime)`, `get(key) → stream`, `delete(key)` | `LocalDiskStorage` | `infrastructure/storage/` |
-| `PASSWORD_HASHER` | `hash`, `verify` | argon2 | `modules/auth/infrastructure/` |
+| `PASSWORD_HASHER` | `hash`, `verify` | `Argon2PasswordHasher` (argon2id) | `common/security/`, `infrastructure/security/` (globalny `SecurityModule`, używany przez `auth` i `users`) |
 
 Moduły domenowe zależą od tokenów, a nie od klas adapterów. Testy podmieniają adaptery fake'ami.
 

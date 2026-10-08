@@ -1,6 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
 
 import type { DomainErrorCode } from '../domain/domain-error';
+import type { ApplicationErrorCode } from './application-error';
 
 /**
  * Status HTTP dla każdego kodu błędu domenowego (docs/architecture/business-rules.md#podsumowanie).
@@ -20,6 +21,15 @@ export const DOMAIN_ERROR_HTTP_STATUS: Record<DomainErrorCode, HttpStatus> = {
   VERSION_CONFLICT: HttpStatus.CONFLICT, // BR-11
   ROOM_NOT_BOOKABLE: HttpStatus.UNPROCESSABLE_ENTITY, // BR-13
   PHOTO_LIMIT_REACHED: HttpStatus.UNPROCESSABLE_ENTITY, // Q-14
+};
+
+/** Status HTTP dla każdego kodu błędu aplikacyjnego (`ApplicationError`). */
+export const APPLICATION_ERROR_HTTP_STATUS: Record<ApplicationErrorCode, HttpStatus> = {
+  NOT_FOUND: HttpStatus.NOT_FOUND, // BR-12: także zasób innego właściciela
+  UNAUTHORIZED: HttpStatus.UNAUTHORIZED,
+  INVALID_CREDENTIALS: HttpStatus.UNAUTHORIZED,
+  EMAIL_TAKEN: HttpStatus.CONFLICT,
+  SLUG_TAKEN: HttpStatus.CONFLICT,
 };
 
 /** Ogólne kody (docs/architecture/api-conventions.md#metody-i-kody-odpowiedzi). */

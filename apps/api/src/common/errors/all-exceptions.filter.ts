@@ -15,12 +15,13 @@ import { type Clock, CLOCK } from '../domain/clock';
 import { DomainError } from '../domain/domain-error';
 import { databaseErrorOf, isUnmappedConflict } from '../../infrastructure/prisma/prisma-errors';
 import type { ErrorResponseDto } from '../http/error-response.dto';
+import { ApplicationError } from './application-error';
 import {
+  APPLICATION_ERROR_HTTP_STATUS,
   codeForHttpStatus,
   DOMAIN_ERROR_HTTP_STATUS,
   type GenericErrorCode,
 } from './error-http-map';
-import { NotFoundError } from './not-found.error';
 import { ValidationFailedException } from './validation';
 
 interface MappedError {
@@ -91,8 +92,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
       };
     }
 
-    if (exception instanceof NotFoundError) {
-      return { status: HttpStatus.NOT_FOUND, code: exception.code, message: exception.message };
+    if (exception instanceof ApplicationError) {
+      return {
+        status: APPLICATION_ERROR_HTTP_STATUS[exception.code],
+        code: exception.code,
+        message: exception.message,
+        details: exception.details,
+      };
     }
 
     if (exception instanceof ValidationFailedException) {

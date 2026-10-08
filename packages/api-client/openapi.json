@@ -1,6 +1,185 @@
 {
   "components": {
     "schemas": {
+      "AdminPropertyListItemDto": {
+        "properties": {
+          "city": {
+            "example": "Mikołajki",
+            "nullable": true,
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "name": {
+            "example": "Domki Leśna Polana",
+            "type": "string"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/AdminPropertyOwnerDto"
+          },
+          "roomsCount": {
+            "description": "Liczba pokoi (bez usuniętych)",
+            "example": 4,
+            "type": "number"
+          },
+          "slug": {
+            "example": "lesna-polana",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "city",
+          "isActive",
+          "owner",
+          "roomsCount",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "AdminPropertyOwnerDto": {
+        "properties": {
+          "email": {
+            "example": "jan.nowak@example.com",
+            "type": "string"
+          },
+          "firstName": {
+            "example": "Jan",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "lastName": {
+            "example": "Nowak",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email"
+        ],
+        "type": "object"
+      },
+      "AdminPropertyPageDto": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/AdminPropertyListItemDto"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMetaDto"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "type": "object"
+      },
+      "AuthResponseDto": {
+        "properties": {
+          "accessToken": {
+            "description": "JWT do nagłówka `Authorization: Bearer …` (trzymany tylko w pamięci SPA)",
+            "type": "string"
+          },
+          "expiresIn": {
+            "description": "Czas życia access tokenu w sekundach",
+            "example": 900,
+            "type": "number"
+          },
+          "user": {
+            "$ref": "#/components/schemas/MeDto"
+          }
+        },
+        "required": [
+          "accessToken",
+          "expiresIn",
+          "user"
+        ],
+        "type": "object"
+      },
+      "CreateOwnerDto": {
+        "properties": {
+          "email": {
+            "example": "jan.nowak@example.com",
+            "maxLength": 254,
+            "type": "string"
+          },
+          "firstName": {
+            "example": "Jan",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "example": "Nowak",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "password": {
+            "description": "Hasło tymczasowe (admin przekazuje je właścicielowi poza systemem)",
+            "maxLength": 200,
+            "minLength": 10,
+            "type": "string"
+          },
+          "property": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateOwnerPropertyDto"
+              }
+            ],
+            "description": "Obiekt zakładany od razu (Q-07)"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "password"
+        ],
+        "type": "object"
+      },
+      "CreateOwnerPropertyDto": {
+        "properties": {
+          "name": {
+            "description": "Nazwa obiektu",
+            "example": "Domki Leśna Polana",
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "slug": {
+            "description": "Adres strony `/o/:slug`. Bez niego generowany z nazwy (z sufiksem przy kolizji).",
+            "example": "lesna-polana",
+            "maxLength": 60,
+            "minLength": 3,
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
       "ErrorResponseDto": {
         "properties": {
           "code": {
@@ -147,6 +326,211 @@
         ],
         "type": "string"
       },
+      "LoginDto": {
+        "properties": {
+          "email": {
+            "description": "E-mail (bez rozróżniania wielkości liter)",
+            "example": "jan.nowak@example.com",
+            "maxLength": 254,
+            "type": "string"
+          },
+          "password": {
+            "description": "Hasło",
+            "example": "Haslo-demo-123",
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object"
+      },
+      "MeDto": {
+        "properties": {
+          "email": {
+            "example": "jan.nowak@example.com",
+            "type": "string"
+          },
+          "firstName": {
+            "example": "Jan",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "lastName": {
+            "example": "Nowak",
+            "type": "string"
+          },
+          "role": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Role"
+              }
+            ],
+            "example": "OWNER"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "firstName",
+          "lastName",
+          "role"
+        ],
+        "type": "object"
+      },
+      "OwnerDto": {
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "email": {
+            "example": "jan.nowak@example.com",
+            "type": "string"
+          },
+          "firstName": {
+            "example": "Jan",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "isActive": {
+            "description": "`false` = konto zablokowane",
+            "type": "boolean"
+          },
+          "lastName": {
+            "example": "Nowak",
+            "type": "string"
+          },
+          "properties": {
+            "items": {
+              "$ref": "#/components/schemas/OwnerPropertyDto"
+            },
+            "type": "array"
+          },
+          "propertiesCount": {
+            "example": 1,
+            "type": "number"
+          },
+          "reservationsLast30Days": {
+            "description": "Rezerwacje utworzone w ostatnich 30 dniach",
+            "example": 12,
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email",
+          "isActive",
+          "propertiesCount",
+          "reservationsLast30Days",
+          "createdAt",
+          "properties"
+        ],
+        "type": "object"
+      },
+      "OwnerListItemDto": {
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "email": {
+            "example": "jan.nowak@example.com",
+            "type": "string"
+          },
+          "firstName": {
+            "example": "Jan",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "isActive": {
+            "description": "`false` = konto zablokowane",
+            "type": "boolean"
+          },
+          "lastName": {
+            "example": "Nowak",
+            "type": "string"
+          },
+          "propertiesCount": {
+            "example": 1,
+            "type": "number"
+          },
+          "reservationsLast30Days": {
+            "description": "Rezerwacje utworzone w ostatnich 30 dniach",
+            "example": 12,
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email",
+          "isActive",
+          "propertiesCount",
+          "reservationsLast30Days",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "OwnerPageDto": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/OwnerListItemDto"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMetaDto"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "type": "object"
+      },
+      "OwnerPropertyDto": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "name": {
+            "example": "Domki Leśna Polana",
+            "type": "string"
+          },
+          "slug": {
+            "example": "lesna-polana",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "isActive"
+        ],
+        "type": "object"
+      },
       "PaginationMetaDto": {
         "properties": {
           "page": {
@@ -173,6 +557,42 @@
           "totalPages"
         ],
         "type": "object"
+      },
+      "Role": {
+        "enum": [
+          "ADMIN",
+          "OWNER"
+        ],
+        "type": "string"
+      },
+      "UpdateOwnerDto": {
+        "properties": {
+          "email": {
+            "maxLength": 254,
+            "type": "string"
+          },
+          "firstName": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "isActive": {
+            "description": "`false` blokuje konto i unieważnia wszystkie sesje (Q-10)",
+            "type": "boolean"
+          },
+          "lastName": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "password": {
+            "description": "Nowe hasło tymczasowe",
+            "maxLength": 200,
+            "minLength": 10,
+            "type": "string"
+          }
+        },
+        "type": "object"
       }
     },
     "securitySchemes": {
@@ -180,6 +600,11 @@
         "bearerFormat": "JWT",
         "scheme": "bearer",
         "type": "http"
+      },
+      "kl_refresh": {
+        "in": "cookie",
+        "name": "kl_refresh",
+        "type": "apiKey"
       }
     }
   },
@@ -191,6 +616,639 @@
   },
   "openapi": "3.0.0",
   "paths": {
+    "/api/v1/admin/owners": {
+      "get": {
+        "operationId": "AdminOwners_list",
+        "parameters": [
+          {
+            "description": "Numer strony (od 1)",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "example": 1,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Liczba elementów na stronie",
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "example": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Sortowanie `pole:asc|desc`, wiele po przecinku. Dozwolone pola: createdAt, lastName.",
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "default": "createdAt:desc",
+              "example": "createdAt:desc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Szukaj w imieniu, nazwisku i e-mailu (min. 2 znaki)",
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "example": "nowak",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filtr: aktywne (`true`) lub zablokowane (`false`)",
+            "in": "query",
+            "name": "isActive",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnerPageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "BR-12: rola inna niż ADMIN"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Lista właścicieli z wyszukiwaniem i paginacją",
+        "tags": [
+          "admin"
+        ]
+      },
+      "post": {
+        "operationId": "AdminOwners_create",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOwnerDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnerDto"
+                }
+              }
+            },
+            "description": "Nagłówek `Location` wskazuje nowego właściciela"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "BR-12: rola inna niż ADMIN"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "EMAIL_TAKEN, SLUG_TAKEN"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Zakłada właściciela (opcjonalnie od razu z obiektem)",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/owners/{id}": {
+      "delete": {
+        "operationId": "AdminOwners_remove",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "BR-12: rola inna niż ADMIN"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Blokuje konto właściciela (dezaktywacja, bez usuwania danych, Q-10)",
+        "tags": [
+          "admin"
+        ]
+      },
+      "get": {
+        "operationId": "AdminOwners_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnerDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "BR-12: rola inna niż ADMIN"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Szczegóły właściciela z listą obiektów",
+        "tags": [
+          "admin"
+        ]
+      },
+      "patch": {
+        "operationId": "AdminOwners_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOwnerDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnerDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "BR-12: rola inna niż ADMIN"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "EMAIL_TAKEN"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Edycja właściciela; `isActive: false` blokuje konto i unieważnia sesje",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/properties": {
+      "get": {
+        "operationId": "AdminProperties_list",
+        "parameters": [
+          {
+            "description": "Numer strony (od 1)",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "example": 1,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Liczba elementów na stronie",
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "example": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Szukaj w nazwie i mieście (min. 2 znaki)",
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "example": "Mazury",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Tylko obiekty tego właściciela",
+            "in": "query",
+            "name": "ownerId",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filtr aktywności obiektu",
+            "in": "query",
+            "name": "isActive",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminPropertyPageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "BR-12: rola inna niż ADMIN"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Wszystkie obiekty platformy (najnowsze pierwsze)",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "Auth_login",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "INVALID_CREDENTIALS"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "RATE_LIMITED (5/min)"
+          }
+        },
+        "summary": "Logowanie e-mailem i hasłem; ustawia ciasteczko kl_refresh",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "Auth_logout",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "kl_refresh": []
+          }
+        ],
+        "summary": "Wylogowanie: unieważnia refresh token z ciasteczka i czyści ciasteczko (idempotentne)",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "Auth_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "UNAUTHORIZED"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Bieżący użytkownik",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "operationId": "Auth_refresh",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "UNAUTHORIZED"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "RATE_LIMITED (20/min)"
+          }
+        },
+        "security": [
+          {
+            "kl_refresh": []
+          }
+        ],
+        "summary": "Nowy access token z ciasteczka kl_refresh (rotacja refresh tokenu)",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
     "/api/v1/health": {
       "get": {
         "operationId": "Health_check",

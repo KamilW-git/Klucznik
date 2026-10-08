@@ -1,8 +1,10 @@
+import { ApplicationError } from './application-error';
+
 /**
- * Błąd aplikacyjny: brak zasobu **albo** zasób innego właściciela (BR-12, 404 zamiast 403).
- * Rzucany przez serwisy i polityki dostępu, mapowany przez `AllExceptionsFilter` na 404 `NOT_FOUND`.
+ * Brak zasobu **albo** zasób innego właściciela (BR-12, 404 zamiast 403).
+ * Rzucany przez serwisy i polityki dostępu. `resource` i `id` służą tylko do logów, nie trafiają do odpowiedzi.
  */
-export class NotFoundError extends Error {
+export class NotFoundError extends ApplicationError {
   readonly code = 'NOT_FOUND';
 
   constructor(
@@ -10,6 +12,5 @@ export class NotFoundError extends Error {
     readonly id?: string,
   ) {
     super('Nie znaleziono zasobu.');
-    this.name = 'NotFoundError';
   }
 }

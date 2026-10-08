@@ -1,6 +1,7 @@
 import { ConfigModule } from '@nestjs/config';
 
 import { appConfig } from './app.config';
+import { authConfig, throttleConfig } from './auth.config';
 import { databaseConfig } from './database.config';
 import { parseEnv } from './env.schema';
 
@@ -15,5 +16,5 @@ export const AppConfigModule = ConfigModule.forRoot({
   envFilePath: ['.env', '../../.env'],
   ignoreEnvFile: process.env.NODE_ENV === 'test',
   validate: parseEnv,
-  load: [appConfig, databaseConfig],
+  load: [appConfig, authConfig, databaseConfig, throttleConfig],
 });

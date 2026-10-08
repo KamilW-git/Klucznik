@@ -3,6 +3,7 @@ import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from '@nestjs/swag
 
 import { ErrorResponseDto } from '../common/http/error-response.dto';
 import { PaginationMetaDto } from '../common/http/pagination';
+import { REFRESH_COOKIE } from '../modules/auth/http/refresh-cookie';
 
 export const SWAGGER_PATH = 'api/docs';
 
@@ -18,6 +19,12 @@ export function buildOpenApiDocument(app: INestApplication): OpenAPIObject {
     )
     .setVersion('1.0')
     .addBearerAuth()
+    // Refresh token w ciasteczku httpOnly, wysyłanym tylko do /api/v1/auth/* (ADR 0004).
+    .addCookieAuth(
+      REFRESH_COOKIE,
+      { type: 'apiKey', in: 'cookie', name: REFRESH_COOKIE },
+      REFRESH_COOKIE,
+    )
     .build();
 
   return SwaggerModule.createDocument(app, config, {
