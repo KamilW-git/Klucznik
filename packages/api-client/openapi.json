@@ -1,0 +1,229 @@
+{
+  "components": {
+    "schemas": {
+      "ErrorResponseDto": {
+        "properties": {
+          "code": {
+            "description": "Stabilny kod maszynowy (UPPER_SNAKE_CASE). UI rozpoznaje błędy wyłącznie po nim.",
+            "example": "RESERVATION_OVERLAP",
+            "type": "string"
+          },
+          "details": {
+            "additionalProperties": true,
+            "description": "Dane dodatkowe zależne od kodu. Dla VALIDATION_ERROR: `{ fields: [{ field, messages }] }`.",
+            "example": {
+              "conflictingReservationNumber": "KL-2026-000118"
+            },
+            "type": "object"
+          },
+          "error": {
+            "description": "Nazwa kodu HTTP",
+            "example": "Conflict",
+            "type": "string"
+          },
+          "message": {
+            "description": "Komunikat po polsku (pomocniczy)",
+            "example": "Wybrany termin koliduje z inną rezerwacją.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Ścieżka żądania",
+            "example": "/api/v1/properties/2b1…/reservations",
+            "type": "string"
+          },
+          "requestId": {
+            "description": "Identyfikator żądania (także w nagłówku X-Request-Id)",
+            "example": "6f0c2a7e-4c1b-4a8e-9a43-1d6f5f1c2b3a",
+            "type": "string"
+          },
+          "statusCode": {
+            "description": "Kod HTTP",
+            "example": 409,
+            "type": "number"
+          },
+          "timestamp": {
+            "description": "Czas błędu (ISO 8601 UTC)",
+            "example": "2026-08-01T10:15:30.000Z",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statusCode",
+          "error",
+          "code",
+          "message",
+          "path",
+          "timestamp",
+          "requestId"
+        ],
+        "type": "object"
+      },
+      "HealthCheckDto": {
+        "properties": {
+          "details": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "up",
+                    "down"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status"
+              ],
+              "type": "object"
+            },
+            "description": "Wyniki wskaźników według nazwy usługi, np. `{ \"database\": { \"status\": \"up\" } }`",
+            "example": {},
+            "type": "object"
+          },
+          "error": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "up",
+                    "down"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status"
+              ],
+              "type": "object"
+            },
+            "description": "Wyniki wskaźników według nazwy usługi, np. `{ \"database\": { \"status\": \"up\" } }`",
+            "example": {},
+            "type": "object"
+          },
+          "info": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "up",
+                    "down"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status"
+              ],
+              "type": "object"
+            },
+            "description": "Wyniki wskaźników według nazwy usługi, np. `{ \"database\": { \"status\": \"up\" } }`",
+            "example": {},
+            "type": "object"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HealthStatus"
+              }
+            ],
+            "example": "ok"
+          }
+        },
+        "required": [
+          "status",
+          "details"
+        ],
+        "type": "object"
+      },
+      "HealthStatus": {
+        "enum": [
+          "ok",
+          "error",
+          "shutting_down"
+        ],
+        "type": "string"
+      },
+      "PaginationMetaDto": {
+        "properties": {
+          "page": {
+            "example": 1,
+            "type": "number"
+          },
+          "pageSize": {
+            "example": 20,
+            "type": "number"
+          },
+          "totalItems": {
+            "example": 134,
+            "type": "number"
+          },
+          "totalPages": {
+            "example": 7,
+            "type": "number"
+          }
+        },
+        "required": [
+          "page",
+          "pageSize",
+          "totalItems",
+          "totalPages"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {},
+    "description": "REST API systemu rezerwacji Klucznik. Konwencje: docs/architecture/api-conventions.md",
+    "title": "Klucznik API",
+    "version": "1.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "operationId": "Health_check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckDto"
+                }
+              }
+            },
+            "description": "API i usługi zależne działają"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "Co najmniej jedna usługa jest niedostępna"
+          }
+        },
+        "summary": "Stan API i usług zależnych (healthcheck Dockera)",
+        "tags": [
+          "health"
+        ]
+      }
+    }
+  },
+  "servers": [],
+  "tags": []
+}

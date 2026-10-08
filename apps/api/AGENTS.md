@@ -76,8 +76,8 @@ Moduły: `auth`, `users` (admin: właściciele), `properties`, `rooms`, `photos`
 |-|-|
 | `pnpm --filter @klucznik/api dev` | API w trybie watch (port 3000) |
 | `pnpm --filter @klucznik/api build` | build do `dist/` |
-| `pnpm --filter @klucznik/api test` | testy jednostkowe (Jest) |
-| `pnpm --filter @klucznik/api test:int` | testy integracyjne (Testcontainers lub `TEST_DATABASE_URL`) |
+| `pnpm --filter @klucznik/api test` | testy jednostkowe (Jest z `--experimental-vm-modules`, bo NestJS 12 to ESM: [Q-26](../../docs/open-questions.md#q-26)) |
+| `pnpm --filter @klucznik/api test:int` | testy integracyjne (Testcontainers, wymaga Dockera, lub `TEST_DATABASE_URL`) |
 | `pnpm --filter @klucznik/api prisma:migrate` | `prisma migrate dev` (nowa migracja) |
 | `pnpm --filter @klucznik/api prisma:deploy` | `prisma migrate deploy` |
 | `pnpm --filter @klucznik/api prisma:seed` | dane demo |

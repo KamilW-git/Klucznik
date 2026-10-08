@@ -7,7 +7,7 @@
 |-|-|-|-|
 | M0 | DOCS | Dokumentacja i wytyczne | gotowe |
 | M1 | INFRA | Szkielet monorepo, lint/format, Docker Compose, CI | gotowe |
-| M2 | API | Bootstrap API | – |
+| M2 | API | Bootstrap API | gotowe (API), Docker i CI: INFRA |
 | M3 | API | Schemat Prisma, migracje, seed | – |
 | M4 | API | Auth, role, zarządzanie właścicielami | – |
 | M5 | API | Obiekty, pokoje, zdjęcia, izolacja | – |
@@ -43,13 +43,13 @@ Spec: [infrastructure.md](architecture/infrastructure.md), [ADR 0001](decisions/
 
 Spec: [http-layer.md](../apps/api/docs/http-layer.md), [integrations.md](../apps/api/docs/integrations.md), [api-conventions.md](architecture/api-conventions.md).
 
-- [ ] [API] NestJS w `apps/api`, prefiks `/api/v1`, helmet, cookie-parser, request id
-- [ ] [API] `@nestjs/config` z walidacją env
-- [ ] [API] Globalny `ValidationPipe` + `AllExceptionsFilter` + `DomainError` + mapa kodów
-- [ ] [API] Swagger `/api/docs` + skrypt `openapi:export` + `ErrorResponseDto`, `Paginated<T>`, `PaginationQuery`, `SortQuery`
-- [ ] [API] `Clock` (`SystemClock`, `FixedClock`), `CalendarDate`, `stay-range`, `date-range` + testy (BR-01, BR-04)
-- [ ] [API] Health check (`/health`), Jest + konfiguracja testów integracyjnych (Testcontainers)
-- [ ] [INFRA] Dockerfile `api`, kontener `api` w compose, joby CI `test-api` i `contract`
+- [x] [API] NestJS w `apps/api`, prefiks `/api/v1`, helmet, cookie-parser, request id
+- [x] [API] `@nestjs/config` z walidacją env
+- [x] [API] Globalny `ValidationPipe` + `AllExceptionsFilter` + `DomainError` + mapa kodów
+- [x] [API] Swagger `/api/docs` + skrypt `openapi:export` + `ErrorResponseDto`, `Paginated<T>`, `PaginationQuery`, `SortQuery`
+- [x] [API] `Clock` (`SystemClock`, `FixedClock`), `CalendarDate`, `stay-range`, `date-range` + testy (BR-01, BR-04)
+- [x] [API] Health check (`/health`, w M2 liveness: [Q-27](open-questions.md#q-27)), Jest + konfiguracja testów integracyjnych (Testcontainers, [Q-26](open-questions.md#q-26))
+- [ ] [INFRA] Dockerfile `api`, kontener `api` w compose, joby CI `test-api` i `contract`: [H-001…H-003](handoff.md#zgłoszenia)
 
 ## M3: Schemat i migracje [API]
 

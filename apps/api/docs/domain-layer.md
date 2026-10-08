@@ -14,11 +14,13 @@
 
 | Plik | Zawartość | Reguły |
 |-|-|-|
-| `common/domain/calendar-date.ts` | value object `CalendarDate` (`YYYY-MM-DD`, `addDays`, `diffDays`, `compare`, `isWeekend`) | – |
-| `common/domain/stay-range.ts` | `StayRange [checkIn, checkOut)`, `nights()`, `overlaps`, `overlapsBlock`, `assertStayDates` | BR-01, BR-04 |
-| `common/domain/date-range.ts` | `InclusiveDateRange [from, to]`, `contains`, `inclusiveRangesOverlap` | BR-01, BR-09 |
-| `common/domain/clock.ts` | interfejs `Clock` + `FixedClock` (testy) | – |
-| `common/domain/domain-error.ts` | klasa bazowa `DomainError` | – |
+| `common/domain/calendar-date.ts` | value object `CalendarDate` (`parse`, `fromInstant(date, timeZone)`, `addDays`, `diffDays`, `compare`, `isBefore`/`isAfter`, `dayOfWeek`, `isWeekend`) | – |
+| `common/domain/stay-range.ts` | `StayRange.of [checkIn, checkOut)` (wyjazd po przyjeździe), `nights()`, `eachNight()`, `toNightsRange()`, `overlaps`, `overlapsBlock`, `assertStayDates(range, today, { allowPastCheckInDays })` | BR-01, BR-04 |
+| `common/domain/date-range.ts` | `InclusiveDateRange.of [from, to]`, `nights()`, `contains`, `inclusiveRangesOverlap` | BR-01, BR-09 |
+| `common/domain/clock.ts` | interfejs `Clock`, token `CLOCK`, `FixedClock` (testy: `at`, `advanceBy`, `setTo`) | – |
+| `common/domain/domain-error.ts` | klasa bazowa `DomainError`, unia `DomainErrorCode` | – |
+| `common/domain/errors/invalid-stay-dates.error.ts` | `InvalidStayDatesError` z `reason` | BR-04 |
+| `infrastructure/clock/system-clock.ts` | `SystemClock` (adapter produkcyjny, `ClockModule`) | – |
 | `modules/pricing/domain/calculate-price.ts` | `calculatePrice` | BR-05 |
 | `modules/pricing/domain/min-nights.ts` | `resolveMinNights`, `assertMinNights` | BR-03 |
 | `modules/reservations/domain/reservation-status.ts` | enum, tabela przejść, `assertTransition`, `isExpired` | BR-06, BR-07 |

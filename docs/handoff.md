@@ -31,4 +31,7 @@ Zasady:
 
 | ID | Data | Od → Do | Co | Dlaczego | Status |
 |-|-|-|-|-|-|
-| | | | | | |
+| H-001 | 2026-10-08 | API → INFRA | `apps/api/Dockerfile` (multi-stage): build `pnpm --filter @klucznik/api build` (kopiuje `tsconfig.base.json` i `pnpm-workspace.yaml` z roota), runtime `node dist/main.js` z katalogu `apps/api`, tylko zależności produkcyjne (`pnpm deploy --prod` lub odpowiednik). Port 3000, healthcheck `GET /api/v1/health` jak w compose | Zadanie `[INFRA]` M2 w [roadmap.md](roadmap.md#m2-bootstrap-api-api); usługa `api` w compose czeka na Dockerfile | `OPEN` |
+| H-002 | 2026-10-08 | API → INFRA | CI `test-api`: usunąć `if: false`; krok `prisma:deploy` usunąć do M3 (skrypt jeszcze nie istnieje); `test:int` korzysta z `TEST_DATABASE_URL` (już w `env`), więc Testcontainers się nie uruchamia. Usługa `redis` niepotrzebna do M9 | `pnpm --filter @klucznik/api test:int` działa od M2 ([testing-strategy.md](architecture/testing-strategy.md)) | `OPEN` |
+| H-003 | 2026-10-08 | API → INFRA | CI `contract`: usunąć `if: false`; kroki `api-client generate` i `web typecheck` pominąć do M10 (skrypty nie istnieją). Eksport nie wymaga `.env` ani usług (wartości zastępcze w `src/config/openapi-export-env.ts`) | Pilnowanie aktualności `openapi.json` od M2 ([ADR 0006](decisions/0006-openapi-contract-codegen.md)) | `OPEN` |
+| H-004 | 2026-10-08 | API → INFRA | `pnpm-workspace.yaml`: `allowBuilds` z jawną odmową dla `@parcel/watcher`, `@scarf/scarf`, `cpu-features`, `protobufjs`, `ssh2`, `unrs-resolver` | pnpm 11 przerywa `pnpm install` (`ERR_PNPM_IGNORED_BUILDS`), gdy skrypty instalacyjne nie są rozstrzygnięte; żaden z pakietów nie wymaga builda | `DONE`: wykonane w sesji API M2 za zgodą właściciela (wyjątek od podziału trybów) |

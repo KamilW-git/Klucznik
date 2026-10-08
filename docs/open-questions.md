@@ -32,6 +32,8 @@ Statusy: `OTWARTE` (obowiązuje rekomendacja), `ZDECYDOWANE` (z datą i decyzją
 | [Q-23](#q-23) | Testy w jobie CI `quality` | OTWARTE |
 | [Q-24](#q-24) | Hosty usług w `.env.example` | OTWARTE |
 | [Q-25](#q-25) | Zmienna `POSTGRES_PORT` | OTWARTE |
+| [Q-26](#q-26) | Jest a NestJS 12 (tylko ESM) | OTWARTE |
+| [Q-27](#q-27) | Zakres health checku przed M3 i kod błędu 503 | OTWARTE |
 
 ## Q-01
 
@@ -164,3 +166,17 @@ Tabela w [infrastructure.md](architecture/infrastructure.md#zmienne-środowiskow
 
 **Zmienna `POSTGRES_PORT` (port Postgresa na hoście).**
 Na maszynie deweloperskiej port 5432 może zajmować lokalnie zainstalowany PostgreSQL (np. usługa Windows `postgresql-x64-17`). Od M1 `docker-compose.yml` mapuje `127.0.0.1:${POSTGRES_PORT:-5432}:5432`, a `.env.example` zawiera `POSTGRES_PORT=5432`. Rekomendacja: zostawić i dopisać zmienną do tabeli w [infrastructure.md](architecture/infrastructure.md#zmienne-środowiskowe) (usługa `postgres`, niewymagana, domyślnie `5432`, „port na hoście; przy zmianie popraw `DATABASE_URL`”).
+
+## Q-26
+
+**Jest a NestJS 12, które jest wydawane wyłącznie jako ESM.**
+Pakiety `@nestjs/*` w wersji 12 mają `"type": "module"` bez eksportu `require`. API zostaje projektem CommonJS (jak oficjalny szablon `nest new` w wariancie TS): Node 24 ładuje pakiety ESM przez `require(esm)`, a Jest robi to tylko z flagą `node --experimental-vm-modules` (skrypty `test` i `test:int` w `apps/api/package.json`, ostrzeżenie `ExperimentalWarning` jest oczekiwane). Ten sam powód sprawia, że skrypty TS uruchamiamy po `nest build` (`openapi:export`), a nie przez `tsx`, które nie emituje `emitDecoratorMetadata`.
+Rekomendacja (stan od M2): zostać przy Jest, zgodnie z [testing-strategy.md](architecture/testing-strategy.md) i szablonem Nesta.
+Alternatywa: projekt ESM (`"type": "module"`) z Vitestem, jak wariant `ts-esm` szablonu Nesta. Wymaga zmiany strategii testów i ADR; warto wrócić do tematu, jeśli flaga eksperymentalna zacznie sprawiać problemy (np. w M3 z klientem Prismy).
+
+## Q-27
+
+**Co sprawdza `GET /health` przed M3 i jaki kod ma odpowiedź 503?**
+[integrations.md](../apps/api/docs/integrations.md#health-check) przewiduje wskaźniki `database` (Prisma) i `redis`, ale Prisma dochodzi w M3, a Redis w M9.
+Decyzja właściciela (2026-10-08, sesja M2): w M2 health check to sam liveness (`200 { status: 'ok' }`); M3 dodaje `database`, M9 `redis`.
+Otwarte: odpowiedź 503 (gdy wskaźnik jest `down`) przechodzi przez globalny filtr i dostaje kod według statusu. Dla 503 mapa nie ma kodu, więc dziś byłby to `INTERNAL_ERROR`. Rekomendacja: w M3 dodać kod ogólny `SERVICE_UNAVAILABLE` (503) do [api-conventions.md](architecture/api-conventions.md#metody-i-kody-odpowiedzi) i przekazywać wynik terminusa w `details`.

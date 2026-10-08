@@ -28,15 +28,18 @@ export class ReservationsController {
 
 ## Globalna konfiguracja (`main.ts`)
 
-| Element | Ustawienie |
-|-|-|
-| Prefiks | `app.setGlobalPrefix('api/v1')` |
-| Walidacja | `ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true, transformOptions: { enableImplicitConversion: false } })` |
-| Filtr | `AllExceptionsFilter` (globalny, przez `APP_FILTER`) |
-| Guardy | `ThrottlerGuard`, `JwtAuthGuard`, `RolesGuard` (globalne, przez `APP_GUARD`, w tej kolejności) |
-| Middleware | `helmet()`, `cookie-parser`, `RequestIdMiddleware` (`X-Request-Id`) |
-| Proxy | `app.set('trust proxy', 1)` (nginx) |
-| Swagger | `/api/docs`, gdy `SWAGGER_ENABLED` |
+Enhancery (pipe, filtr, guardy) rejestruje `AppModule` przez DI, a ustawienia HTTP funkcja `configureApp(app)` z `src/app.setup.ts`. Tej samej funkcji używają `main.ts` i testy integracyjne (`test/integration/support/create-test-app.ts`), więc testy działają na identycznej konfiguracji.
+
+| Element | Ustawienie | Gdzie |
+|-|-|-|
+| Prefiks | `app.setGlobalPrefix('api/v1')` | `configureApp` |
+| Walidacja | `ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true, transformOptions: { enableImplicitConversion: false } })` + `exceptionFactory` → `ValidationFailedException` | `APP_PIPE`, `common/errors/validation.ts` |
+| Filtr | `AllExceptionsFilter` (`timestamp` z `Clock`) | `APP_FILTER` |
+| Guardy | `ThrottlerGuard`, `JwtAuthGuard`, `RolesGuard` (globalne, przez `APP_GUARD`, w tej kolejności) | M4 |
+| Middleware | `requestIdMiddleware` (`X-Request-Id`: poprawny `[\w-]{1,128}` od klienta albo UUID; `req.requestId`), `helmet()`, `cookie-parser` | `configureApp` |
+| CORS | tylko gdy `CORS_ORIGINS` niepuste, z `credentials: true` | `configureApp` |
+| Proxy | `app.set('trust proxy', 1)` (nginx), wyłączone `x-powered-by` | `configureApp` |
+| Swagger | `/api/docs` (JSON: `/api/docs-json`), gdy `SWAGGER_ENABLED` | `main.ts`, `src/openapi/swagger.ts` |
 
 ## DTO i walidacja
 
@@ -46,7 +49,16 @@ export class ReservationsController {
 - Kwoty: `@IsInt() @Min(0)`, liczba groszy.
 - Query: liczby przez `@Type(() => Number)`, listy przez `@Transform` (split po przecinku).
 - Walidacja krzyżowa kształtu (np. `dateTo ≥ dateFrom`) jako własny dekorator → 400. Reguły biznesowe (np. BR-04) nie należą do DTO, bo są w domenie → 422.
-- Wspólne: `PaginationQuery` (`page`, `pageSize`), `SortQuery` (parsowanie `field:dir` z białej listy), `Paginated<T>` (generyczny DTO odpowiedzi dla Swaggera).
+- Wspólne (`common/http/pagination.ts`, `common/http/sort.ts`): `PaginationQuery` (`page`, `pageSize`), `SortQuery(pola, domyślne)` (`field:dir` z białej listy, 400 dla nieznanego pola) + `parseSort()`, `Paginated<T>` (typ wyniku serwisu) i `Paginated(ItemDto)` (generyczny DTO odpowiedzi dla Swaggera), `paginate()`, `toSkipTake()`:
+
+```ts
+export class ListReservationsQuery extends IntersectionType(
+  PaginationQuery,
+  SortQuery(['checkIn', 'number', 'createdAt'], 'checkIn:asc'),
+) {}
+
+export class ReservationPageDto extends Paginated(ReservationListItemDto) {} // nazwany schemat w OpenAPI
+```
 
 ## Mappery
 
@@ -77,24 +89,29 @@ Jedyne miejsce tłumaczenia błędów na HTTP: `common/errors/all-exceptions.fil
 
 | Źródło | Wynik |
 |-|-|
-| `DomainError` (z polem `code`) | status z mapy `code → status` ([business-rules.md](../../../docs/architecture/business-rules.md#podsumowanie)), `message`, `details` z błędu |
+| `DomainError` (z polem `code`) | status z mapy `DOMAIN_ERROR_HTTP_STATUS` ([business-rules.md](../../../docs/architecture/business-rules.md#podsumowanie)), `message`, `details` z błędu |
 | `NotFoundError` (aplikacyjny) | 404 `NOT_FOUND` |
-| `ValidationPipe` (`BadRequestException`) | 400 `VALIDATION_ERROR`, `details.fields` |
-| `HttpException` Nesta (401/403/413/429) | odpowiadający `code` (`UNAUTHORIZED`, `FORBIDDEN`, `FILE_TOO_LARGE`, `RATE_LIMITED`) |
-| Prisma `P2002` niezmapowane w repozytorium | 409 `CONFLICT` + log ostrzeżenia (to sygnał, że repozytorium powinno je zmapować) |
-| Inne | 500 `INTERNAL_ERROR`, pełny stack tylko w logu z `requestId` |
+| `ValidationPipe` (`ValidationFailedException`) | 400 `VALIDATION_ERROR`, `details.fields` (ścieżki z kropką, np. `guest.email`) |
+| `HttpException` rzucony z ciałem `{ code, message, details? }` | status wyjątku i **jego** `code` (np. `new UnauthorizedException({ code: 'INVALID_CREDENTIALS', message })`) |
+| `HttpException` Nesta i Expressa (400/401/403/404/409/413/415/429) | kod według statusu (`VALIDATION_ERROR`, `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `CONFLICT`, `FILE_TOO_LARGE`, `UNSUPPORTED_FILE_TYPE`, `RATE_LIMITED`) i polski komunikat domyślny; dotyczy też nieznanej trasy, złego JSON i `ParseUUIDPipe` (bez `details.fields`) |
+| Prisma `P2002` niezmapowane w repozytorium | 409 `CONFLICT` + log ostrzeżenia (to sygnał, że repozytorium powinno je zmapować) (M3) |
+| Inne (w tym `HttpException` o statusie spoza mapy) | 500 `INTERNAL_ERROR`, pełny stack tylko w logu z `requestId` ([Q-27](../../../docs/open-questions.md#q-27): kod dla 503) |
 
-Nowy błąd domenowy to klasa w `modules/<f>/domain/errors/` + wpis w mapie + kod w [business-rules.md](../../../docs/architecture/business-rules.md) lub [api-conventions.md](../../../docs/architecture/api-conventions.md).
+Nowy błąd domenowy to klasa w `modules/<f>/domain/errors/` + kod w unii `DomainErrorCode` (`common/domain/domain-error.ts`) + wpis w `DOMAIN_ERROR_HTTP_STATUS` (bez niego kod się nie skompiluje) + kod w [business-rules.md](../../../docs/architecture/business-rules.md) lub [api-conventions.md](../../../docs/architecture/api-conventions.md).
 
 ## Swagger
 
 - `@ApiTags('<moduł>')` na kontrolerze; `@ApiBearerAuth()` dla chronionych.
-- `operationId` = `<Controller>_<method>` (np. `Rooms_create`). Wpływa na nazwy hooków orval: [ADR 0006](../../../docs/decisions/0006-openapi-contract-codegen.md).
+- `operationId` = `<Controller>_<method>` (np. `Rooms_create`). Domyślnie nadaje go `operationIdFactory` w `src/openapi/swagger.ts`; jawne `operationId` w `@ApiOperation` zabezpiecza nazwę przed zmianą nazwy metody. Wpływa na nazwy hooków orval: [ADR 0006](../../../docs/decisions/0006-openapi-contract-codegen.md).
 - Odpowiedzi błędów: `@ApiResponse({ status: 409, type: ErrorResponseDto })` dla kodów z sekcji 5 dokumentu funkcjonalności.
 - Enumy jako `@ApiProperty({ enum: ReservationStatus, enumName: 'ReservationStatus' })`, żeby orval wygenerował nazwany typ.
 - Upload: `@ApiConsumes('multipart/form-data')` + `@ApiBody({ schema })`.
-- Eksport: `src/openapi/export.ts` buduje `AppModule` bez `listen`, wywołuje `SwaggerModule.createDocument` i zapisuje posortowany JSON do `packages/api-client/openapi.json`.
+- Eksport: `src/openapi/export.ts` (po `nest build`) buduje `AppModule` w trybie `preview` (bez providerów, bez połączeń z bazą), wywołuje `SwaggerModule.createDocument` i zapisuje JSON z posortowanymi kluczami do `packages/api-client/openapi.json`. Brakujące zmienne env uzupełnia `src/config/openapi-export-env.ts`, więc eksport działa bez `.env` (CI `contract`).
+- Odpowiedź błędu w dokumentacji ma zawsze schemat `ErrorResponseDto`, także gdy biblioteka (np. terminus) dokumentuje własny: odpowiedź i tak formatuje globalny filtr.
 
 ## Testy
 
 Warstwę HTTP testujemy **integracyjnie** (supertest): kody, `Location`, format błędu, walidacja, guardy. Testy jednostkowe kontrolerów nie są wymagane.
+
+- `createTestApp({ controllers?, now? })` (`test/integration/support/`): prawdziwy `AppModule` + `configureApp`, `CLOCK` nadpisany `FixedClock` (domyślnie `2026-08-01T10:00:00+02:00`).
+- Mechanizmy wspólne bez endpointu (format błędów) testuje kontroler-sonda zdefiniowany w pliku testu: `test/integration/error-format.e2e-spec.ts`.

@@ -5,9 +5,11 @@
 
 ## Konfiguracja
 
-- `@nestjs/config` z `validate` (schemat zod lub class-validator) w `src/config/env.schema.ts`. Błędna lub brakująca zmienna oznacza, że aplikacja nie startuje i wypisuje listę błędów.
-- Typowana konfiguracja przez `registerAs` (`appConfig`, `authConfig`, `mailConfig`, `storageConfig`, `redisConfig`) i wstrzykiwanie `ConfigType<typeof authConfig>`. Nie używaj `process.env` poza `src/config/`.
-- `NODE_ENV=test` pozwala na wartości testowe (np. krótki sekret JWT w testach).
+- `@nestjs/config` z `validate: parseEnv` (schemat **zod 4**) w `src/config/env.schema.ts`. Błędna lub brakująca zmienna oznacza, że aplikacja nie startuje i wypisuje listę wszystkich błędów (`InvalidEnvError`). Pusta wartość (`SMTP_USER=`) liczy się jak brak zmiennej, więc działa wartość domyślna.
+- Schemat obejmuje zmienne API z `.env.example`. `SEED_*` waliduje skrypt seeda, a `POSTGRES_*` i `VITE_*` nie dotyczą API.
+- Plik `.env`: `apps/api/.env` albo `.env` w roocie monorepo (`AppConfigModule` w `src/config/config.module.ts`). Zmienne procesu (Docker, CI) mają pierwszeństwo. Przy `NODE_ENV=test` plik jest pomijany, a wartości testów integracyjnych ustawia `test/integration/setup/test-env.ts`.
+- Typowana konfiguracja przez `registerAs` (`appConfig` od M2; `authConfig`, `mailConfig`, `storageConfig`, `redisConfig` w etapach, które ich używają) i wstrzykiwanie `ConfigType<typeof authConfig>`. Nie używaj `process.env` poza `src/config/`.
+- `NODE_ENV=test` pozwala na wartości testowe (np. krótki sekret JWT w testach). `NODE_ENV=production` odrzuca sekret JWT z `.env.example` (`change-me…`).
 
 ## Porty techniczne
 
@@ -61,4 +63,4 @@ Moduły domenowe zależą od tokenów, a nie od klas adapterów. Testy podmienia
 
 ## Health check
 
-`GET /api/v1/health` (`@Public`, `@nestjs/terminus`): `database` (Prisma ping), `redis`. Zwraca `200 { status: 'ok', info }` lub `503`. Używany przez healthcheck Dockera.
+`GET /api/v1/health` (`@Public`, `@nestjs/terminus`): `database` (Prisma ping, od M3), `redis` (od M9). Zwraca `200 { status: 'ok', info }` lub `503` w formacie `ErrorResponseDto`. Używany przez healthcheck Dockera. W M2 to sam liveness bez wskaźników ([Q-27](../../../docs/open-questions.md#q-27)).
