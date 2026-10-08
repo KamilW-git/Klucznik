@@ -1,5 +1,5 @@
 // Testy jednostkowe: pliki *.spec.ts obok kodu w src/.
-// Uruchamiane z `--experimental-vm-modules`, bo pakiety NestJS 12 są ESM (Q-26).
+// Uruchamiane z `--experimental-vm-modules`, bo pakiety NestJS 12 są ESM (docs/open-questions.md#q-26).
 
 /** @type {import('jest').Config} */
 export default {

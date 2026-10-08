@@ -58,6 +58,7 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 - [ ] [API] `schema.prisma` (wszystkie encje), migracja `init`
 - [ ] [API] Migracja z ręcznym SQL: `btree_gist`, `EXCLUDE` (BR-01, BR-09), `CHECK`
 - [ ] [API] `PrismaService`, `TransactionManager` (CLS), `resetDatabase()` i fabryki testowe
+- [ ] [API] Wskaźnik `database` w `/health` + kod `SERVICE_UNAVAILABLE` (503, wynik terminusa w `details`) w filtrze i w [api-conventions.md](architecture/api-conventions.md#metody-i-kody-odpowiedzi) ([Q-27](open-questions.md#q-27); zmiana w `docs/architecture` przez handoff do `DOCS`)
 - [ ] [API] Seed danych demo (idempotentny)
 
 ## M4: Auth i właściciele [API]

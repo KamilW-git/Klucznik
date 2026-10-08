@@ -16,7 +16,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Ustaw POSTGRES_PASSWORD w .env (wzór w .env.example)}
       POSTGRES_DB: ${POSTGRES_DB:-klucznik}
     ports:
-      # Q-25: port na hoście konfigurowalny, gdy 5432 zajmuje lokalny PostgreSQL.
+      # Port na hoście konfigurowalny, gdy 5432 zajmuje lokalny PostgreSQL.
       - '127.0.0.1:${POSTGRES_PORT:-5432}:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -64,7 +64,7 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      # Q-24: w kontenerze hosty usług zamiast localhost z .env.
+      # W kontenerze hosty usług zamiast localhost z .env.
       DATABASE_URL: postgresql://${POSTGRES_USER:-klucznik}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-klucznik}
       REDIS_HOST: redis
       SMTP_HOST: mailpit

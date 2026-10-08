@@ -63,4 +63,4 @@ Moduły domenowe zależą od tokenów, a nie od klas adapterów. Testy podmienia
 
 ## Health check
 
-`GET /api/v1/health` (`@Public`, `@nestjs/terminus`): `database` (Prisma ping, od M3), `redis` (od M9). Zwraca `200 { status: 'ok', info }` lub `503` w formacie `ErrorResponseDto`. Używany przez healthcheck Dockera. W M2 to sam liveness bez wskaźników ([Q-27](../../../docs/open-questions.md#q-27)).
+`GET /api/v1/health` (`@Public`, `@nestjs/terminus`): `database` (Prisma ping, od M3), `redis` (od M9). Zwraca `200 { status: 'ok', info }` lub `503 SERVICE_UNAVAILABLE` w formacie `ErrorResponseDto` z wynikiem terminusa w `details` (od M3). Używany przez healthcheck Dockera. W M2 to sam liveness bez wskaźników ([Q-27](../../../docs/open-questions.md#q-27)).

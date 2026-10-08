@@ -34,13 +34,16 @@ package.json, pnpm-workspace.yaml, tsconfig.base.json, eslint.config.mjs, .prett
 
 Wartości sekretów **nie** trafiają do repo. `.env.example` zawiera klucze z bezpiecznymi wartościami deweloperskimi albo `change-me`. API waliduje zmienne przy starcie ([integrations.md](../../apps/api/docs/integrations.md#konfiguracja)).
 
+Kolumna „Domyślna (dev)” podaje wartości dla `pnpm dev` na hoście (usługi z `docker compose up -d postgres redis mailpit`), więc hosty to `localhost`. Usługa `api` w `docker-compose.yml` nadpisuje `DATABASE_URL`, `REDIS_HOST` i `SMTP_HOST` nazwami usług Compose (`postgres`, `redis`, `mailpit`) ([Q-24](../open-questions.md#q-24)).
+
 | Zmienna | Usługa | Wymagana | Domyślna (dev) | Opis |
 |-|-|-|-|-|
 | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | postgres | ✔ | `klucznik` / sekret / `klucznik` | inicjalizacja bazy |
+| `POSTGRES_PORT` | postgres | – | `5432` | port na hoście; przy zmianie popraw `DATABASE_URL` ([Q-25](../open-questions.md#q-25)) |
 | `NODE_ENV` | api | ✔ | `development` | `development` / `test` / `production` |
 | `PORT` | api | – | `3000` | |
-| `DATABASE_URL` | api | ✔ | – | `postgresql://…@postgres:5432/klucznik` |
-| `REDIS_HOST`, `REDIS_PORT` | api | ✔ | `redis`, `6379` | BullMQ |
+| `DATABASE_URL` | api | ✔ | `postgresql://klucznik:…@localhost:5432/klucznik` | w kontenerze `api`: host `postgres` |
+| `REDIS_HOST`, `REDIS_PORT` | api | ✔ | `localhost`, `6379` | BullMQ; w kontenerze `api`: host `redis` |
 | `JWT_ACCESS_SECRET` | api | ✔ sekret | – | min. 32 znaki |
 | `JWT_ACCESS_TTL` | api | – | `900` | sekundy |
 | `REFRESH_TOKEN_TTL_DAYS` | api | – | `7` | |
@@ -48,7 +51,7 @@ Wartości sekretów **nie** trafiają do repo. `.env.example` zawiera klucze z b
 | `CORS_ORIGINS` | api | – | `http://localhost:5173` | lista po przecinku; tylko dev |
 | `APP_PUBLIC_URL` | api | ✔ | `http://localhost:8080` | baza linków w e-mailach |
 | `APP_TIMEZONE` | api | – | `Europe/Warsaw` | strefa „dziś” i crona |
-| `SMTP_HOST`, `SMTP_PORT` | api | ✔ | `mailpit`, `1025` | |
+| `SMTP_HOST`, `SMTP_PORT` | api | ✔ | `localhost`, `1025` | w kontenerze `api`: host `mailpit` |
 | `SMTP_USER`, `SMTP_PASSWORD` | api | – sekret | puste | puste w dev |
 | `MAIL_FROM` | api | ✔ | `"Klucznik" <no-reply@klucznik.local>` | |
 | `STORAGE_DRIVER` | api | – | `local` | `local` (MVP), później `s3` |

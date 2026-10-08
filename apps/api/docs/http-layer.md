@@ -95,7 +95,8 @@ Jedyne miejsce tłumaczenia błędów na HTTP: `common/errors/all-exceptions.fil
 | `HttpException` rzucony z ciałem `{ code, message, details? }` | status wyjątku i **jego** `code` (np. `new UnauthorizedException({ code: 'INVALID_CREDENTIALS', message })`) |
 | `HttpException` Nesta i Expressa (400/401/403/404/409/413/415/429) | kod według statusu (`VALIDATION_ERROR`, `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `CONFLICT`, `FILE_TOO_LARGE`, `UNSUPPORTED_FILE_TYPE`, `RATE_LIMITED`) i polski komunikat domyślny; dotyczy też nieznanej trasy, złego JSON i `ParseUUIDPipe` (bez `details.fields`) |
 | Prisma `P2002` niezmapowane w repozytorium | 409 `CONFLICT` + log ostrzeżenia (to sygnał, że repozytorium powinno je zmapować) (M3) |
-| Inne (w tym `HttpException` o statusie spoza mapy) | 500 `INTERNAL_ERROR`, pełny stack tylko w logu z `requestId` ([Q-27](../../../docs/open-questions.md#q-27): kod dla 503) |
+| `ServiceUnavailableException` (health check, wskaźnik `down`) | 503 `SERVICE_UNAVAILABLE`, wynik terminusa w `details` (od M3, [Q-27](../../../docs/open-questions.md#q-27)) |
+| Inne (w tym `HttpException` o statusie spoza mapy) | 500 `INTERNAL_ERROR`, pełny stack tylko w logu z `requestId` |
 
 Nowy błąd domenowy to klasa w `modules/<f>/domain/errors/` + kod w unii `DomainErrorCode` (`common/domain/domain-error.ts`) + wpis w `DOMAIN_ERROR_HTTP_STATUS` (bez niego kod się nie skompiluje) + kod w [business-rules.md](../../../docs/architecture/business-rules.md) lub [api-conventions.md](../../../docs/architecture/api-conventions.md).
 

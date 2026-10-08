@@ -30,7 +30,7 @@ export class HealthController {
     type: ErrorResponseDto,
   })
   check(): Promise<HealthCheckResult> {
-    // Q-27: w M2 tylko liveness. M3 dodaje `database` (Prisma ping), M9 `redis`.
+    // M2: tylko liveness. M3 dodaje `database` (Prisma ping) i kod SERVICE_UNAVAILABLE, M9 `redis`.
     return this.health.check([]);
   }
 }

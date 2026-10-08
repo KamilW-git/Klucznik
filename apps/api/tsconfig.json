@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    // CommonJS (brak "type": "module"); pakiety NestJS 12 (ESM) ładuje require(esm) z Node 24. Q-26
+    // CommonJS (brak "type": "module"); pakiety NestJS 12 (ESM) ładuje require(esm) z Node 24.
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "experimentalDecorators": true,
