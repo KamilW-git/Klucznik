@@ -4,7 +4,12 @@
  * Katalog kodów ogólnych: docs/architecture/api-conventions.md#metody-i-kody-odpowiedzi.
  */
 export type ApplicationErrorCode =
-  'NOT_FOUND' | 'UNAUTHORIZED' | 'INVALID_CREDENTIALS' | 'EMAIL_TAKEN' | 'SLUG_TAKEN';
+  | 'NOT_FOUND'
+  | 'UNAUTHORIZED'
+  | 'INVALID_CREDENTIALS'
+  | 'EMAIL_TAKEN'
+  | 'SLUG_TAKEN'
+  | 'UNSUPPORTED_FILE_TYPE';
 
 /**
  * Bazowa klasa błędów warstwy aplikacji. Jak `DomainError` nie zna HTTP: status nadaje globalny filtr.

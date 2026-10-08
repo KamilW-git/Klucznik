@@ -40,14 +40,14 @@ Zdjęcia sprzedają nocleg. Właściciel dodaje je przez przeciągnięcie plikó
 
 ## 6. Backend: zadania
 
-- [ ] Port `StorageService` (`put`, `get` (stream), `delete`) + `LocalDiskStorage` (`STORAGE_LOCAL_PATH`).
-- [ ] Upload przez `FileInterceptor` (multer, `memoryStorage`, limit `UPLOAD_MAX_BYTES`), mapowanie błędu limitu na 413.
-- [ ] Walidacja typu po magic bytes (np. biblioteka `file-type`) → 415.
-- [ ] `PhotosService`: limit liczby (422), zapis metadanych i pliku. Gdy zapis do DB się nie powiedzie, usuń plik (kompensacja).
-- [ ] Usuwanie: rekord w transakcji, plik po commicie (błąd usunięcia pliku tylko logujemy).
-- [ ] Przenumerowanie `sortOrder` w transakcji.
-- [ ] `FilesController` (`@Public`): strumieniowanie pliku, nagłówki cache.
-- [ ] Swagger: `@ApiConsumes('multipart/form-data')` + schemat body.
+- [x] Port `STORAGE` (`common/storage/storage.ts`: `put`, `get` (stream), `delete`) + `LocalDiskStorage` (`STORAGE_LOCAL_PATH`).
+- [x] Upload przez `FileInterceptor` (multer w pamięci przez `MulterModule.registerAsync`, limit `UPLOAD_MAX_BYTES`), błąd limitu → 413 `FILE_TOO_LARGE`.
+- [x] Walidacja typu po magic bytes → 415: własna funkcja `modules/photos/domain/image-type.ts` (JPEG, PNG, WebP), bez zależności `file-type`.
+- [x] `PhotosService`: limit liczby (422), zapis metadanych i pliku. Gdy zapis do DB się nie powiedzie, usuń plik (kompensacja).
+- [x] Usuwanie: rekord w transakcji, plik po commicie (błąd usunięcia pliku tylko logujemy).
+- [x] Przenumerowanie `sortOrder` w transakcji.
+- [x] `FilesController` (`@Public`): strumieniowanie pliku, nagłówki cache.
+- [x] Swagger: `@ApiConsumes('multipart/form-data')` + schemat body.
 
 ## 7. Frontend: ekrany i zadania
 
@@ -81,7 +81,7 @@ Ekrany: O7 zakładka „Zdjęcia”, O8 karta „Zdjęcia obiektu”, P1 galeria
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Gotowe (M5) |
 | UI | Nie rozpoczęto |
 
 Otwarte: [Q-14](../open-questions.md#q-14) (limity).

@@ -10,7 +10,7 @@
 | M2 | API | Bootstrap API | gotowe (API), Docker i CI: INFRA |
 | M3 | API | Schemat Prisma, migracje, seed | gotowe |
 | M4 | API | Auth, role, zarządzanie właścicielami | gotowe |
-| M5 | API | Obiekty, pokoje, zdjęcia, izolacja | – |
+| M5 | API | Obiekty, pokoje, zdjęcia, izolacja | gotowe |
 | M6 | API | Cennik, blokady, dostępność, kalendarz | – |
 | M7 | API | Rezerwacje: reguły, stany, ręczna, optimistic locking, goście | – |
 | M8 | API | Publiczny proces rezerwacji i token gościa | – |
@@ -69,12 +69,12 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M5: Obiekty, pokoje, zdjęcia [API]
 
-- [ ] [API] `OwnershipPolicy`, `AccessScope` (BR-12): [application-layer.md](../apps/api/docs/application-layer.md#polityki-dostępu)
-- [ ] [API] Obiekty + slug + dashboard: [properties.md](features/properties.md)
-- [ ] [API] Pokoje + BR-10: [rooms.md](features/rooms.md)
-- [ ] [API] Zdjęcia, `StorageService`, `/files`: [photos.md](features/photos.md)
-- [ ] [API] Testy izolacji (owner B → zasoby A → 404)
-- [ ] [INFRA] Wolumen `uploads` w compose
+- [x] [API] `OwnershipPolicy`, `AccessScope` (BR-12): [application-layer.md](../apps/api/docs/application-layer.md#polityki-dostępu)
+- [x] [API] Obiekty + slug + dashboard: [properties.md](features/properties.md)
+- [x] [API] Pokoje + BR-10: [rooms.md](features/rooms.md)
+- [x] [API] Zdjęcia, `StorageService`, `/files`: [photos.md](features/photos.md)
+- [x] [API] Testy izolacji (owner B → zasoby A → 404)
+- [x] [INFRA] Wolumen `uploads` w compose (sesja API M5 za zgodą właściciela: [H-009](handoff.md#zgłoszenia))
 
 ## M6: Cennik i dostępność [API]
 

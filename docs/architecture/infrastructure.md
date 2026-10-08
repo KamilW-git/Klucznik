@@ -55,7 +55,7 @@ Kolumna „Domyślna (dev)” podaje wartości dla `pnpm dev` na hoście (usług
 | `SMTP_USER`, `SMTP_PASSWORD` | api | – sekret | puste | puste w dev |
 | `MAIL_FROM` | api | ✔ | `"Klucznik" <no-reply@klucznik.local>` | |
 | `STORAGE_DRIVER` | api | – | `local` | `local` (MVP), później `s3` |
-| `STORAGE_LOCAL_PATH` | api | – | `/data/uploads` | |
+| `STORAGE_LOCAL_PATH` | api | – | `./uploads` | katalog zdjęć; względny wobec `apps/api` przy `pnpm dev`, w kontenerze `api` nadpisany na `/data/uploads` (wolumen `uploads`) |
 | `UPLOAD_MAX_BYTES` | api | – | `10485760` | 10 MB |
 | `THROTTLE_TTL`, `THROTTLE_LIMIT` | api | – | `60`, `100` | globalny limit |
 | `SWAGGER_ENABLED` | api | – | `true` | `/api/docs` |

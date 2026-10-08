@@ -68,9 +68,12 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-klucznik}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-klucznik}
       REDIS_HOST: redis
       SMTP_HOST: mailpit
+      STORAGE_LOCAL_PATH: /data/uploads
     ports:
       - '127.0.0.1:3000:3000'
-    # M5: wolumen `uploads:/data/uploads`.
+    volumes:
+      # Zdjęcia przetrwają restart i przebudowę kontenera (docs/features/photos.md).
+      - uploads:/data/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -105,3 +108,4 @@ services:
 volumes:
   pgdata:
   redisdata:
+  uploads:

@@ -1,5 +1,7 @@
 import { execSync } from 'node:child_process';
-import { resolve } from 'node:path';
+import { mkdtemp } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 
 import { PostgreSqlContainer, type StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 
@@ -7,6 +9,7 @@ export const POSTGRES_IMAGE = 'postgres:16-alpine';
 
 export interface IntegrationGlobals {
   __POSTGRES_CONTAINER__?: StartedPostgreSqlContainer;
+  __UPLOADS_DIR__?: string;
 }
 
 const API_ROOT = resolve(__dirname, '../../..');
@@ -18,6 +21,11 @@ const API_ROOT = resolve(__dirname, '../../..');
  * też ręczny SQL z migracji (EXCLUDE, CHECK).
  */
 export default async function globalSetup(): Promise<void> {
+  // Pliki zdjęć w katalogu tymczasowym przebiegu (usuwany w global-teardown).
+  const uploadsDir = await mkdtemp(join(tmpdir(), 'klucznik-uploads-'));
+  process.env.STORAGE_LOCAL_PATH = uploadsDir;
+  (globalThis as IntegrationGlobals).__UPLOADS_DIR__ = uploadsDir;
+
   let databaseUrl = process.env.TEST_DATABASE_URL;
 
   if (!databaseUrl) {

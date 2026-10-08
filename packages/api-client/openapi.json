@@ -180,6 +180,202 @@
         ],
         "type": "object"
       },
+      "CreatePropertyDto": {
+        "properties": {
+          "cancellationDeadlineDays": {
+            "default": 7,
+            "description": "Bezpłatne anulowanie do N dni przed przyjazdem (BR-08)",
+            "maximum": 60,
+            "minimum": 0,
+            "type": "number"
+          },
+          "checkInTime": {
+            "default": "15:00",
+            "example": "15:00",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "type": "string"
+          },
+          "checkOutTime": {
+            "default": "11:00",
+            "example": "11:00",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "type": "string"
+          },
+          "city": {
+            "example": "Mikołajki",
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "contactEmail": {
+            "example": "kontakt@lesnapolana.example.com",
+            "nullable": true,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 5000,
+            "nullable": true,
+            "type": "string"
+          },
+          "isActive": {
+            "default": true,
+            "description": "Nieaktywny obiekt nie przyjmuje rezerwacji (BR-13)",
+            "type": "boolean"
+          },
+          "name": {
+            "example": "Domki Leśna Polana",
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "ownerId": {
+            "description": "Właściciel: tylko i obowiązkowo dla ADMIN",
+            "format": "uuid",
+            "type": "string"
+          },
+          "pendingExpiryHours": {
+            "default": 48,
+            "description": "Czas na potwierdzenie rezerwacji online w godzinach (BR-07)",
+            "maximum": 168,
+            "minimum": 1,
+            "type": "number"
+          },
+          "phone": {
+            "example": "+48 600 100 200",
+            "maxLength": 30,
+            "nullable": true,
+            "type": "string"
+          },
+          "postalCode": {
+            "example": "11-730",
+            "pattern": "^\\d{2}-\\d{3}$",
+            "type": "string"
+          },
+          "slug": {
+            "description": "Adres strony `/o/:slug`; bez niego generowany z nazwy",
+            "example": "lesna-polana",
+            "maxLength": 60,
+            "minLength": 3,
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+            "type": "string"
+          },
+          "street": {
+            "example": "Leśna 12",
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "street",
+          "postalCode",
+          "city"
+        ],
+        "type": "object"
+      },
+      "CreateRoomDto": {
+        "properties": {
+          "basePricePerNight": {
+            "description": "Cena bazowa za noc w groszach (BR-05)",
+            "example": 37000,
+            "maximum": 10000000,
+            "minimum": 0,
+            "type": "number"
+          },
+          "capacity": {
+            "description": "Maksymalna liczba gości (BR-02)",
+            "example": 4,
+            "maximum": 30,
+            "minimum": 1,
+            "type": "number"
+          },
+          "description": {
+            "maxLength": 5000,
+            "nullable": true,
+            "type": "string"
+          },
+          "isActive": {
+            "default": true,
+            "description": "Widoczny na stronie i dostępny do rezerwacji (BR-13)",
+            "type": "boolean"
+          },
+          "minNights": {
+            "default": 1,
+            "description": "Minimalna liczba nocy (BR-03)",
+            "maximum": 30,
+            "minimum": 1,
+            "type": "number"
+          },
+          "name": {
+            "example": "Domek Sosna",
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "capacity",
+          "basePricePerNight"
+        ],
+        "type": "object"
+      },
+      "DashboardDto": {
+        "properties": {
+          "arrivalsToday": {
+            "description": "CONFIRMED z przyjazdem dziś",
+            "example": 2,
+            "type": "number"
+          },
+          "departuresToday": {
+            "description": "CONFIRMED z wyjazdem dziś",
+            "example": 1,
+            "type": "number"
+          },
+          "occupancyNext30Days": {
+            "description": "Kolejne 30 dni od dziś",
+            "items": {
+              "$ref": "#/components/schemas/OccupancyDayDto"
+            },
+            "type": "array"
+          },
+          "occupancyThisMonth": {
+            "description": "% zajętych nocy aktywnych pokoi w bieżącym miesiącu (0–100)",
+            "example": 64,
+            "type": "number"
+          },
+          "pendingCount": {
+            "description": "Rezerwacje PENDING",
+            "example": 3,
+            "type": "number"
+          },
+          "pendingReservations": {
+            "description": "Do 10 najstarszych PENDING",
+            "items": {
+              "$ref": "#/components/schemas/ReservationListItemDto"
+            },
+            "type": "array"
+          },
+          "upcomingArrivals": {
+            "description": "CONFIRMED z przyjazdem w ciągu 7 dni",
+            "items": {
+              "$ref": "#/components/schemas/ReservationListItemDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "arrivalsToday",
+          "departuresToday",
+          "pendingCount",
+          "occupancyThisMonth",
+          "pendingReservations",
+          "upcomingArrivals",
+          "occupancyNext30Days"
+        ],
+        "type": "object"
+      },
       "ErrorResponseDto": {
         "properties": {
           "code": {
@@ -384,6 +580,30 @@
         ],
         "type": "object"
       },
+      "OccupancyDayDto": {
+        "properties": {
+          "date": {
+            "example": "2026-08-14",
+            "format": "date",
+            "type": "string"
+          },
+          "occupiedRooms": {
+            "example": 3,
+            "type": "number"
+          },
+          "totalRooms": {
+            "description": "Aktywne pokoje obiektu",
+            "example": 4,
+            "type": "number"
+          }
+        },
+        "required": [
+          "date",
+          "occupiedRooms",
+          "totalRooms"
+        ],
+        "type": "object"
+      },
       "OwnerDto": {
         "properties": {
           "createdAt": {
@@ -558,12 +778,496 @@
         ],
         "type": "object"
       },
+      "PhotoDto": {
+        "properties": {
+          "altText": {
+            "example": "Taras z widokiem na las",
+            "nullable": true,
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "mimeType": {
+            "enum": [
+              "image/jpeg",
+              "image/png",
+              "image/webp"
+            ],
+            "type": "string"
+          },
+          "roomId": {
+            "description": "`null` = zdjęcie obiektu",
+            "format": "uuid",
+            "nullable": true,
+            "type": "string"
+          },
+          "sizeBytes": {
+            "example": 524288,
+            "type": "number"
+          },
+          "sortOrder": {
+            "description": "Pozycja w galerii; 0 = zdjęcie główne",
+            "example": 0,
+            "type": "number"
+          },
+          "url": {
+            "description": "Adres pliku",
+            "example": "/api/v1/files/6f0c2a7e-4c1b-4a8e-9a43-1d6f5f1c2b3a.jpg",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "altText",
+          "sortOrder",
+          "roomId",
+          "mimeType",
+          "sizeBytes",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "PropertyDto": {
+        "properties": {
+          "cancellationDeadlineDays": {
+            "example": 7,
+            "type": "number"
+          },
+          "checkInTime": {
+            "example": "15:00",
+            "type": "string"
+          },
+          "checkOutTime": {
+            "example": "11:00",
+            "type": "string"
+          },
+          "city": {
+            "example": "Mikołajki",
+            "nullable": true,
+            "type": "string"
+          },
+          "contactEmail": {
+            "nullable": true,
+            "type": "string"
+          },
+          "coverPhoto": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhotoDto"
+              }
+            ],
+            "description": "Pierwsze zdjęcie galerii obiektu",
+            "nullable": true,
+            "type": "object"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "currency": {
+            "example": "PLN",
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "name": {
+            "example": "Domki Leśna Polana",
+            "type": "string"
+          },
+          "ownerId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "pendingExpiryHours": {
+            "example": 48,
+            "type": "number"
+          },
+          "phone": {
+            "nullable": true,
+            "type": "string"
+          },
+          "photos": {
+            "description": "Zdjęcia obiektu (bez zdjęć pokoi)",
+            "items": {
+              "$ref": "#/components/schemas/PhotoDto"
+            },
+            "type": "array"
+          },
+          "postalCode": {
+            "example": "11-730",
+            "nullable": true,
+            "type": "string"
+          },
+          "publicUrl": {
+            "example": "http://localhost:8080/o/lesna-polana",
+            "type": "string"
+          },
+          "slug": {
+            "example": "lesna-polana",
+            "type": "string"
+          },
+          "street": {
+            "example": "Leśna 12",
+            "nullable": true,
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ownerId",
+          "name",
+          "slug",
+          "description",
+          "street",
+          "postalCode",
+          "city",
+          "phone",
+          "contactEmail",
+          "checkInTime",
+          "checkOutTime",
+          "cancellationDeadlineDays",
+          "pendingExpiryHours",
+          "currency",
+          "isActive",
+          "coverPhoto",
+          "photos",
+          "publicUrl",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
+      "PropertyListDto": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/PropertyListItemDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "type": "object"
+      },
+      "PropertyListItemDto": {
+        "properties": {
+          "city": {
+            "example": "Mikołajki",
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "name": {
+            "example": "Domki Leśna Polana",
+            "type": "string"
+          },
+          "roomsCount": {
+            "example": 4,
+            "type": "number"
+          },
+          "slug": {
+            "example": "lesna-polana",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "city",
+          "isActive",
+          "roomsCount"
+        ],
+        "type": "object"
+      },
+      "ReservationGuestRefDto": {
+        "properties": {
+          "email": {
+            "example": "anna.kowalska@example.com",
+            "nullable": true,
+            "type": "string"
+          },
+          "firstName": {
+            "example": "Anna",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "lastName": {
+            "example": "Kowalska",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email"
+        ],
+        "type": "object"
+      },
+      "ReservationListItemDto": {
+        "properties": {
+          "checkIn": {
+            "example": "2026-08-14",
+            "format": "date",
+            "type": "string"
+          },
+          "checkOut": {
+            "description": "Dzień wyjazdu (zakres `[checkIn, checkOut)`)",
+            "example": "2026-08-18",
+            "format": "date",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "currency": {
+            "example": "PLN",
+            "type": "string"
+          },
+          "expiresAt": {
+            "description": "Tylko dla PENDING (BR-07)",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "guest": {
+            "$ref": "#/components/schemas/ReservationGuestRefDto"
+          },
+          "guestsCount": {
+            "example": 3,
+            "type": "number"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "nights": {
+            "example": 4,
+            "type": "number"
+          },
+          "number": {
+            "example": "KL-2026-000123",
+            "type": "string"
+          },
+          "propertyId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "room": {
+            "$ref": "#/components/schemas/ReservationRoomRefDto"
+          },
+          "source": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReservationSource"
+              }
+            ]
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReservationStatus"
+              }
+            ]
+          },
+          "totalPrice": {
+            "description": "Grosze",
+            "example": 164000,
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "number",
+          "propertyId",
+          "room",
+          "guest",
+          "checkIn",
+          "checkOut",
+          "nights",
+          "guestsCount",
+          "totalPrice",
+          "currency",
+          "status",
+          "source",
+          "expiresAt",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "ReservationRoomRefDto": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "name": {
+            "example": "Domek Sosna",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "ReservationSource": {
+        "enum": [
+          "ONLINE",
+          "MANUAL"
+        ],
+        "type": "string"
+      },
+      "ReservationStatus": {
+        "enum": [
+          "PENDING",
+          "CONFIRMED",
+          "CANCELLED",
+          "EXPIRED",
+          "COMPLETED"
+        ],
+        "type": "string"
+      },
       "Role": {
         "enum": [
           "ADMIN",
           "OWNER"
         ],
         "type": "string"
+      },
+      "RoomDto": {
+        "properties": {
+          "basePricePerNight": {
+            "description": "Grosze",
+            "example": 37000,
+            "type": "number"
+          },
+          "capacity": {
+            "example": 4,
+            "type": "number"
+          },
+          "coverPhoto": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhotoDto"
+              }
+            ],
+            "description": "Pierwsze zdjęcie galerii",
+            "nullable": true,
+            "type": "object"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "currency": {
+            "example": "PLN",
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "minNights": {
+            "example": 1,
+            "type": "number"
+          },
+          "name": {
+            "example": "Domek Sosna",
+            "type": "string"
+          },
+          "photos": {
+            "items": {
+              "$ref": "#/components/schemas/PhotoDto"
+            },
+            "type": "array"
+          },
+          "propertyId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "upcomingReservationsCount": {
+            "description": "Rezerwacje PENDING/CONFIRMED z wyjazdem po dziś",
+            "example": 3,
+            "type": "number"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "propertyId",
+          "name",
+          "description",
+          "capacity",
+          "basePricePerNight",
+          "currency",
+          "minNights",
+          "isActive",
+          "coverPhoto",
+          "photos",
+          "upcomingReservationsCount",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
+      "RoomListDto": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/RoomDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "type": "object"
       },
       "UpdateOwnerDto": {
         "properties": {
@@ -589,6 +1293,147 @@
             "description": "Nowe hasło tymczasowe",
             "maxLength": 200,
             "minLength": 10,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdatePhotoDto": {
+        "properties": {
+          "altText": {
+            "description": "Opis zdjęcia; `null` usuwa",
+            "maxLength": 300,
+            "nullable": true,
+            "type": "string"
+          },
+          "sortOrder": {
+            "description": "Nowa pozycja (0 = zdjęcie główne); pozostałe są przenumerowane",
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "UpdatePropertyDto": {
+        "properties": {
+          "cancellationDeadlineDays": {
+            "default": 7,
+            "description": "Bezpłatne anulowanie do N dni przed przyjazdem (BR-08)",
+            "maximum": 60,
+            "minimum": 0,
+            "type": "number"
+          },
+          "checkInTime": {
+            "default": "15:00",
+            "example": "15:00",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "type": "string"
+          },
+          "checkOutTime": {
+            "default": "11:00",
+            "example": "11:00",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "type": "string"
+          },
+          "city": {
+            "example": "Mikołajki",
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "contactEmail": {
+            "example": "kontakt@lesnapolana.example.com",
+            "nullable": true,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 5000,
+            "nullable": true,
+            "type": "string"
+          },
+          "isActive": {
+            "default": true,
+            "description": "Nieaktywny obiekt nie przyjmuje rezerwacji (BR-13)",
+            "type": "boolean"
+          },
+          "name": {
+            "example": "Domki Leśna Polana",
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "pendingExpiryHours": {
+            "default": 48,
+            "description": "Czas na potwierdzenie rezerwacji online w godzinach (BR-07)",
+            "maximum": 168,
+            "minimum": 1,
+            "type": "number"
+          },
+          "phone": {
+            "example": "+48 600 100 200",
+            "maxLength": 30,
+            "nullable": true,
+            "type": "string"
+          },
+          "postalCode": {
+            "example": "11-730",
+            "pattern": "^\\d{2}-\\d{3}$",
+            "type": "string"
+          },
+          "slug": {
+            "description": "Adres strony `/o/:slug`; bez niego generowany z nazwy",
+            "example": "lesna-polana",
+            "maxLength": 60,
+            "minLength": 3,
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+            "type": "string"
+          },
+          "street": {
+            "example": "Leśna 12",
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateRoomDto": {
+        "properties": {
+          "basePricePerNight": {
+            "description": "Cena bazowa za noc w groszach (BR-05)",
+            "example": 37000,
+            "maximum": 10000000,
+            "minimum": 0,
+            "type": "number"
+          },
+          "capacity": {
+            "description": "Maksymalna liczba gości (BR-02)",
+            "example": 4,
+            "maximum": 30,
+            "minimum": 1,
+            "type": "number"
+          },
+          "description": {
+            "maxLength": 5000,
+            "nullable": true,
+            "type": "string"
+          },
+          "isActive": {
+            "default": true,
+            "description": "Widoczny na stronie i dostępny do rezerwacji (BR-13)",
+            "type": "boolean"
+          },
+          "minNights": {
+            "default": 1,
+            "description": "Minimalna liczba nocy (BR-03)",
+            "maximum": 30,
+            "minimum": 1,
+            "type": "number"
+          },
+          "name": {
+            "example": "Domek Sosna",
+            "maxLength": 120,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -1249,6 +2094,70 @@
         ]
       }
     },
+    "/api/v1/files/{storageKey}": {
+      "get": {
+        "operationId": "Files_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storageKey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              },
+              "image/webp": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              },
+              "image/webp": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "Nieznany plik albo zły format klucza"
+          }
+        },
+        "summary": "Plik zdjęcia",
+        "tags": [
+          "files"
+        ]
+      }
+    },
     "/api/v1/health": {
       "get": {
         "operationId": "Health_check",
@@ -1278,6 +2187,862 @@
         "summary": "Stan API i usług zależnych (healthcheck Dockera)",
         "tags": [
           "health"
+        ]
+      }
+    },
+    "/api/v1/photos/{id}": {
+      "delete": {
+        "operationId": "Photos_remove",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Usuwa zdjęcie i jego plik",
+        "tags": [
+          "photos"
+        ]
+      },
+      "patch": {
+        "operationId": "Photos_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePhotoDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Zmienia opis lub pozycję zdjęcia (przenumerowanie galerii)",
+        "tags": [
+          "photos"
+        ]
+      }
+    },
+    "/api/v1/properties": {
+      "get": {
+        "operationId": "Properties_list",
+        "parameters": [
+          {
+            "description": "Tylko ADMIN: obiekty jednego właściciela",
+            "in": "query",
+            "name": "ownerId",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyListDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Obiekty: własne (OWNER) albo wszystkie (ADMIN)",
+        "tags": [
+          "properties"
+        ]
+      },
+      "post": {
+        "operationId": "Properties_create",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePropertyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyDto"
+                }
+              }
+            },
+            "description": "Nagłówek `Location: /api/v1/properties/:id`"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "Nieznany właściciel (`ownerId`)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "SLUG_TAKEN"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Zakłada obiekt",
+        "tags": [
+          "properties"
+        ]
+      }
+    },
+    "/api/v1/properties/{id}": {
+      "delete": {
+        "operationId": "Properties_remove",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "HAS_FUTURE_RESERVATIONS (BR-10)"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Usuwa obiekt (soft delete)",
+        "tags": [
+          "properties"
+        ]
+      },
+      "get": {
+        "operationId": "Properties_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Szczegóły obiektu ze zdjęciami",
+        "tags": [
+          "properties"
+        ]
+      },
+      "patch": {
+        "operationId": "Properties_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePropertyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "SLUG_TAKEN, HAS_FUTURE_RESERVATIONS (BR-10)"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Edycja ustawień obiektu",
+        "tags": [
+          "properties"
+        ]
+      }
+    },
+    "/api/v1/properties/{id}/dashboard": {
+      "get": {
+        "operationId": "Properties_dashboard",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Pulpit obiektu na dziś (Q-08)",
+        "tags": [
+          "properties"
+        ]
+      }
+    },
+    "/api/v1/properties/{id}/photos": {
+      "post": {
+        "operationId": "Photos_uploadForProperty",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "altText": {
+                    "maxLength": 300,
+                    "type": "string"
+                  },
+                  "file": {
+                    "description": "JPG, PNG lub WebP, maks. 10 MB",
+                    "format": "binary",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "FILE_TOO_LARGE"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "UNSUPPORTED_FILE_TYPE"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "PHOTO_LIMIT_REACHED"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Dodaje zdjęcie obiektu (na koniec galerii)",
+        "tags": [
+          "photos"
+        ]
+      }
+    },
+    "/api/v1/properties/{propertyId}/rooms": {
+      "get": {
+        "operationId": "Rooms_list",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "propertyId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Także pokoje ukryte (`isActive: false`)",
+            "in": "query",
+            "name": "includeInactive",
+            "required": false,
+            "schema": {
+              "default": true,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Pokoje obiektu (bez usuniętych, sort po nazwie)",
+        "tags": [
+          "rooms"
+        ]
+      },
+      "post": {
+        "operationId": "Rooms_create",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "propertyId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoomDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomDto"
+                }
+              }
+            },
+            "description": "Nagłówek `Location: /api/v1/rooms/:id`"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Dodaje pokój do obiektu",
+        "tags": [
+          "rooms"
+        ]
+      }
+    },
+    "/api/v1/rooms/{id}": {
+      "delete": {
+        "operationId": "Rooms_remove",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "HAS_FUTURE_RESERVATIONS (BR-10)"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Usuwa pokój (soft delete, historia rezerwacji zostaje)",
+        "tags": [
+          "rooms"
+        ]
+      },
+      "get": {
+        "operationId": "Rooms_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Szczegóły pokoju",
+        "tags": [
+          "rooms"
+        ]
+      },
+      "patch": {
+        "operationId": "Rooms_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoomDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "HAS_FUTURE_RESERVATIONS przy `isActive: false` (BR-10)"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Edycja pokoju",
+        "tags": [
+          "rooms"
+        ]
+      }
+    },
+    "/api/v1/rooms/{id}/photos": {
+      "post": {
+        "operationId": "Photos_uploadForRoom",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "altText": {
+                    "maxLength": 300,
+                    "type": "string"
+                  },
+                  "file": {
+                    "description": "JPG, PNG lub WebP, maks. 10 MB",
+                    "format": "binary",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "FILE_TOO_LARGE"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "UNSUPPORTED_FILE_TYPE"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "PHOTO_LIMIT_REACHED"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Dodaje zdjęcie pokoju (na koniec galerii)",
+        "tags": [
+          "photos"
         ]
       }
     }

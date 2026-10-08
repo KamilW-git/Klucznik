@@ -56,7 +56,7 @@ export const envSchema = z
     MAIL_FROM: z.string().min(1),
 
     STORAGE_DRIVER: z.enum(['local']).default('local'),
-    STORAGE_LOCAL_PATH: z.string().min(1).default('/data/uploads'),
+    STORAGE_LOCAL_PATH: z.string().min(1).default('./uploads'),
     UPLOAD_MAX_BYTES: positiveInt.default(10_485_760),
 
     THROTTLE_TTL: positiveInt.default(60),

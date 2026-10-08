@@ -38,7 +38,7 @@ providers: [RoomsService, { provide: ROOMS_REPOSITORY, useClass: PrismaRoomsRepo
 
 ## Polityki dostępu
 
-Model: [ADR 0008](../../../docs/decisions/0008-multi-tenancy-ownership.md). Implementacja w `common/access/`:
+Model: [ADR 0008](../../../docs/decisions/0008-multi-tenancy-ownership.md). Typy i port w `common/access/` (`AccessScope`, `scopeOf(user)`, `ownerIdFilter(scope)`, `OWNERSHIP_POLICY`), implementacja `PrismaOwnershipPolicy` w `infrastructure/access/` (globalny `AccessModule`):
 
 ```ts
 export type AccessScope = { userId: string; role: 'ADMIN' | 'OWNER' };
@@ -55,7 +55,9 @@ where: scope.role === 'ADMIN' ? { id } : { id, property: { ownerId: scope.userId
 | Tworzenie w kontekście rodzica | najpierw `findById(parentId, scope)`, potem zapis |
 | Listy | zawsze filtrowane po scope; `ADMIN` może podać `ownerId` lub `propertyId` |
 
-`OwnershipPolicy` to współdzielony serwis z metodami `assertProperty(propertyId, scope)`, `assertRoom(roomId, scope) → { room, property }`, używany tam, gdzie zasób nie jest pobierany repozytorium z filtrem.
+`OwnershipPolicy` to współdzielony port (`@Inject(OWNERSHIP_POLICY)`) z metodami `assertProperty(propertyId, scope)`, `assertRoom(roomId, scope) → { room, property }`, używany tam, gdzie zasób nie jest pobierany repozytorium z filtrem. Usunięty obiekt lub pokój (soft delete) też daje 404.
+
+Test izolacji: `test/integration/isolation.e2e-spec.ts` (każdy endpoint panelu, owner B → zasób A → 404). Operacje niszczące są na końcu listy, bo udany wyciek usunąłby zasób i zamaskował kolejne przypadki (sprawdzone mutacją filtra).
 
 ## Transakcje
 

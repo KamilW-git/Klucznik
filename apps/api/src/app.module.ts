@@ -11,13 +11,18 @@ import { AllExceptionsFilter } from './common/errors/all-exceptions.filter';
 import { createValidationPipe } from './common/errors/validation';
 import { type ThrottleConfig, throttleConfig } from './config/auth.config';
 import { AppConfigModule } from './config/config.module';
+import { AccessModule } from './infrastructure/access/access.module';
 import { ClockModule } from './infrastructure/clock/clock.module';
 import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { PrismaService } from './infrastructure/prisma/prisma.service';
 import { SecurityModule } from './infrastructure/security/security.module';
+import { StorageModule } from './infrastructure/storage/storage.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
+import { PhotosModule } from './modules/photos/photos.module';
 import { PropertiesModule } from './modules/properties/properties.module';
+import { ReservationsModule } from './modules/reservations/reservations.module';
+import { RoomsModule } from './modules/rooms/rooms.module';
 import { UsersModule } from './modules/users/users.module';
 
 /**
@@ -31,6 +36,8 @@ import { UsersModule } from './modules/users/users.module';
     ClockModule,
     PrismaModule,
     SecurityModule,
+    StorageModule,
+    AccessModule,
     // Kontekst żądania (AsyncLocalStorage) i transakcje Prismy przez `TransactionHost`.
     ClsModule.forRoot({
       global: true,
@@ -55,6 +62,9 @@ import { UsersModule } from './modules/users/users.module';
     AuthModule,
     UsersModule,
     PropertiesModule,
+    RoomsModule,
+    PhotosModule,
+    ReservationsModule,
     HealthModule,
   ],
   providers: [

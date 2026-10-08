@@ -4,6 +4,7 @@ import { appConfig } from './app.config';
 import { authConfig, throttleConfig } from './auth.config';
 import { databaseConfig } from './database.config';
 import { parseEnv } from './env.schema';
+import { storageConfig } from './storage.config';
 
 /**
  * Konfiguracja env: `.env` z `apps/api` albo z roota monorepo (`pnpm --filter` uruchamia w `apps/api`).
@@ -16,5 +17,5 @@ export const AppConfigModule = ConfigModule.forRoot({
   envFilePath: ['.env', '../../.env'],
   ignoreEnvFile: process.env.NODE_ENV === 'test',
   validate: parseEnv,
-  load: [appConfig, authConfig, databaseConfig, throttleConfig],
+  load: [appConfig, authConfig, databaseConfig, storageConfig, throttleConfig],
 });

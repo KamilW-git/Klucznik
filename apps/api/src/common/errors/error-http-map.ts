@@ -30,6 +30,7 @@ export const APPLICATION_ERROR_HTTP_STATUS: Record<ApplicationErrorCode, HttpSta
   INVALID_CREDENTIALS: HttpStatus.UNAUTHORIZED,
   EMAIL_TAKEN: HttpStatus.CONFLICT,
   SLUG_TAKEN: HttpStatus.CONFLICT,
+  UNSUPPORTED_FILE_TYPE: HttpStatus.UNSUPPORTED_MEDIA_TYPE, // Q-14
 };
 
 /** Ogólne kody (docs/architecture/api-conventions.md#metody-i-kody-odpowiedzi). */

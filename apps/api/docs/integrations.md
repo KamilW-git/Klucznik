@@ -21,7 +21,7 @@
 | `MAILER` | `send({ to, subject, html, text, replyTo? })` | `NodemailerMailer` (SMTP) | `infrastructure/mail/` |
 | `TEMPLATE_RENDERER` | `render(template, context) → { subject, html, text }` | Handlebars | `infrastructure/mail/` |
 | `EMAIL_QUEUE` | `enqueue(job, { jobId })` | BullMQ `Queue('emails')` | `infrastructure/queue/` |
-| `STORAGE` | `put(key, buffer, mime)`, `get(key) → stream`, `delete(key)` | `LocalDiskStorage` | `infrastructure/storage/` |
+| `STORAGE` | `put(key, buffer, mime)`, `get(key) → { stream, size }`, `delete(key)` | `LocalDiskStorage` | `common/storage/`, `infrastructure/storage/` (globalny `StorageModule`) |
 | `PASSWORD_HASHER` | `hash`, `verify` | `Argon2PasswordHasher` (argon2id) | `common/security/`, `infrastructure/security/` (globalny `SecurityModule`, używany przez `auth` i `users`) |
 
 Moduły domenowe zależą od tokenów, a nie od klas adapterów. Testy podmieniają adaptery fake'ami.
@@ -56,8 +56,8 @@ Moduły domenowe zależą od tokenów, a nie od klas adapterów. Testy podmienia
 
 ## Storage
 
-- `LocalDiskStorage`: katalog `STORAGE_LOCAL_PATH` (wolumen Dockera `uploads`), klucze płaskie `<uuid>.<ext>`.
-- `get` zwraca `{ stream, size }` lub rzuca `FileNotFoundError` (→ 404).
+- `LocalDiskStorage`: katalog `STORAGE_LOCAL_PATH` (`storageConfig`; ścieżka względna liczona od katalogu uruchomienia, przy `pnpm dev` to `apps/api/uploads`; w kontenerze `/data/uploads` na wolumenie `uploads`), klucze płaskie `<uuid>.<ext>`. Katalog powstaje przy pierwszym zapisie.
+- `get` zwraca `{ stream, size }` lub rzuca `NotFoundError` (→ 404). Testy integracyjne używają katalogu tymczasowego przebiegu (`global-setup.ts`).
 - Walidacja klucza regexem przed dostępem do dysku (ochrona przed path traversal).
 - Przyszłość: `S3Storage` z tym samym interfejsem; wybór przez `STORAGE_DRIVER`. `GET /files/:key` może wtedy przekierowywać na pre-signed URL.
 

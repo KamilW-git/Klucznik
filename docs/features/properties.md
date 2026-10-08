@@ -71,12 +71,12 @@ Przy tworzeniu przez admina z `POST /admin/owners` adres może być pusty ([Q-13
 
 ## 6. Backend: zadania
 
-- [ ] Moduł `properties`: kontroler, `PropertiesService`, `PropertiesRepository` (z `AccessScope`).
+- [x] Moduł `properties`: kontroler, `PropertiesService`, `PropertiesRepository`; dostęp przez `OWNERSHIP_POLICY` i filtr `ownerId` w zapytaniu. `ADMIN` bez `ownerId` w `POST` → 400, `OWNER` z cudzym `ownerId` → 403, nieznany właściciel → 404.
 - [x] `SlugGenerator` (domena: transliteracja `ą→a, ł→l, …`, kebab-case) + obsługa kolizji: `modules/properties/domain/slug.ts` (M4).
-- [ ] `OwnershipPolicy` jako współdzielony serwis używany przez wszystkie moduły panelu ([application-layer.md](../../apps/api/docs/application-layer.md#polityki-dostępu)).
-- [ ] BR-10 przy `DELETE` i `PATCH isActive=false` (`ReservationsQueryPort.countFutureActive(propertyId)`).
-- [ ] Soft delete: `deletedAt`, wykluczenie z list i z `/public/**`.
-- [ ] `DashboardService` (zapytania agregujące, bez N+1).
+- [x] `OwnershipPolicy` jako współdzielony serwis używany przez wszystkie moduły panelu ([application-layer.md](../../apps/api/docs/application-layer.md#polityki-dostępu)).
+- [x] BR-10 przy `DELETE` i `PATCH isActive=false` (`ReservationsQueryService.countFutureActive`, w transakcji z `SELECT … FOR UPDATE` na obiekcie).
+- [x] Soft delete: `deletedAt`, wykluczenie z list, szczegółów i pokoi obiektu (M5). Wykluczenie z `/public/**`: M8.
+- [x] Pulpit: `ReservationsQueryService.dashboard` (agregaty SQL: `COUNT … FILTER`, `daterange`, `generate_series`; bez N+1). Obłożenie liczy rezerwacje `CONFIRMED`/`COMPLETED` aktywnych pokoi.
 
 ## 7. Frontend: ekrany i zadania
 
@@ -109,7 +109,7 @@ Ekrany: O2 (pulpit), O8 (ustawienia obiektu): [screens.md](../../apps/web/docs/s
 
 | Warstwa | Status |
 |-|-|
-| API | Zalążek (M4): slug, tworzenie obiektu z właścicielem, `/admin/properties`; reszta w M5 |
+| API | Gotowe (M5); wykluczenie usuniętych z `/public/**` w M8 |
 | UI | Nie rozpoczęto |
 
 Otwarte: [Q-08](../open-questions.md#q-08) (dashboard), [Q-13](../open-questions.md#q-13) (adres).

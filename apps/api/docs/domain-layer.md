@@ -21,6 +21,9 @@
 | `common/domain/domain-error.ts` | klasa bazowa `DomainError`, unia `DomainErrorCode` | – |
 | `common/domain/errors/invalid-stay-dates.error.ts` | `InvalidStayDatesError` z `reason` | BR-04 |
 | `infrastructure/clock/system-clock.ts` | `SystemClock` (adapter produkcyjny, `ClockModule`) | – |
+| `common/domain/errors/has-future-reservations.error.ts` | `HasFutureReservationsError`, `assertNoFutureReservations(count)` (obiekty i pokoje) | BR-10 |
+| `modules/photos/domain/image-type.ts` | `detectImageType(bytes)` po sygnaturze (JPEG, PNG, WebP) | – |
+| `modules/photos/domain/photo-order.ts` | `moveToPosition(ids, id, position)`, `PHOTO_LIMIT` | Q-14 |
 | `modules/pricing/domain/calculate-price.ts` | `calculatePrice` | BR-05 |
 | `modules/pricing/domain/min-nights.ts` | `resolveMinNights`, `assertMinNights` | BR-03 |
 | `modules/reservations/domain/reservation-status.ts` | enum, tabela przejść, `assertTransition`, `isExpired` | BR-06, BR-07 |

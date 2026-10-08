@@ -13,6 +13,8 @@ const defaults: Record<string, string> = {
   MAIL_FROM: 'test@klucznik.local',
   SWAGGER_ENABLED: 'false',
   SCHEDULER_ENABLED: 'false',
+  // Mały limit, żeby test 413 nie generował 10 MB.
+  UPLOAD_MAX_BYTES: String(256 * 1024),
 };
 
 for (const [key, value] of Object.entries(defaults)) {
