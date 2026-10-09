@@ -2,15 +2,27 @@
   "name": "@klucznik/api-client",
   "version": "0.0.0",
   "private": true,
-  "description": "Klucznik – kontrakt OpenAPI i wygenerowany klient TypeScript (orval, od M10).",
+  "description": "Klucznik – kontrakt OpenAPI i wygenerowany klient TypeScript (orval).",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts"
   },
   "scripts": {
+    "generate": "orval --config orval.config.ts",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
-    "typescript": "catalog:"
+    "@tanstack/react-query": "^5.104.1",
+    "@types/react": "^19.3.0",
+    "orval": "^8.40.0",
+    "react": "^19.3.0",
+    "typescript": "catalog:",
+    "vitest": "^5.0.3"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "react": "^19.0.0"
   }
 }

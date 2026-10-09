@@ -18,6 +18,7 @@ allowBuilds:
   esbuild: false # tsx (seed), binaria w optionalDependencies
   prisma: false # preinstall sprawdza tylko wersję Node
   msgpackr-extract: false # BullMQ (msgpackr), natywne przyspieszenie opcjonalne (fallback w JS)
+  msw: false # postinstall kopiuje service worker do public/; testy używają `msw/node`
   protobufjs: false # Testcontainers, postinstall bez wpływu na działanie
   ssh2: false # Testcontainers, natywny crypto opcjonalny (fallback w JS)
   unrs-resolver: false # jest-resolve, binaria w optionalDependencies

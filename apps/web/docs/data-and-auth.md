@@ -10,12 +10,14 @@
 
 ```ts
 configureApiClient({
-  baseUrl: import.meta.env.VITE_API_BASE_URL ?? '/api/v1',
-  getAccessToken: () => tokenStore.get(),
-  refresh: () => authService.refresh(),   // single-flight, zwraca nowy token lub null
-  onUnauthorized: () => authService.logoutLocal(),
+  baseUrl: import.meta.env.VITE_API_BASE_URL ?? '/api/v1', // zastępuje prefiks /api/v1 ścieżek z kontraktu
+  getAccessToken: sessionStore.getAccessToken,
+  refresh: refreshSession, // POST /auth/refresh pod blokadą Web Locks; zwraca nowy token lub null
+  onUnauthorized: () => sessionStore.signOut(),
 });
 ```
+
+W developmencie Vite przekazuje `/api` do `localhost:3000` (proxy), a w produkcji robi to nginx, więc SPA i API mają jeden origin i ciasteczko `kl_refresh` (`Path=/api/v1/auth`, `SameSite=Strict`) działa bez CORS.
 
 - Mutator (`packages/api-client/src/http/mutator.ts`) robi `fetch` z `credentials: 'include'` (cookie dla `/auth/*`), dokleja `Authorization` i parsuje błędy do `ApiError`.
 - Nie piszemy własnych `fetch` do API. Brakujący endpoint zgłaszamy w [handoff.md](../../../docs/handoff.md).
@@ -44,7 +46,7 @@ sequenceDiagram
   Auth->>API: POST /auth/refresh (cookie)
   alt cookie ważne
     API-->>Auth: 200 { accessToken, user }
-    Auth->>Auth: tokenStore.set(token), status = authenticated
+    Auth->>Auth: sessionStore.signIn(token, user), status = authenticated
   else brak / nieważne
     API-->>Auth: 401
     Auth->>Auth: status = anonymous
@@ -59,19 +61,21 @@ sequenceDiagram
 
 | Element | Implementacja |
 |-|-|
-| `tokenStore` | zmienna w module (pamięć). Nie trafia do `localStorage` ani `sessionStorage` |
-| `AuthProvider` | stan `{ status: 'loading' \| 'authenticated' \| 'anonymous', user }`, akcje `login`, `logout`, `refresh` |
-| Single-flight refresh | trwający refresh jest współdzielony, a równoległe 401 czekają na ten sam `Promise` |
-| Ponowienie | żądanie po 401 jest ponawiane raz. Drugie 401 albo nieudany refresh oznacza wylogowanie lokalne i przekierowanie do `/logowanie?next=…` |
-| Proaktywny refresh | opcjonalnie timer na `expiresIn − 60 s` |
-| Wylogowanie | `POST /auth/logout`, wyczyszczenie `tokenStore`, `queryClient.clear()`, przekierowanie |
+| `sessionStore` (`src/api/session-store.ts`) | access token i stan sesji w pamięci modułu. Token nie trafia do `localStorage` ani `sessionStorage` |
+| `AuthProvider` (`features/auth`) | stan `{ status: 'loading' \| 'authenticated' \| 'anonymous', user, endReason }` z `sessionStore` (`useSyncExternalStore`), akcje `signIn`, `logout`; bootstrap przy starcie: `refreshAccessToken()` |
+| Single-flight refresh | w mutatorze (`refreshAccessToken`): trwający refresh jest współdzielony, a równoległe 401 czekają na ten sam `Promise` |
+| Refresh w wielu kartach | `navigator.locks.request('kl-auth-refresh')`: karty odświeżają po kolei, a następna wysyła już nowe ciasteczko. Bez blokady dwie karty wysłałyby ten sam token, a API potraktowałoby drugie użycie jako kradzież i unieważniło wszystkie sesje ([security.md](../../../docs/architecture/security.md#refresh-token)) |
+| Ponowienie | żądanie po 401 jest ponawiane raz. Drugie 401 albo nieudany refresh oznacza wylogowanie lokalne (`endReason: 'expired'`) i przekierowanie do `/logowanie?next=…` z komunikatem „Sesja wygasła” |
+| Proaktywny refresh | nie w MVP (refresh dopiero po 401) |
+| Wylogowanie | `POST /auth/logout`, `sessionStore.signOut('logout')`, `queryClient.clear()`, przekierowanie do `/logowanie` bez `next` |
 | Wiele kart | `BroadcastChannel('kl-auth')` informuje inne karty o wylogowaniu |
+| `?next=` | tylko ścieżka wewnętrzna (`safeNext`: zaczyna się od `/`, nie od `//`), żeby link logowania nie przekierował na obcą stronę |
 
 ## Obsługa błędów API
 
 `ApiError` (z mutatora): `{ status, code, message, details, requestId }` zgodnie z [api-conventions.md](../../../docs/architecture/api-conventions.md#format-błędu).
 
-**Mapa komunikatów** w `shared/lib/api-errors.ts`. Jedno miejsce, klucz to `code`:
+**Mapa komunikatów** w `shared/lib/api-errors.ts` (`getErrorMessage`, lista `API_ERROR_CODES`). Jedno miejsce, klucz to `code`:
 
 | `code` | Komunikat (domyślny) |
 |-|-|
@@ -89,7 +93,8 @@ sequenceDiagram
 | `CANCELLATION_DEADLINE_PASSED` | „Termin bezpłatnego anulowania minął – skontaktuj się z gospodarzem” |
 | `SEASONAL_RATE_OVERLAP` | „Ta stawka nakłada się na stawkę „{conflictingRateName}”” |
 | `HAS_FUTURE_RESERVATIONS` | „Nie można usunąć – istnieją przyszłe rezerwacje ({count})” |
-| `INTERNAL_ERROR`, sieć | „Coś poszło nie tak. Spróbuj ponownie” |
+| `INTERNAL_ERROR`, `UNKNOWN_ERROR` | „Coś poszło nie tak. Spróbuj ponownie” |
+| `NETWORK_ERROR` (klient: brak połączenia) | „Brak połączenia z serwerem. Sprawdź internet i spróbuj ponownie.” |
 
 Pozostałe kody z [business-rules.md](../../../docs/architecture/business-rules.md#podsumowanie) i [api-conventions.md](../../../docs/architecture/api-conventions.md#metody-i-kody-odpowiedzi) też muszą mieć wpis. Test sprawdza, że każdy znany kod ma komunikat.
 
@@ -97,7 +102,7 @@ Pozostałe kody z [business-rules.md](../../../docs/architecture/business-rules.
 
 | Sytuacja | Forma |
 |-|-|
-| `VALIDATION_ERROR` w formularzu | `setError` na polach z `details.fields`, plus ogólny alert dla pól bez mapowania |
+| `VALIDATION_ERROR` w formularzu | `applyFieldErrors` (`shared/lib/form-errors.ts`): pola z `details.fields` dostają polski komunikat „Nieprawidłowa wartość. Popraw to pole.” (komunikaty class-validator są techniczne, po angielsku), plus ogólny alert dla pól bez mapowania |
 | Reguła biznesowa w formularzu (409/422) | alert inline nad przyciskiem zapisu |
 | Akcja z listy lub drawera | toast błędu |
 | Błąd ładowania widoku | `ErrorState` z „Spróbuj ponownie” (`refetch`) |

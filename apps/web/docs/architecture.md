@@ -17,8 +17,8 @@
 ## Routing
 
 - React Router (data router: `createBrowserRouter`). Definicja w `app/router.tsx`.
-- **Lazy loading per obszar:** `lazy(() => import('features/…/pages/…'))`, dzięki czemu gość nie pobiera kodu panelu.
-- Ścieżki w UI są po polsku i definiowane wyłącznie w `app/routes.ts` jako stałe (`routes.panel.reservations()`, `routes.public.property(slug)`). Nie wpisujemy stringów ścieżek w komponentach.
+- **Lazy loading per obszar:** właściwość `lazy` trasy (`lazy: async () => ({ Component: (await import('…')).Page })`) dla layoutów obszarów i stron, dzięki czemu gość nie pobiera kodu panelu.
+- Ścieżki w UI są po polsku i definiowane wyłącznie w `app/routes.ts`: wzorce dla routera (`paths.panel.reservation` = `/panel/rezerwacje/:id`) i funkcje dla komponentów (`routes.panel.reservations()`, `routes.public.property(slug)`). Nie wpisujemy stringów ścieżek w komponentach.
 - Filtry, paginacja i zakładki są w URL (`useSearchParams`), żeby linki dało się udostępniać i odświeżać.
 
 ```
@@ -48,11 +48,14 @@ Rezerwacja ręczna (O5) jest dialogiem otwieranym z kalendarza, listy rezerwacji
 
 | Komponent | Działanie |
 |-|-|
-| `RequireAuth` | czeka na `auth.status !== 'loading'` (bootstrap refresh); `anonymous` → `/logowanie?next=<ścieżka>` |
-| `RequireRole roles={['OWNER','ADMIN']}` | zła rola → przekierowanie do panelu właściwego dla roli (`ADMIN` → `/admin`, `OWNER` → `/panel`) |
-| `RedirectIfAuthenticated` | na `/logowanie` przekierowuje zalogowanych |
+| `RequireAuth` | czeka na `auth.status !== 'loading'` (bootstrap refresh); `anonymous` → `/logowanie?next=<ścieżka>` (bez `next` po świadomym wylogowaniu) |
+| `RequireRole roles={['OWNER','ADMIN']}` | zła rola → przekierowanie do panelu właściwego dla roli (`ADMIN` → `/admin/wlasciciele`, `OWNER` → `/panel`; `homeFor(role)` w `app/routes.ts`) |
+| `RedirectIfAuthenticated` | na `/logowanie` przekierowuje zalogowanych: do `?next=` (tylko ścieżka wewnętrzna, `safeNext`) albo do panelu roli. To ono przekierowuje po udanym logowaniu |
+| `RootRedirect` | `/` → panel roli albo `/logowanie` |
 
 Ochrona tras w UI służy wygodzie użytkownika. Faktyczną autoryzację wymusza API (403/404).
+
+Trasy z kolejnych etapów mają do czasu realizacji zaślepkę `ComingSoonPage` („Ten widok jest w przygotowaniu”). Nieobsłużony błąd renderowania albo nieudane pobranie kodu obszaru (np. po wdrożeniu nowej wersji) pokazuje `RouteErrorPage` z przeładowaniem strony, a w trakcie ładowania kodu obszaru widać `FullPageLoader`.
 
 ## Kontekst obiektu w panelu
 
@@ -91,5 +94,5 @@ features/reservations/
 ## Wydajność i jakość
 
 - Strona publiczna: obrazy `loading="lazy"`, rozmiar bundla obszaru publicznego monitorowany (`vite build --report` w M12).
-- ESLint z regułami `react-hooks`, `jsx-a11y`.
+- ESLint z regułami `react-hooks`, `jsx-a11y` i `react-refresh` (plik `.tsx` eksportuje tylko komponenty; stałe, warianty `cva` i hooki kontekstu są w osobnych plikach `.ts`).
 - Testy: [testing-strategy.md](../../../docs/architecture/testing-strategy.md#frontend).

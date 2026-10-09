@@ -15,7 +15,7 @@
 | M7 | API | Rezerwacje: reguły, stany, ręczna, optimistic locking, goście | gotowe |
 | M8 | API | Publiczny proces rezerwacji i token gościa | gotowe |
 | M9 | API | Zdarzenia, kolejka e-maili, szablony, scheduler | gotowe |
-| M10 | UI | Setup frontendu, design system, logowanie | – |
+| M10 | UI | Setup frontendu, design system, logowanie | gotowe |
 | M11 | UI | Panel Gospodarza | – |
 | M12 | UI | Strona publiczna i proces rezerwacji | – |
 | M13 | UI | Panel admina | – |
@@ -106,12 +106,13 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M10: Setup frontendu [UI]
 
-- [ ] [UI] Vite + React + TS, Tailwind, shadcn/ui, React Router, TanStack Query, Vitest + MSW: [architecture.md](../apps/web/docs/architecture.md)
-- [ ] [UI] Konfiguracja orval i mutatora, `generate`: [packages/api-client/AGENTS.md](../packages/api-client/AGENTS.md)
-- [ ] [UI] Design system z ekranów Stitch (tokeny, typografia, `StatusBadge`, stany S1): [design-system.md](../apps/web/docs/design-system.md)
-- [ ] [UI] Layouty, ochrona tras, `AuthProvider`, interceptor refresh, mapa błędów: [data-and-auth.md](../apps/web/docs/data-and-auth.md)
-- [ ] [UI] Ekran logowania O1: [auth.md](features/auth.md)
-- [ ] [INFRA] Dockerfile `web` (nginx + proxy `/api`), job CI `test-web`
+- [x] [UI] Vite + React + TS, Tailwind, shadcn/ui, React Router, TanStack Query, Vitest + MSW: [architecture.md](../apps/web/docs/architecture.md)
+- [x] [UI] Konfiguracja orval i mutatora, `generate` ([Q-22](open-questions.md#q-22)): [packages/api-client/AGENTS.md](../packages/api-client/AGENTS.md)
+- [x] [UI] Design system z ekranów Stitch (tokeny, typografia, `StatusBadge`, stany S1; [Q-28](open-questions.md#q-28)): [design-system.md](../apps/web/docs/design-system.md)
+- [x] [UI] Layouty, ochrona tras, `AuthProvider`, interceptor refresh, mapa błędów: [data-and-auth.md](../apps/web/docs/data-and-auth.md)
+- [x] [UI] Ekran logowania O1: [auth.md](features/auth.md)
+- [x] [INFRA] Job CI `test-web` (build weba; testy Vitest w `quality`, [Q-23](open-questions.md#q-23)) i krok aktualności `src/generated` w `contract` (sesja UI M10 za zgodą właściciela: [H-014](handoff.md#zgłoszenia))
+- [ ] [INFRA] Dockerfile `web` (nginx + proxy `/api`): [H-015](handoff.md#zgłoszenia), razem z Dockerfile `api` ([H-001](handoff.md#zgłoszenia))
 
 ## M11: Panel Gospodarza [UI]
 

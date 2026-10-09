@@ -28,12 +28,13 @@ Statusy: `OTWARTE` (obowiązuje rekomendacja), `ZDECYDOWANE` (z datą i decyzją
 | [Q-19](#q-19) | Akceptacja regulaminu przy rezerwacji | OTWARTE |
 | [Q-20](#q-20) | Udogodnienia pokoi i obiektu | OTWARTE |
 | [Q-21](#q-21) | Prettier a pliki Markdown | OTWARTE |
-| [Q-22](#q-22) | Kto i kiedy tworzy `orval.config.ts` | OTWARTE |
+| [Q-22](#q-22) | Kto i kiedy tworzy `orval.config.ts` | ZDECYDOWANE |
 | [Q-23](#q-23) | Testy w jobie CI `quality` | OTWARTE |
 | [Q-24](#q-24) | Hosty usług w `.env.example` | ZDECYDOWANE |
 | [Q-25](#q-25) | Zmienna `POSTGRES_PORT` | ZDECYDOWANE |
 | [Q-26](#q-26) | Jest a NestJS 12 (tylko ESM) | ZDECYDOWANE |
 | [Q-27](#q-27) | Zakres health checku przed M3 i kod błędu 503 | ZDECYDOWANE |
+| [Q-28](#q-28) | Rozbieżności ekranów Stitch ze specyfikacją | ZDECYDOWANE |
 
 ## Q-01
 
@@ -164,6 +165,7 @@ Dokumentacja używa zwartych tabel `|-|-|`, a Prettier wyrównuje kolumny i prze
 
 **Kto i kiedy tworzy `packages/api-client/orval.config.ts`?**
 [packages/api-client/AGENTS.md](../packages/api-client/AGENTS.md) przypisuje plik sesji `INFRA` w M1, a [roadmapa](roadmap.md#m10-setup-frontendu-ui) przypisuje „Konfigurację orval i mutatora” sesji `UI` w M10. Rekomendacja: w całości M10 (`UI`), bo w M1 nie ma jeszcze zależności orval ani `openapi.json`. Po decyzji poprawić tabelę „Kto co zmienia” w `packages/api-client/AGENTS.md`.
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M10 (`UI`): `orval.config.ts`, mutator i skrypt `generate`. Tabela „Kto co zmienia” w [packages/api-client/AGENTS.md](../packages/api-client/AGENTS.md) poprawiona.
 
 ## Q-23
 
@@ -198,3 +200,10 @@ Odpowiedź 503 (wskaźnik `down`) przechodzi przez globalny filtr, który w M2 n
 - M2: health check to sam liveness (`200 { status: 'ok' }`), bez wskaźników.
 - M3 (zrealizowane): wskaźnik `database` (ping bazy) oraz kod ogólny `SERVICE_UNAVAILABLE` (503) w `error-http-map.ts` i w [api-conventions.md](architecture/api-conventions.md#metody-i-kody-odpowiedzi); wynik terminusa trafia do `details`. Zadanie w [roadmap.md](roadmap.md#m3-schemat-i-migracje-api).
 - M9: wskaźnik `redis`.
+
+## Q-28
+
+**Co z elementami ekranów Stitch, których nie ma w specyfikacji, i z niespójną paletą eksportów?**
+Ekrany ze Stitch ([screens.md](../apps/web/docs/screens.md)) zawierają funkcje spoza MVP i spoza dokumentów funkcjonalności: kody PIN do inteligentnych zamków i wysyłkę SMS (O2, O4), zaliczki i płatności online (O2, O4, P3), synchronizację iCal (O4), „Zapamiętaj mnie”, „Nie pamiętasz hasła?”, „Załóż konto próbne”, telefon wsparcia i znaczek SSL (O1), podział gości na dorosłych i dzieci (O4, P1), opinię klienta na ekranie logowania. Eksporty HTML panelu mają paletę wygenerowaną automatycznie przez Stitch (`#F0FDF3`, `#154539`, `#924B23`), inną niż [style.md](../design/stitch/style.md). Pliki w `design/stitch/` mają też nazwy niezgodne z [konwencją](../design/README.md#konwencja-nazw), a `public/05-quest-reservation.*` to kopia `04-booking-confirmation.*` (brak osobnego projektu P5).
+Rekomendacja: pomijamy wszystkie elementy spoza specyfikacji (wygrywa specyfikacja, [design/README.md](../design/README.md#jak-używać)); w O1 zamiast nich trzy karty z faktycznymi funkcjami. Tokeny bierzemy z `style.md` i opisu w `DESIGN.md`, a nie z eksportów HTML. P5 projektujemy według układu P4 i komponentów design systemu. Zmiana nazw plików w `design/stitch/` to zadanie `DOCS` (opcjonalne); do tego czasu [screens.md](../apps/web/docs/screens.md) podaje faktyczne nazwy.
+**Decyzja (2026-10-09):** zgodnie z rekomendacją (sesja `UI` M10). Szczegóły tokenów: [design-system.md](../apps/web/docs/design-system.md#źródła-i-rozbieżności-w-stitch).

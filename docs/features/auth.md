@@ -51,13 +51,13 @@ Właściciel i administrator logują się do panelu bezpiecznie i bez częstego 
 
 Ekrany: O1 (logowanie): [screens.md](../../apps/web/docs/screens.md).
 
-- [ ] Strona `/logowanie`: formularz (RHF + zod), pokaż/ukryj hasło, alert „Nieprawidłowy e-mail lub hasło” dla `INVALID_CREDENTIALS`, komunikat dla `RATE_LIMITED`.
-- [ ] Link „Nie pamiętasz hasła?” ukryty w MVP ([Q-06](../open-questions.md#q-06)).
-- [ ] `AuthProvider`: access token w pamięci, `bootstrap()` → `/auth/refresh` przy starcie aplikacji, stan `loading | authenticated | anonymous`.
-- [ ] Interceptor: 401 → jeden współdzielony refresh → ponowienie żądania; nieudany refresh → wylogowanie i przekierowanie do `/logowanie?next=…` ([data-and-auth.md](../../apps/web/docs/data-and-auth.md)).
-- [ ] Przekierowanie po logowaniu: `OWNER` → `/panel`, `ADMIN` → `/admin`.
-- [ ] Menu użytkownika z „Wyloguj”.
-- [ ] `RequireRole` dla tras `/panel/*` i `/admin/*`.
+- [x] Strona `/logowanie`: formularz (RHF + zod), pokaż/ukryj hasło, alert „Nieprawidłowy e-mail lub hasło” dla `INVALID_CREDENTIALS` (hasło czyszczone, fokus na haśle), komunikat dla `RATE_LIMITED`, „Sesja wygasła” po utracie sesji. Elementy ekranu Stitch spoza specyfikacji pominięte ([Q-28](../open-questions.md#q-28)).
+- [x] Link „Nie pamiętasz hasła?” ukryty w MVP ([Q-06](../open-questions.md#q-06)).
+- [x] `AuthProvider`: access token w pamięci (`sessionStore`), bootstrap → `/auth/refresh` przy starcie aplikacji, stan `loading | authenticated | anonymous`.
+- [x] Interceptor (mutator `@klucznik/api-client`): 401 → jeden współdzielony refresh (Web Locks między kartami) → ponowienie żądania; nieudany refresh → wylogowanie i przekierowanie do `/logowanie?next=…` ([data-and-auth.md](../../apps/web/docs/data-and-auth.md)).
+- [x] Przekierowanie po logowaniu: `?next=` (tylko ścieżka wewnętrzna) albo `OWNER` → `/panel`, `ADMIN` → `/admin/wlasciciele`.
+- [x] Menu użytkownika z „Wyloguj się” (wylogowanie także w pozostałych kartach).
+- [x] `RequireRole` dla tras `/panel/*` i `/admin/*`.
 
 ## 8. Testy
 
@@ -74,16 +74,16 @@ Ekrany: O1 (logowanie): [screens.md](../../apps/web/docs/screens.md).
 
 ## 9. Kryteria akceptacji
 
-- [ ] Po zalogowaniu i przeładowaniu strony użytkownik nadal jest zalogowany.
-- [ ] Refresh token nie jest dostępny z JavaScriptu (`document.cookie`).
+- [x] Po zalogowaniu i przeładowaniu strony użytkownik nadal jest zalogowany.
+- [x] Refresh token nie jest dostępny z JavaScriptu (`document.cookie`).
 - [ ] Zablokowanie konta przez admina uniemożliwia odświeżenie sesji.
-- [ ] `OWNER` nie wejdzie na `/admin` (UI przekierowuje, API zwraca 403).
+- [x] `OWNER` nie wejdzie na `/admin` (UI przekierowuje, API zwraca 403).
 
 ## 10. Status i otwarte kwestie
 
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M4) |
-| UI | Nie rozpoczęto |
+| UI | Gotowe (M10) |
 
 Otwarte: [Q-06](../open-questions.md#q-06) (reset hasła).

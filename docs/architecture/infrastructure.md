@@ -74,8 +74,8 @@ Kolumna „Domyślna (dev)” podaje wartości dla `pnpm dev` na hoście (usług
 |-|-|
 | `quality` | checkout → pnpm (cache) → `pnpm install --frozen-lockfile` → `pnpm lint` → `pnpm format:check` → `pnpm typecheck` |
 | `test-api` | service `postgres:16` → `prisma migrate deploy` → `pnpm --filter @klucznik/api test` → `test:int` (z `TEST_DATABASE_URL`; kolejka e-maili inline, więc bez Redisa) |
-| `test-web` | `pnpm --filter @klucznik/web test` |
-| `contract` | `pnpm --filter @klucznik/api openapi:export` → `git diff --exit-code packages/api-client/openapi.json` (kontrakt aktualny) → `pnpm --filter @klucznik/api-client generate` → typecheck web |
+| `test-web` | `pnpm --filter @klucznik/web build` (build produkcyjny Vite); testy Vitest weba biegną w `quality` przez `pnpm test` ([Q-23](../open-questions.md#q-23)) |
+| `contract` | `pnpm --filter @klucznik/api openapi:export` → `git diff --exit-code packages/api-client/openapi.json` (kontrakt aktualny) → `pnpm --filter @klucznik/api-client generate` → `git diff --exit-code packages/api-client/src/generated` (klient aktualny) → typecheck web |
 | `build` | `pnpm -r build` + `docker compose build` (na `main`) |
 
 Sekrety testowe (np. `JWT_ACCESS_SECRET`) są generowane w workflow (`openssl rand`) albo ustawione w `env:` jako jawne wartości testowe. Nie są to sekrety produkcyjne.

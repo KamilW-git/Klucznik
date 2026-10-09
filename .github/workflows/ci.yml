@@ -81,9 +81,9 @@ jobs:
       - run: pnpm --filter @klucznik/api prisma:deploy
       - run: pnpm --filter @klucznik/api test:int
 
+  # Q-23: testy Vitest weba (jsdom) biegną w `quality` (`pnpm test`); tu build produkcyjny Vite.
   test-web:
-    name: Web – testy (M10)
-    if: false
+    name: Web – build (M10)
     needs: quality
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -95,7 +95,7 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @klucznik/web test
+      - run: pnpm --filter @klucznik/web build
 
   contract:
     name: Kontrakt OpenAPI (M2)
@@ -115,6 +115,8 @@ jobs:
       - name: openapi.json aktualny względem kodu API
         run: git diff --exit-code packages/api-client/openapi.json
       - run: pnpm --filter @klucznik/api-client generate
+      - name: wygenerowany klient aktualny względem openapi.json
+        run: git diff --exit-code packages/api-client/src/generated
       - run: pnpm --filter @klucznik/web typecheck
 
   build:
