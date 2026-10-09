@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { type AccessScope, ownerIdFilter } from '../../../common/access/access-scope';
+import type { CalendarDate } from '../../../common/domain/calendar-date';
 import { Prisma } from '../../../infrastructure/prisma/generated/client';
 import { isConstraintViolation, PG_ERROR } from '../../../infrastructure/prisma/prisma-errors';
 import { fromDbDate, toDbDate } from '../../../infrastructure/prisma/prisma-dates';
@@ -8,6 +9,7 @@ import { PrismaRepository } from '../../../infrastructure/prisma/prisma.reposito
 import type { ReservationListItem } from '../application/read-models';
 import type {
   NewReservation,
+  NewReservationEvent,
   NightPriceRecord,
   ReservationChanges,
   ReservationDetail,
@@ -228,16 +230,59 @@ export class PrismaReservationsRepository
     });
   }
 
-  async addEvent(event: {
-    reservationId: string;
-    type: ReservationEventRecord['type'];
-    actorType: ReservationEventRecord['actorType'];
-    actorUserId: string | null;
-    payload?: Record<string, unknown>;
-  }): Promise<void> {
-    await this.db.reservationEvent.create({
-      data: { ...event, payload: event.payload as Prisma.InputJsonValue | undefined },
+  async addEvent(event: NewReservationEvent): Promise<void> {
+    await this.addEvents([event]);
+  }
+
+  async addEvents(events: readonly NewReservationEvent[]): Promise<void> {
+    if (events.length === 0) {
+      return;
+    }
+    await this.db.reservationEvent.createMany({
+      data: events.map((event) => ({
+        ...event,
+        payload: event.payload as Prisma.InputJsonValue | undefined,
+      })),
     });
+  }
+
+  async setGuestTokenHash(id: string, tokenHash: string): Promise<void> {
+    await this.db.reservation.update({ where: { id }, data: { guestAccessTokenHash: tokenHash } });
+  }
+
+  async expirePending(now: Date): Promise<string[]> {
+    // BR-07, idempotencja: zapis warunkowy; równoległe potwierdzenie albo drugi przebieg joba nic nie zmienia.
+    const rows = await this.db.$queryRaw<{ id: string }[]>`
+      UPDATE reservations
+      SET status = 'EXPIRED', version = version + 1, updated_at = ${now}
+      WHERE status = 'PENDING' AND expires_at <= ${now}
+      RETURNING id
+    `;
+    return rows.map((row) => row.id);
+  }
+
+  async completeStays(today: CalendarDate): Promise<string[]> {
+    const rows = await this.db.$queryRaw<{ id: string }[]>`
+      UPDATE reservations
+      SET status = 'COMPLETED', version = version + 1, updated_at = now()
+      WHERE status = 'CONFIRMED' AND check_out < ${today.toString()}::date
+      RETURNING id
+    `;
+    return rows.map((row) => row.id);
+  }
+
+  async markRemindersDue(checkIn: CalendarDate, now: Date): Promise<string[]> {
+    // Warunek `reminder_sent_at IS NULL` w tym samym UPDATE: drugi przebieg nie wyśle drugiego e-maila.
+    const rows = await this.db.$queryRaw<{ id: string }[]>`
+      UPDATE reservations r
+      SET reminder_sent_at = ${now}
+      FROM guests g
+      WHERE g.id = r.guest_id AND g.email IS NOT NULL
+        AND r.status = 'CONFIRMED' AND r.check_in = ${checkIn.toString()}::date
+        AND r.reminder_sent_at IS NULL
+      RETURNING r.id
+    `;
+    return rows.map((row) => row.id);
   }
 
   /** BR-01: `EXCLUDE` w bazie łapie kolizję, której nie wykrył zamek (ostatnia linia obrony). */

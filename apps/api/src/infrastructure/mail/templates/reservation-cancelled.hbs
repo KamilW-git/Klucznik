@@ -1,0 +1,18 @@
+<p>Dzień dobry {{guest.firstName}},</p>
+{{#if (eq reservation.cancelledBy 'GUEST')}}
+  <p>potwierdzamy anulowanie Twojej rezerwacji
+    <strong>{{reservation.number}}</strong>
+    w obiekcie
+    {{property.name}}.</p>
+{{else}}
+  <p>gospodarz obiektu
+    <strong>{{property.name}}</strong>
+    anulował rezerwację
+    <strong>{{reservation.number}}</strong>.</p>
+  {{#if reservation.cancellationReason}}<p>Powód: {{reservation.cancellationReason}}</p>{{/if}}
+{{/if}}
+<p>Pokój {{room.name}}, pobyt {{date reservation.checkIn}} – {{date reservation.checkOut}}.</p>
+<p>W razie pytań skontaktuj się z gospodarzem:{{#if property.phone}}
+    tel.
+    {{property.phone}}{{/if}}{{#if property.contactEmail}} {{property.contactEmail}}{{/if}}.</p>
+<p><a href='{{links.property}}'>Zobacz inne terminy</a></p>

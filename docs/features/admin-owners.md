@@ -34,7 +34,7 @@ Wszystkie endpointy: rola `ADMIN`, kontroler z `@Roles('ADMIN')`.
 | `PATCH` | `/admin/owners/:id` | `UpdateOwnerDto` | `200` `OwnerDto` | `409 EMAIL_TAKEN` |
 | `DELETE` | `/admin/owners/:id` | – | `204` (dezaktywacja, [Q-10](../open-questions.md#q-10)) | `404` |
 | `GET` | `/admin/properties` | query: `page`, `pageSize`, `q` (nazwa, miasto), `ownerId`, `isActive` | `200` `Paginated<AdminPropertyListItemDto>` | – |
-| `GET` | `/admin/email-logs` | query: `page`, `pageSize`, `status`, `q` (odbiorca), `from`, `to` (data `createdAt`) | `200` `Paginated<EmailLogDto>` | – ([Q-07](../open-questions.md#q-07)) |
+| `GET` | `/admin/email-logs` | query: `page`, `pageSize`, `status` (`QUEUED`, `SENT`, `FAILED`), `q` (fragment odbiorcy, 2–100 znaków), `from`, `to` (dni `createdAt` w `Europe/Warsaw`, włącznie) | `200` `Paginated<EmailLogDto>` (od najnowszych) | `400` ([Q-07](../open-questions.md#q-07)) |
 
 - `CreateOwnerDto`: `firstName`, `lastName` (1–100), `email`, `password` (min. 10), `property?`: `{ name (1–120), slug? }` ([Q-07](../open-questions.md#q-07)). Gdy podano `property`, obiekt powstaje w tej samej transakcji z wartościami domyślnymi ([properties.md](properties.md)).
 - `UpdateOwnerDto`: wszystkie pola opcjonalne: `firstName`, `lastName`, `email`, `password`, `isActive`. Ustawienie `isActive: false` unieważnia wszystkie refresh tokeny.
@@ -52,7 +52,7 @@ Wszystkie endpointy: rola `ADMIN`, kontroler z `@Roles('ADMIN')`.
 - [x] Dezaktywacja: `isActive = false` + `revokeAllForUser`.
 - [x] Liczniki `propertiesCount` i `reservationsLast30Days` jednym zapytaniem (bez N+1).
 - [x] `AdminPropertiesController` w module `properties` (lista wszystkich obiektów, najnowsze pierwsze).
-- [ ] `AdminEmailLogsController` (M9, po module notifications).
+- [x] `AdminEmailLogsController` (M9, moduł `notifications`).
 
 ## 7. Frontend: ekrany i zadania
 

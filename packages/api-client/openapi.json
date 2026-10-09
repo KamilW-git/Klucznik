@@ -823,6 +823,98 @@
         ],
         "type": "object"
       },
+      "EmailLogDto": {
+        "properties": {
+          "attempts": {
+            "example": 1,
+            "type": "number"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "lastError": {
+            "nullable": true,
+            "type": "string"
+          },
+          "recipient": {
+            "example": "anna.kowalska@example.com",
+            "type": "string"
+          },
+          "reservationNumber": {
+            "example": "KL-2026-000123",
+            "nullable": true,
+            "type": "string"
+          },
+          "sentAt": {
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EmailStatus"
+              }
+            ]
+          },
+          "template": {
+            "enum": [
+              "reservation-received",
+              "owner-new-reservation",
+              "reservation-confirmed",
+              "reservation-cancelled",
+              "owner-reservation-cancelled",
+              "reservation-expired",
+              "stay-reminder"
+            ],
+            "example": "reservation-received",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "recipient",
+          "template",
+          "status",
+          "attempts",
+          "lastError",
+          "sentAt",
+          "createdAt",
+          "reservationNumber"
+        ],
+        "type": "object"
+      },
+      "EmailLogPageDto": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/EmailLogDto"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMetaDto"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "type": "object"
+      },
+      "EmailStatus": {
+        "enum": [
+          "QUEUED",
+          "SENT",
+          "FAILED"
+        ],
+        "type": "string"
+      },
       "ErrorResponseDto": {
         "properties": {
           "code": {
@@ -3118,6 +3210,97 @@
   },
   "openapi": "3.0.0",
   "paths": {
+    "/api/v1/admin/email-logs": {
+      "get": {
+        "operationId": "AdminEmailLogs_list",
+        "parameters": [
+          {
+            "description": "Numer strony (od 1)",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "example": 1,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Liczba elementów na stronie",
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "example": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/EmailStatus"
+            }
+          },
+          {
+            "description": "Fragment adresu odbiorcy (min. 2 znaki)",
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "example": "kowalska",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Dzień `createdAt` od (Europe/Warsaw)",
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Dzień `createdAt` do, włącznie; ≥ from",
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailLogPageDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Logi wysyłki e-maili",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
     "/api/v1/admin/owners": {
       "get": {
         "operationId": "AdminOwners_list",

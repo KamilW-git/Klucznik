@@ -29,7 +29,7 @@ Funkcjonalność nie ma własnych endpointów. Logi e-maili dla admina: `GET /ad
 
 ## Szablony
 
-Pliki: `apps/api/src/infrastructure/mail/templates/<nazwa>.hbs` + wspólny `layout.hbs`. Wszystkie po polsku, kwoty i daty sformatowane po polsku (helpery Handlebars `money`, `date`).
+Pliki: `apps/api/src/infrastructure/mail/templates/<nazwa>.hbs` + wspólny `layout.hbs` (tematy w `EMAIL_SUBJECTS` w `handlebars-template-renderer.ts`). Wszystkie po polsku, kwoty i daty sformatowane po polsku (helpery Handlebars `money`, `date`, `dateTime`, `pluralNights`). Szablony kompiluje się w trybie `strict`: brakujące pole kontekstu to błąd (próba `FAILED` w `EmailLog`), a nie e-mail z pustym miejscem. Wersja tekstowa powstaje z HTML. Prettier pomija `*.hbs` (parser glimmer usuwa `<!doctype html>`).
 
 | Szablon | Odbiorca | Wyzwalacz (zdarzenie) | Temat | Treść (min.) |
 |-|-|-|-|-|
@@ -56,13 +56,13 @@ Harmonogramy i idempotencja: [async-and-jobs.md](../architecture/async-and-jobs.
 
 ## 6. Backend: zadania
 
-- [ ] `infrastructure/mail`: port `MailerPort` + `NodemailerMailer` (SMTP z konfiguracji), `TemplateRenderer` (Handlebars, layout, helpery `money`, `date`, `pluralNights`).
-- [ ] `infrastructure/queue`: rejestracja BullMQ (`emails`), `EmailProcessor` z ponowieniami.
-- [ ] Moduł `notifications`: `NotificationsListener` (zdarzenie → odbiorcy, szablon, `EmailLog`, job) + mapowanie z tabeli szablonów.
-- [ ] Rotacja tokenu gościa dla e-maili z linkiem ([Q-16](../open-questions.md#q-16)).
-- [ ] Joby schedulera (cienkie klasy) + metody serwisów: `expirePending(now)`, `completeStays(today)`, `sendReminders(today)`.
-- [ ] `AdminEmailLogsController` ([admin-owners.md](admin-owners.md)).
-- [ ] Szablony `.hbs` (7) + layout; w dev podgląd w Mailpit (`http://localhost:8025`).
+- [x] `infrastructure/mail`: port `MAILER` (`common/mail/mailer.ts`) + `NodemailerMailer` (SMTP z `mailConfig`), `TEMPLATE_RENDERER` (Handlebars, layout, helpery `money`, `date`, `dateTime`, `pluralNights`); globalny `MailModule`.
+- [x] Kolejka `emails` w `modules/notifications/infrastructure/queue/` (zależy od `EmailLog`, więc jest przy powiadomieniach): `BullEmailQueueModule` (BullMQ, `EmailProcessor`, wskaźnik `redis`) albo `InlineEmailQueueModule` według `EMAIL_QUEUE_DRIVER`. `jobId` = id `EmailLog`, bo BullMQ nie przyjmuje `:` w id; duplikaty wyklucza unikalny `idempotencyKey` zapisany przed dodaniem joba.
+- [x] Moduł `notifications`: `NotificationsListener` (zdarzenie → odbiorcy, szablon, `EmailLog`, job) + mapowanie z tabeli szablonów jako czysta funkcja `domain/email-plan.ts` (`planEmails`). `EmailLog` przez `INSERT … ON CONFLICT DO NOTHING`; token i job tylko dla nowego wpisu. Błąd kolejki (np. Redis) → `EmailLog` `FAILED`, bez błędu HTTP.
+- [x] Rotacja tokenu gościa dla e-maili z linkiem ([Q-16](../open-questions.md#q-16)): `GuestTokenService.issue` (moduł `reservations`) przy planowaniu e-maila. Surowy token jest tylko w danych joba, nie w `EmailLog` ani zdarzeniu.
+- [x] Joby schedulera (`ReservationJobsScheduler`, `@Cron` w `Europe/Warsaw`, tylko przy `SCHEDULER_ENABLED`) + metody `ReservationJobsService`: `expirePending(now)`, `completeStays(today, now)`, `sendReminders(today, now)`.
+- [x] `AdminEmailLogsController` ([admin-owners.md](admin-owners.md)).
+- [x] Szablony `.hbs` (7) + layout; w dev podgląd w Mailpit (`http://localhost:8025`).
 
 ## 7. Frontend: ekrany i zadania
 
@@ -75,7 +75,9 @@ Brak ekranów w panelu właściciela. Logi e-maili są w panelu admina ([admin-o
 | Listener: `ReservationCreated` (`ONLINE`) → 2 `EmailLog` z poprawnymi `idempotencyKey` | unit | – |
 | Ten sam event dwa razy → bez duplikatu (`idempotencyKey`) | unit | – |
 | Worker: błąd SMTP → `attempts++`, `lastError`; po 5. próbie `FAILED` | unit | – |
-| `TemplateRenderer`: kwota `164000` → „1 640,00 zł”, data → „14.08.2026” | unit | – |
+| `TemplateRenderer`: kwota `164000` → „1 640,00 zł”, data → „14.08.2026”; 7 szablonów w trybie `strict` | unit | – |
+| Prośba online → 2 e-maile, link z e-maila działa; potwierdzenie → nowy link, stary 404 | int | Q-16 |
+| SMTP niedostępny → rezerwacja 201, `EmailLog` `FAILED` z `lastError` | int | – |
 | `expirePending` z fałszywym zegarem → `EXPIRED`, zdarzenie, termin wolny | int | BR-07 |
 | `completeStays` → `COMPLETED` tylko dla `checkOut < today` | int | BR-06 |
 | `sendReminders` dwukrotnie → jeden e-mail | int | – |
@@ -90,7 +92,7 @@ Brak ekranów w panelu właściciela. Logi e-maili są w panelu admina ([admin-o
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Gotowe (M9) |
 | UI | nie dotyczy (logi: M13) |
 
-Otwarte: [Q-09](../open-questions.md#q-09), [Q-16](../open-questions.md#q-16).
+Zdecydowane: [Q-09](../open-questions.md#q-09), [Q-16](../open-questions.md#q-16).

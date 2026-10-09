@@ -1,0 +1,28 @@
+<p>Nowa prośba o rezerwację czeka na Twoje potwierdzenie.</p>
+<table role='presentation' cellpadding='0' cellspacing='0' style='margin:16px 0;font-size:15px;'>
+  <tr><td style='padding:2px 12px 2px 0;color:#7a7a7a;'>Numer</td><td
+    >{{reservation.number}}</td></tr>
+  <tr><td style='padding:2px 12px 2px 0;color:#7a7a7a;'>Gość</td><td>{{guest.firstName}}
+      {{guest.lastName}}{{#if guest.email}}, {{guest.email}}{{/if}}{{#if guest.phone}},
+        {{guest.phone}}{{/if}}</td></tr>
+  <tr><td style='padding:2px 12px 2px 0;color:#7a7a7a;'>Pokój</td><td>{{room.name}}</td></tr>
+  <tr><td style='padding:2px 12px 2px 0;color:#7a7a7a;'>Pobyt</td><td>{{date reservation.checkIn}}
+      –
+      {{date reservation.checkOut}}
+      ({{pluralNights reservation.nights}})</td></tr>
+  <tr><td style='padding:2px 12px 2px 0;color:#7a7a7a;'>Goście</td><td
+    >{{reservation.guestsCount}}</td></tr>
+  <tr><td style='padding:2px 12px 2px 0;color:#7a7a7a;'>Kwota</td><td>{{money
+        reservation.totalPrice
+        reservation.currency
+      }}</td></tr>
+  {{#if reservation.guestNotes}}<tr><td style='padding:2px 12px 2px 0;color:#7a7a7a;'>Uwagi gościa</td><td
+      >{{reservation.guestNotes}}</td></tr>{{/if}}
+</table>
+<p>Bez potwierdzenia rezerwacja wygaśnie
+  <strong>{{dateTime reservation.expiresAt}}</strong>
+  i termin zostanie zwolniony.</p>
+<p><a
+    href='{{links.panel}}'
+    style='display:inline-block;padding:10px 18px;background:#2f5d50;color:#ffffff;text-decoration:none;border-radius:6px;'
+  >Otwórz w panelu</a></p>

@@ -73,8 +73,8 @@ const { reservation, events } = await this.tx.run(async () => { … return { res
 events.forEach((e) => this.eventBus.publish(e)); // po commicie
 ```
 
-- `EventBus` to port opakowujący `EventEmitter2` (`emitAsync` nie blokuje odpowiedzi; błędy listenerów są logowane).
-- Klasy zdarzeń leżą w `modules/<f>/domain/events/`; nazwy i odbiorcy: [async-and-jobs.md](../../../docs/architecture/async-and-jobs.md#zdarzenia-domenowe).
+- `EVENT_BUS` to port opakowujący `EventEmitter2`: `publish` czeka na listenery (`emitAsync`), a ich błędy tylko loguje, więc nie zmieniają odpowiedzi. Listenery są cienkie (zapis `EmailLog` + job); wysyłka SMTP jest w workerze kolejki.
+- Klasy zdarzeń leżą w `modules/<f>/domain/events.ts`; nazwy i odbiorcy: [async-and-jobs.md](../../../docs/architecture/async-and-jobs.md#zdarzenia-domenowe).
 
 ## Konwencje serwisów
 

@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import type { CalendarDate } from '../../../common/domain/calendar-date';
 import { type Clock, CLOCK } from '../../../common/domain/clock';
+import { EVENT_BUS, type EventBus } from '../../../common/events/event-bus';
 import { StayRange } from '../../../common/domain/stay-range';
 import { NotFoundError } from '../../../common/errors/not-found.error';
 import {
@@ -21,7 +22,8 @@ import { InvalidStatusTransitionError } from '../domain/errors';
 import { isGuestTokenValid } from '../domain/guest-access-token';
 import { formatReservationNumber } from '../domain/reservation-number';
 import type { ReservationStatus } from '../domain/reservation-status';
-import { generateGuestToken, hashGuestToken } from './guest-token';
+import { ReservationCancelled, ReservationCreated } from '../domain/events';
+import { hashGuestToken } from './guest-token';
 import {
   type GuestReservationRecord,
   RESERVATIONS_REPOSITORY,
@@ -70,7 +72,8 @@ export interface GuestReservationView extends Omit<GuestReservationRecord, 'room
 
 /**
  * Proces gościa bez konta (docs/features/guest-booking.md): prośba o rezerwację online oraz podgląd
- * i anulowanie przez token z linku w e-mailu. Token w bazie tylko jako SHA-256.
+ * i anulowanie przez token z linku w e-mailu. Token w bazie tylko jako SHA-256; nowy token dla
+ * każdego e-maila z linkiem wydaje `GuestTokenService` (Q-16).
  */
 @Injectable()
 export class GuestBookingService {
@@ -81,6 +84,7 @@ export class GuestBookingService {
     private readonly availability: AvailabilityService,
     private readonly guests: GuestsService,
     private readonly photos: PhotosService,
+    @Inject(EVENT_BUS) private readonly events: EventBus,
   ) {}
 
   /** Prośba o rezerwację: `PENDING` z `expiresAt` (BR-07), cena z serwera (BR-05). */
@@ -107,7 +111,6 @@ export class GuestBookingService {
       const guestId = await this.guests.resolveForReservation(property.id, input.guest); // Q-04
       const year = Number(this.clock.today().toString().slice(0, 4));
       const number = formatReservationNumber(year, await this.reservations.nextSequence(year));
-      const { token, hash } = generateGuestToken();
       const reservationId = await this.reservations.create({
         number,
         propertyId: property.id,
@@ -128,7 +131,8 @@ export class GuestBookingService {
         internalNotes: null,
         confirmedAt: null,
         expiresAt,
-        guestAccessTokenHash: hash,
+        // Q-16: token (i link) powstaje przy wysyłce `reservation-received`.
+        guestAccessTokenHash: null,
       });
       await this.reservations.addEvent({
         reservationId,
@@ -137,10 +141,9 @@ export class GuestBookingService {
         actorUserId: null,
         payload: { source: 'ONLINE', status: 'PENDING' },
       });
-      return { reservationId, token, number, room, stay, price, currency };
+      return { reservationId, number, room, stay, price, currency };
     });
-    // M9: po commicie ReservationCreated({ reservationId, source: 'ONLINE', guestAccessToken: token }):
-    // surowy token trafia wyłącznie do linku `/r/:token` w e-mailu, nigdy do odpowiedzi ani logów.
+    await this.events.publish([new ReservationCreated(created.reservationId, 'ONLINE', now)]);
 
     return {
       number: created.number,
@@ -176,7 +179,7 @@ export class GuestBookingService {
 
   // BR-06, BR-08: gość anuluje z linku; `cancelledBy = GUEST`.
   async cancelByToken(token: string, reason: string | null): Promise<GuestReservationView> {
-    await this.tx.run(async () => {
+    const reservationId = await this.tx.run(async () => {
       const record = await this.findByTokenOrFail(token);
       assertGuestCanCancel(record, record.property, this.clock.today());
       const saved = await this.reservations.updateIf(
@@ -199,8 +202,9 @@ export class GuestBookingService {
         actorUserId: null,
         payload: reason ? { reason } : undefined,
       });
+      return record.id;
     });
-    // M9: ReservationCancelled({ cancelledBy: 'GUEST' }) po commicie (e-mail do gościa i właściciela).
+    await this.events.publish([new ReservationCancelled(reservationId, 'GUEST', this.clock.now())]);
     return this.getByToken(token);
   }
 

@@ -54,6 +54,8 @@ export const envSchema = z
     SMTP_USER: z.string().default(''),
     SMTP_PASSWORD: z.string().default(''),
     MAIL_FROM: z.string().min(1),
+    // `inline`: e-mail wysyłany od razu, bez Redisa i BullMQ (testy integracyjne).
+    EMAIL_QUEUE_DRIVER: z.enum(['bullmq', 'inline']).default('bullmq'),
 
     STORAGE_DRIVER: z.enum(['local']).default('local'),
     STORAGE_LOCAL_PATH: z.string().min(1).default('./uploads'),

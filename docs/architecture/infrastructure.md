@@ -53,7 +53,8 @@ Kolumna „Domyślna (dev)” podaje wartości dla `pnpm dev` na hoście (usług
 | `APP_TIMEZONE` | api | – | `Europe/Warsaw` | strefa „dziś” i crona |
 | `SMTP_HOST`, `SMTP_PORT` | api | ✔ | `localhost`, `1025` | w kontenerze `api`: host `mailpit` |
 | `SMTP_USER`, `SMTP_PASSWORD` | api | – sekret | puste | puste w dev |
-| `MAIL_FROM` | api | ✔ | `"Klucznik" <no-reply@klucznik.local>` | |
+| `MAIL_FROM` | api | ✔ | `"Klucznik" <no-reply@klucznik.local>` | adres nadawcy; nazwę nadpisuje „{obiekt} przez Klucznik” |
+| `EMAIL_QUEUE_DRIVER` | api | – | `bullmq` | `bullmq` (Redis, ponowienia, wskaźnik `redis` w `/health`) albo `inline` (wysyłka od razu, bez Redisa; testy integracyjne) |
 | `STORAGE_DRIVER` | api | – | `local` | `local` (MVP), później `s3` |
 | `STORAGE_LOCAL_PATH` | api | – | `./uploads` | katalog zdjęć; względny wobec `apps/api` przy `pnpm dev`, w kontenerze `api` nadpisany na `/data/uploads` (wolumen `uploads`) |
 | `UPLOAD_MAX_BYTES` | api | – | `10485760` | 10 MB |
@@ -72,7 +73,7 @@ Kolumna „Domyślna (dev)” podaje wartości dla `pnpm dev` na hoście (usług
 | Job | Kroki |
 |-|-|
 | `quality` | checkout → pnpm (cache) → `pnpm install --frozen-lockfile` → `pnpm lint` → `pnpm format:check` → `pnpm typecheck` |
-| `test-api` | service `postgres:16` (+ `redis:7`) → `prisma migrate deploy` → `pnpm --filter @klucznik/api test` → `test:int` (z `TEST_DATABASE_URL`) |
+| `test-api` | service `postgres:16` → `prisma migrate deploy` → `pnpm --filter @klucznik/api test` → `test:int` (z `TEST_DATABASE_URL`; kolejka e-maili inline, więc bez Redisa) |
 | `test-web` | `pnpm --filter @klucznik/web test` |
 | `contract` | `pnpm --filter @klucznik/api openapi:export` → `git diff --exit-code packages/api-client/openapi.json` (kontrakt aktualny) → `pnpm --filter @klucznik/api-client generate` → typecheck web |
 | `build` | `pnpm -r build` + `docker compose build` (na `main`) |

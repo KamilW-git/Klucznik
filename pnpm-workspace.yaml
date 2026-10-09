@@ -17,6 +17,7 @@ allowBuilds:
   cpu-features: false # ssh2 (Testcontainers), opcjonalne przyspieszenie
   esbuild: false # tsx (seed), binaria w optionalDependencies
   prisma: false # preinstall sprawdza tylko wersję Node
+  msgpackr-extract: false # BullMQ (msgpackr), natywne przyspieszenie opcjonalne (fallback w JS)
   protobufjs: false # Testcontainers, postinstall bez wpływu na działanie
   ssh2: false # Testcontainers, natywny crypto opcjonalny (fallback w JS)
   unrs-resolver: false # jest-resolve, binaria w optionalDependencies

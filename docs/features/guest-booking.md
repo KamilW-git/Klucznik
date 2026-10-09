@@ -54,7 +54,7 @@ Token: `randomBytes(32)` w base64url, w bazie tylko SHA-256 (`guestAccessTokenHa
 - [x] Moduł `public`: `PublicController`, `PublicBookingService`, `PublicPropertiesRepository` (odczyt strony obiektu). Przypadki użycia rezerwacji gościa w `reservations/application/guest-booking.service.ts` (eksport `GuestBookingService`).
 - [x] `PublicPropertyQuery`: obiekt po `slug` (aktywny, nieusunięty) z pokojami, zdjęciami i `priceFrom`.
 - [x] Dostępność: `AvailabilityService.checkRooms` w trybie raportu dla wszystkich pokoi (stawki, rezerwacje i blokady po jednym zapytaniu dla całego obiektu); zajętość: `AvailabilityService.occupiedNights`.
-- [x] `GuestBookingService.createOnline`: transakcja → `FOR UPDATE` pokoju → `AvailabilityService` (assert) → upsert gościa po `(propertyId, email)` ([Q-04](../open-questions.md#q-04)) → numer → token (32 B) + hash → insert `PENDING` z `expiresAt = now + pendingExpiryHours` → `ReservationEvent(CREATED, GUEST)`. Emisja `ReservationCreated` z surowym tokenem po commicie: M9 (`EventBus`); do tego czasu surowy token nie opuszcza serwera.
+- [x] `GuestBookingService.createOnline`: transakcja → `FOR UPDATE` pokoju → `AvailabilityService` (assert) → upsert gościa po `(propertyId, email)` ([Q-04](../open-questions.md#q-04)) → numer → insert `PENDING` z `expiresAt = now + pendingExpiryHours` → `ReservationEvent(CREATED, GUEST)` → po commicie `ReservationCreated`. Token (32 B) i jego hash powstają przy wysyłce `reservation-received` ([Q-16](../open-questions.md#q-16)), więc surowy token jest tylko w linku w e-mailu.
 - [x] `GuestBookingService.getByToken` i `cancelByToken`: hash tokenu → rezerwacja; ważność ([Q-11](../open-questions.md#q-11), `guest-access-token.ts`); BR-08 przez `cancellation-policy.ts`; `cancelledBy = GUEST`, wpis historii z aktorem `GUEST`.
 - [x] Throttling per endpoint, a w logach maskowanie tokenu (pokazujemy tylko pierwsze 6 znaków).
 
@@ -76,7 +76,7 @@ Ekrany: P1–P5: [screens.md](../../apps/web/docs/screens.md). `PublicLayout`: m
 | `GET /public/properties/:slug` nieaktywnego obiektu → 404 | int | BR-13 |
 | Dostępność: pokój zajęty → `available: false, OCCUPIED`; za mało nocy → `MIN_NIGHTS_NOT_MET` | int | BR-01, BR-03 |
 | Dostępność z `checkIn` w przeszłości → 422 | int | BR-04 |
-| Utworzenie → 201 `PENDING`, `expiresAt`, hash tokenu w bazie, brak tokenu i `Location` w odpowiedzi (e-mail w kolejce: M9) | int | BR-07 |
+| Utworzenie → 201 `PENDING`, `expiresAt`, hash tokenu w bazie, brak tokenu i `Location` w odpowiedzi, e-mail z działającym linkiem | int | BR-07 |
 | Link po `checkOut + 30 dni` i nieznany token → 404 | int, unit | Q-11 |
 | Szósty `POST /public/**` z jednego IP w minucie → 429 | int | – |
 | Zajętość: rezerwacje i blokady przycięte do zakresu, bez anulowanych | int | BR-01 |
@@ -97,7 +97,7 @@ Ekrany: P1–P5: [screens.md](../../apps/web/docs/screens.md). `PublicLayout`: m
 
 | Warstwa | Status |
 |-|-|
-| API | Gotowe (M8); e-maile z linkiem `/r/:token`: M9 |
+| API | Gotowe (M8, e-maile z linkiem: M9) |
 | UI | Nie rozpoczęto |
 
-Zdecydowane: [Q-04](../open-questions.md#q-04), [Q-11](../open-questions.md#q-11), [Q-17](../open-questions.md#q-17). Otwarte: [Q-16](../open-questions.md#q-16) (M9), [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia).
+Zdecydowane: [Q-04](../open-questions.md#q-04), [Q-11](../open-questions.md#q-11), [Q-17](../open-questions.md#q-17). Zdecydowane też: [Q-16](../open-questions.md#q-16). Otwarte: [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia).

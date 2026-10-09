@@ -13,16 +13,16 @@ Statusy: `OTWARTE` (obowiązuje rekomendacja), `ZDECYDOWANE` (z datą i decyzją
 | [Q-04](#q-04) | Aktualizacja danych powracającego gościa | ZDECYDOWANE |
 | [Q-05](#q-05) | Historia rezerwacji (`ReservationEvent`) | ZDECYDOWANE |
 | [Q-06](#q-06) | Reset hasła | OTWARTE |
-| [Q-07](#q-07) | Logi e-maili i obiekt przy zakładaniu właściciela | OTWARTE |
+| [Q-07](#q-07) | Logi e-maili i obiekt przy zakładaniu właściciela | ZDECYDOWANE |
 | [Q-08](#q-08) | Endpoint pulpitu | OTWARTE |
-| [Q-09](#q-09) | Przypomnienia przed przyjazdem | OTWARTE |
+| [Q-09](#q-09) | Przypomnienia przed przyjazdem | ZDECYDOWANE |
 | [Q-10](#q-10) | Semantyka usunięcia właściciela | OTWARTE |
 | [Q-11](#q-11) | Ważność tokenu gościa | ZDECYDOWANE |
 | [Q-12](#q-12) | Numeracja rezerwacji | ZDECYDOWANE |
 | [Q-13](#q-13) | Struktura adresu obiektu | OTWARTE |
 | [Q-14](#q-14) | Limity zdjęć | OTWARTE |
 | [Q-15](#q-15) | Blokada terminu a istniejąca rezerwacja | ZDECYDOWANE |
-| [Q-16](#q-16) | Link z tokenem w kolejnych e-mailach | OTWARTE |
+| [Q-16](#q-16) | Link z tokenem w kolejnych e-mailach | ZDECYDOWANE |
 | [Q-17](#q-17) | Endpointy wynikające z ekranów Stitch | ZDECYDOWANE |
 | [Q-18](#q-18) | Edycja i usuwanie danych gości (RODO) | OTWARTE |
 | [Q-19](#q-19) | Akceptacja regulaminu przy rezerwacji | OTWARTE |
@@ -76,6 +76,7 @@ Rekomendacja: poza MVP. Link ukryty, a w razie potrzeby admin ustawia nowe hasł
 
 **Logi e-maili w panelu admina (A1) i „Utwórz od razu obiekt” przy zakładaniu właściciela.**
 Zarys API ich nie zawiera, a ekran A1 tak. Rekomendacja: `GET /admin/email-logs` (paginacja, filtr statusu) oraz opcjonalne pole `property: { name, slug? }` w `POST /admin/owners` (obiekt w tej samej transakcji).
+**Decyzja (2026-10-09):** zgodnie z rekomendacją: obiekt przy zakładaniu właściciela od M4, `GET /admin/email-logs` w M9 (dodatkowo filtry `q` i `from`/`to`), [admin-owners.md](features/admin-owners.md).
 
 ## Q-08
 
@@ -86,6 +87,7 @@ Rekomendacja: `GET /properties/:id/dashboard` z agregatami (przyjazdy i wyjazdy 
 
 **Przypomnienia schedulera: komu i kiedy?**
 Rekomendacja: e-mail do gościa 2 dni przed przyjazdem (job codziennie o 09:00), tylko dla `CONFIRMED` z e-mailem, idempotentnie przez `reminderSentAt`. Bez przypomnień dla właściciela w MVP (ma pulpit).
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M9 (`ReservationJobsService.sendReminders`: warunek `reminder_sent_at IS NULL` w tym samym `UPDATE`).
 
 ## Q-10
 
@@ -125,6 +127,7 @@ Rekomendacja: nie. 409 `BLOCK_OVERLAPS_RESERVATION` z numerem rezerwacji, a wła
 **Jak wysyłać link `/r/:token` w kolejnych e-mailach, skoro przechowujemy tylko hash?**
 Rekomendacja: każdy e-mail z linkiem (`reservation-received`, `reservation-confirmed`, `stay-reminder`) generuje nowy token i nadpisuje hash. Działa wtedy tylko najnowszy link, a stare pokazują „Link jest nieaktualny – użyj linku z najnowszego e-maila”.
 Alternatywy: link tylko w pierwszym e-mailu (gorszy UX); przechowywanie tokenu zaszyfrowanego (narusza zasadę „tylko hash”); tabela wielu tokenów (więcej złożoności).
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M9: token generuje `NotificationsListener` (`GuestTokenService.issue`) tylko dla faktycznie planowanego e-maila, więc powtórzone zdarzenie nie unieważnia linku. Rezerwacja online nie tworzy tokenu przy zapisie; także rezerwacja ręczna z e-mailem dostaje link w `reservation-confirmed`.
 
 ## Q-17
 

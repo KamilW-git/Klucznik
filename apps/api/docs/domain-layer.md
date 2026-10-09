@@ -18,6 +18,8 @@
 | `common/domain/stay-range.ts` | `StayRange.of [checkIn, checkOut)` (wyjazd po przyjeździe), `nights()`, `eachNight()`, `toNightsRange()`, `overlaps`, `overlapsBlock`, `assertStayDates(range, today, { allowPastCheckInDays })`, `MANUAL_PAST_CHECK_IN_DAYS` | BR-01, BR-04, Q-01 |
 | `common/domain/date-range.ts` | `InclusiveDateRange.of [from, to]`, `nights()`, `contains`, `inclusiveRangesOverlap` | BR-01, BR-09 |
 | `common/domain/clock.ts` | interfejs `Clock`, token `CLOCK`, `FixedClock` (testy: `at`, `advanceBy`, `setTo`) | – |
+| `common/domain/time-zone.ts` | `startOfDayInZone(date, timeZone)` (filtry dni po znacznikach czasu) | – |
+| `common/domain/domain-event.ts` | interfejs `DomainEvent` (`name`, `occurredAt`) | – |
 | `common/domain/domain-error.ts` | klasa bazowa `DomainError`, unia `DomainErrorCode` | – |
 | `common/domain/errors/invalid-stay-dates.error.ts` | `InvalidStayDatesError` z `reason` | BR-04 |
 | `infrastructure/clock/system-clock.ts` | `SystemClock` (adapter produkcyjny, `ClockModule`) | – |
@@ -34,6 +36,8 @@
 | `modules/reservations/domain/guest-access-token.ts` | `isGuestTokenValid(checkOut, today)` | Q-11 |
 | `modules/reservations/domain/reservation-number.ts` | `formatReservationNumber(year, seq)` | Q-12 |
 | `modules/reservations/domain/editing-policy.ts` | `assertEditable(reservation, changedFields, today)` | Q-02 |
+| `modules/reservations/domain/events.ts` | `ReservationCreated`, `…Confirmed`, `…Cancelled`, `…Expired`, `…Completed`, `StayReminderDue` | BR-06, BR-07, Q-09 |
+| `modules/notifications/domain/email-plan.ts` | `planEmails(event, guestHasEmail)`, `emailIdempotencyKey` | Q-03, Q-16 |
 | `modules/properties/domain/slug.ts` | `slugify` (transliteracja PL) | – |
 
 ## Błędy domenowe

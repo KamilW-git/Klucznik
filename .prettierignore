@@ -16,3 +16,5 @@ design
 
 # Q-21: dokumentacja używa zwartych tabel `|-|-|`, których Prettier nie zachowuje.
 *.md
+# Szablony e-maili: parser glimmer usuwa <!doctype html> (apps/api/src/infrastructure/mail/templates).
+*.hbs

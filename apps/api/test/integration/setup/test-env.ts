@@ -13,6 +13,8 @@ const defaults: Record<string, string> = {
   MAIL_FROM: 'test@klucznik.local',
   SWAGGER_ENABLED: 'false',
   SCHEDULER_ENABLED: 'false',
+  // E-mail wysyłany od razu (bez Redisa); MAILER podmienia FakeMailer (create-test-app.ts).
+  EMAIL_QUEUE_DRIVER: 'inline',
   // Mały limit, żeby test 413 nie generował 10 MB.
   UPLOAD_MAX_BYTES: String(256 * 1024),
 };

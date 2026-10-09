@@ -1,0 +1,14 @@
+<p>Dzień dobry {{guest.firstName}},</p>
+<p>gospodarz obiektu
+  <strong>{{property.name}}</strong>
+  nie potwierdził na czas Twojej prośby o rezerwację
+  <strong>{{reservation.number}}</strong>
+  ({{room.name}},
+  {{date reservation.checkIn}}
+  –
+  {{date reservation.checkOut}}), więc wygasła. Nie pobraliśmy żadnej opłaty.</p>
+<p>Możesz sprawdzić inne terminy na stronie obiektu.</p>
+<p><a
+    href='{{links.property}}'
+    style='display:inline-block;padding:10px 18px;background:#2f5d50;color:#ffffff;text-decoration:none;border-radius:6px;'
+  >Sprawdź dostępność</a></p>

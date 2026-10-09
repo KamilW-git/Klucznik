@@ -17,10 +17,10 @@
 |-|-|-|-|
 | `CLOCK` | `now()`, `today()` | `SystemClock` | `common/domain/clock.ts`, `infrastructure/clock/` |
 | `TRANSACTION_MANAGER` | `run(fn)` | `ClsTransactionManager` (Prisma + `@nestjs-cls/transactional`) | `common/transactions/`, `infrastructure/prisma/` |
-| `EVENT_BUS` | `publish(event)` | `EventEmitter2` | `infrastructure/events/` |
-| `MAILER` | `send({ to, subject, html, text, replyTo? })` | `NodemailerMailer` (SMTP) | `infrastructure/mail/` |
-| `TEMPLATE_RENDERER` | `render(template, context) → { subject, html, text }` | Handlebars | `infrastructure/mail/` |
-| `EMAIL_QUEUE` | `enqueue(job, { jobId })` | BullMQ `Queue('emails')` | `infrastructure/queue/` |
+| `EVENT_BUS` | `publish(events)` (czeka na listenery, ich błędy tylko loguje) | `EventEmitterEventBus` | `common/events/`, `infrastructure/events/` (globalny `EventsModule`) |
+| `MAILER` | `send({ from, to, subject, html, text, replyTo? })` | `NodemailerMailer` (SMTP) | `common/mail/`, `infrastructure/mail/` (globalny `MailModule`) |
+| `TEMPLATE_RENDERER` | `render(template, context) → { subject, html, text }` | `HandlebarsTemplateRenderer` | `common/mail/`, `infrastructure/mail/` |
+| `EMAIL_QUEUE` | `enqueue(job)` (`jobId` = `EmailLog.id`) | `BullMqEmailQueue` albo `InlineEmailQueue` (`EMAIL_QUEUE_DRIVER`) | `modules/notifications/application/ports.ts`, `modules/notifications/infrastructure/queue/` |
 | `STORAGE` | `put(key, buffer, mime)`, `get(key) → { stream, size }`, `delete(key)` | `LocalDiskStorage` | `common/storage/`, `infrastructure/storage/` (globalny `StorageModule`) |
 | `PASSWORD_HASHER` | `hash`, `verify` | `Argon2PasswordHasher` (argon2id) | `common/security/`, `infrastructure/security/` (globalny `SecurityModule`, używany przez `auth` i `users`) |
 
@@ -37,20 +37,22 @@ Moduły domenowe zależą od tokenów, a nie od klas adapterów. Testy podmienia
 - Szablony: `src/infrastructure/mail/templates/*.hbs` + `layout.hbs` + `partials/`. Build kopiuje je do `dist` (`nest-cli.json` → `assets`).
 - Helpery Handlebars: `money` (grosze → „1 640,00 zł”), `date` (`YYYY-MM-DD` → „14.08.2026”), `pluralNights` („1 noc”, „2 noce”, „5 nocy”).
 - Każdy szablon ma wersję HTML i tekstową (tekst generowany z HTML albo osobny blok).
-- Dev: Mailpit (`http://localhost:8025`). Testy: `FakeMailer` zbierający wiadomości w pamięci.
+- Dev: Mailpit (`http://localhost:8025`). Testy: `FakeMailer` (`test/support/fake-mailer.ts`) zbierający wiadomości w pamięci, podstawiony w `createTestApp`; `failNext(n)` symuluje awarię SMTP.
+- Nadawca: `"{obiekt} przez Klucznik" <adres z MAIL_FROM>`, `Reply-To` = `Property.contactEmail` (jeśli ustawiony).
+- Szablony są poza Prettierem (`*.hbs` w `.prettierignore`), bo parser glimmer usuwa `<!doctype html>`. Formatuj z katalogu głównego repo, bo tylko tam działa `.prettierignore`.
 
 ## Kolejki (BullMQ)
 
-- `@nestjs/bullmq`: `BullModule.forRootAsync` (połączenie z `REDIS_HOST` i `REDIS_PORT`), `registerQueue({ name: 'emails' })`.
+- `@nestjs/bullmq` 12 + `bullmq` 6 + `ioredis` (w BullMQ 6 opcjonalna peer dependency): `BullModule.forRootAsync` (połączenie z `redisConfig`, `maxRetriesPerRequest: null`), `registerQueue({ name: 'emails' })` w `BullEmailQueueModule`. Natywny `msgpackr-extract` ma `allowBuilds: false` (fallback w JS).
 - `EmailProcessor extends WorkerHost` (`@Processor('emails', { concurrency: 5 })`): logika w [async-and-jobs.md](../../../docs/architecture/async-and-jobs.md#kolejka-e-maili-bullmq).
 - Domyślne opcje jobów: `attempts: 5`, `backoff: exponential 30 s`, `removeOnComplete: true`, `removeOnFail: 1000`.
-- Testy integracyjne bez Redisa: `EMAIL_QUEUE` podmieniony na `InlineEmailQueue` (wywołuje processor synchronicznie).
-- Health check sprawdza połączenie z Redisem.
+- Wybór kolejki: `EMAIL_QUEUE_DRIVER` przez `ConditionalModule.registerWhen` (sama podmiana providera nie wystarcza, bo `BullModule` łączy się z Redisem już przy starcie). `inline` w testach integracyjnych: `InlineEmailQueue` wywołuje `EmailDeliveryService` od razu, jedną próbą.
+- Health check (`REDIS_HEALTH_INDICATOR`, tylko przy `bullmq`): `PING` przez klienta kolejki z limitem 1 s.
 
 ## Scheduler
 
-- `ScheduleModule.forRoot()` w `infrastructure/scheduler/`. Klasy jobów w modułach (`modules/reservations/application/jobs/*.job.ts`).
-- `@Cron(expr, { name, timeZone: APP_TIMEZONE })`. Job loguje start, liczbę przetworzonych rekordów i czas.
+- `ScheduleModule.forRoot()` w `infrastructure/scheduler/` przez `ConditionalModule` (tylko przy `SCHEDULER_ENABLED=true`). Joby: `modules/reservations/application/reservation-jobs.scheduler.ts` (`@Cron`), logika w `reservation-jobs.service.ts`.
+- `@Cron(expr, { name, timeZone: 'Europe/Warsaw' })`: dekorator wylicza się przy imporcie, więc strefa jest stałą równą domyślnemu `APP_TIMEZONE`; „dziś” i „teraz” jobów pochodzą z `Clock`. Job loguje liczbę przetworzonych rekordów i czas.
 - Logika w metodach serwisów (testowalna bez crona); job tylko wywołuje serwis z `Clock`.
 - Wyłączenie w testach i na dodatkowych instancjach: `SCHEDULER_ENABLED=false`.
 
@@ -63,4 +65,4 @@ Moduły domenowe zależą od tokenów, a nie od klas adapterów. Testy podmienia
 
 ## Health check
 
-`GET /api/v1/health` (`@Public`, `@nestjs/terminus`): `database` (`DatabaseHealthIndicator`: `SELECT 1` z limitem 1 s), `redis` (od M9). Zwraca `200 { status: 'ok', info }` lub `503 SERVICE_UNAVAILABLE` w formacie `ErrorResponseDto` z wynikiem terminusa w `details` ([Q-27](../../../docs/open-questions.md#q-27)). Używany przez healthcheck Dockera. Własny wskaźnik zamiast `PrismaHealthIndicator`, bo ten rozpoznaje bazę SQL po treści błędu `$runCommandRaw`.
+`GET /api/v1/health` (`@Public`, `@nestjs/terminus`): `database` (`DatabaseHealthIndicator`: `SELECT 1` z limitem 1 s), `redis` (od M9, tylko przy `EMAIL_QUEUE_DRIVER=bullmq`). Zwraca `200 { status: 'ok', info }` lub `503 SERVICE_UNAVAILABLE` w formacie `ErrorResponseDto` z wynikiem terminusa w `details` ([Q-27](../../../docs/open-questions.md#q-27)). Używany przez healthcheck Dockera. Własny wskaźnik zamiast `PrismaHealthIndicator`, bo ten rozpoznaje bazę SQL po treści błędu `$runCommandRaw`.

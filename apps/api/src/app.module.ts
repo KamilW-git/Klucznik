@@ -17,6 +17,10 @@ import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { PrismaService } from './infrastructure/prisma/prisma.service';
 import { SecurityModule } from './infrastructure/security/security.module';
 import { StorageModule } from './infrastructure/storage/storage.module';
+import { EventsModule } from './infrastructure/events/events.module';
+import { MailModule } from './infrastructure/mail/mail.module';
+import { SchedulerModule } from './infrastructure/scheduler/scheduler.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { AvailabilityModule } from './modules/availability/availability.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { GuestsModule } from './modules/guests/guests.module';
@@ -63,6 +67,9 @@ import { UsersModule } from './modules/users/users.module';
         { name: 'default', ttl: config.ttlSeconds * 1000, limit: config.limit },
       ],
     }),
+    EventsModule,
+    MailModule,
+    SchedulerModule,
     AuthModule,
     UsersModule,
     PropertiesModule,
@@ -73,6 +80,7 @@ import { UsersModule } from './modules/users/users.module';
     GuestsModule,
     ReservationsModule,
     PublicModule,
+    NotificationsModule,
     HealthModule,
   ],
   providers: [

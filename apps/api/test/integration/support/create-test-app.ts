@@ -5,7 +5,9 @@ import { Test } from '@nestjs/testing';
 import { AppModule } from '../../../src/app.module';
 import { configureApp } from '../../../src/app.setup';
 import { CLOCK, FixedClock } from '../../../src/common/domain/clock';
+import { MAILER } from '../../../src/common/mail/mailer';
 import { PrismaService } from '../../../src/infrastructure/prisma/prisma.service';
+import { FakeMailer } from '../../support/fake-mailer';
 
 /** Domyślne „teraz” testów integracyjnych (docs/architecture/testing-strategy.md#zegar-w-testach). */
 export const TEST_NOW = '2026-08-01T10:00:00+02:00';
@@ -13,6 +15,8 @@ export const TEST_NOW = '2026-08-01T10:00:00+02:00';
 export interface TestApp {
   app: NestExpressApplication;
   clock: FixedClock;
+  /** E-maile „wysłane” przez kolejkę inline (`EMAIL_QUEUE_DRIVER=inline`). */
+  mailer: FakeMailer;
   /** Do przygotowania danych (fabryki) i asercji na bazie. */
   prisma: PrismaService;
 }
@@ -25,10 +29,11 @@ export interface TestAppOptions {
 
 /**
  * Prawdziwy `AppModule` z konfiguracją HTTP jak w `main.ts`.
- * Nadpisany jest tylko `CLOCK` (`FixedClock`); kolejne etapy dodadzą fake mailera i kolejki.
+ * Nadpisane są `CLOCK` (`FixedClock`) i `MAILER` (`FakeMailer`); kolejka e-maili działa inline.
  */
 export async function createTestApp(options: TestAppOptions = {}): Promise<TestApp> {
   const clock = FixedClock.at(options.now ?? TEST_NOW);
+  const mailer = new FakeMailer();
 
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
@@ -36,11 +41,13 @@ export async function createTestApp(options: TestAppOptions = {}): Promise<TestA
   })
     .overrideProvider(CLOCK)
     .useValue(clock)
+    .overrideProvider(MAILER)
+    .useValue(mailer)
     .compile();
 
   const app = moduleRef.createNestApplication<NestExpressApplication>({ logger: false });
   configureApp(app);
   await app.init();
 
-  return { app, clock, prisma: app.get(PrismaService) };
+  return { app, clock, mailer, prisma: app.get(PrismaService) };
 }

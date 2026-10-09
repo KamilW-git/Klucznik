@@ -4,6 +4,9 @@ import { AvailabilityModule } from '../availability/availability.module';
 import { GuestsModule } from '../guests/guests.module';
 import { PhotosModule } from '../photos/photos.module';
 import { GuestBookingService } from './application/guest-booking.service';
+import { GuestTokenService } from './application/guest-token.service';
+import { ReservationJobsScheduler } from './application/reservation-jobs.scheduler';
+import { ReservationJobsService } from './application/reservation-jobs.service';
 import { RESERVATIONS_QUERY_REPOSITORY } from './application/ports';
 import { RESERVATIONS_REPOSITORY } from './application/reservation-ports';
 import { ReservationsQueryService } from './application/reservations-query.service';
@@ -23,9 +26,17 @@ import { PrismaReservationsRepository } from './infrastructure/prisma-reservatio
     ReservationsService,
     ReservationsQueryService,
     GuestBookingService,
+    GuestTokenService,
+    ReservationJobsService,
+    ReservationJobsScheduler,
     { provide: RESERVATIONS_REPOSITORY, useClass: PrismaReservationsRepository },
     { provide: RESERVATIONS_QUERY_REPOSITORY, useClass: PrismaReservationsQueryRepository },
   ],
-  exports: [ReservationsQueryService, GuestBookingService],
+  exports: [
+    ReservationsQueryService,
+    GuestBookingService,
+    GuestTokenService,
+    ReservationJobsService,
+  ],
 })
 export class ReservationsModule {}

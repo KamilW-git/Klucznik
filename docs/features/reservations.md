@@ -67,8 +67,8 @@ Rezerwacja ręczna podlega BR-04 z przyjazdem do 30 dni wstecz ([Q-01](../open-q
 ## 6. Backend: zadania
 
 - [x] Domena: `reservation-status.ts` (tabela przejść, `assertTransition`, `assertConfirmable`, `isExpired`), `reservation-policy.ts` (`assertCapacity`, `assertBookable`, od M6), `reservation-number.ts` (`formatReservationNumber`), `editing-policy.ts` (`assertEditable`, Q-02).
-- [x] `ReservationsService.createManual`: transakcja → `FOR UPDATE` pokoju → `AvailabilityService` (tryb assert) → upsert gościa → numer z `ReservationCounter` → insert `CONFIRMED` → `ReservationEvent(CREATED)`. Emisja `ReservationCreated` po commicie: M9 (`EventBus`), w kodzie komentarz `// M9:`.
-- [x] `confirm` i `cancel`: zapis warunkowy po statusie, `ReservationEvent` (`cancelledBy` = rola aktora). Zdarzenia `ReservationConfirmed` i `ReservationCancelled`: M9.
+- [x] `ReservationsService.createManual`: transakcja → `FOR UPDATE` pokoju → `AvailabilityService` (tryb assert) → upsert gościa → numer z `ReservationCounter` → insert `CONFIRMED` → `ReservationEvent(CREATED)` → po commicie `ReservationCreated` (`EVENT_BUS`; e-mail do gościa z adresem).
+- [x] `confirm` i `cancel`: zapis warunkowy po statusie, `ReservationEvent` (`cancelledBy` = rola aktora), po commicie `ReservationConfirmed` i `ReservationCancelled`.
 - [x] `update`: BR-11 (`WHERE version = :v`), ponowna walidacja przy zmianie dat, pokoju lub liczby gości (zamki obu pokoi w stałej kolejności), `ReservationEvent(UPDATED)` z listą zmienionych pól.
 - [x] Mapowanie `23P01` (EXCLUDE) → `ReservationOverlapError` w repozytorium.
 - [x] Lista z filtrami, wyszukiwaniem (`ILIKE` po `guest.lastName`, `guest.email`, `number`) i sortowaniem z białej listy; indeksy z [data-model.md](../architecture/data-model.md#reservation-rezerwacja).
@@ -106,7 +106,7 @@ Ekrany: O4 (lista + drawer), O5 (nowa rezerwacja ręczna), O2 (akcje na pulpicie
 
 ## 9. Kryteria akceptacji
 
-- [ ] Potwierdzenie `PENDING` zmienia status, zapisuje historię i wysyła e-mail do gościa (M9).
+- [x] Potwierdzenie `PENDING` zmienia status, zapisuje historię i wysyła e-mail do gościa (M9).
 - [ ] Rezerwacja ręczna jest od razu `CONFIRMED` i widoczna w kalendarzu.
 - [ ] Dwie karty przeglądarki edytujące tę samą rezerwację: druga dostaje czytelny komunikat konfliktu.
 
@@ -114,7 +114,7 @@ Ekrany: O4 (lista + drawer), O5 (nowa rezerwacja ręczna), O2 (akcje na pulpicie
 
 | Warstwa | Status |
 |-|-|
-| API | Gotowe (M7); zdarzenia i e-maile: M9 |
+| API | Gotowe (M7, zdarzenia i e-maile: M9) |
 | UI | Nie rozpoczęto |
 
 Zdecydowane: [Q-01](../open-questions.md#q-01), [Q-02](../open-questions.md#q-02), [Q-03](../open-questions.md#q-03), [Q-04](../open-questions.md#q-04), [Q-05](../open-questions.md#q-05), [Q-12](../open-questions.md#q-12).

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject, Optional } from '@nestjs/common';
 import {
   ApiOkResponse,
   ApiOperation,
@@ -8,6 +8,10 @@ import {
 import { HealthCheck, type HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
 
 import { Public } from '../../../common/auth/public.decorator';
+import {
+  type HealthIndicator,
+  REDIS_HEALTH_INDICATOR,
+} from '../../../common/health/health-indicator';
 import { ErrorResponseDto } from '../../../common/http/error-response.dto';
 import { DatabaseHealthIndicator } from '../../../infrastructure/prisma/prisma.health';
 import { HealthCheckDto } from './dto/health-check.dto';
@@ -18,6 +22,8 @@ export class HealthController {
   constructor(
     private readonly health: HealthCheckService,
     private readonly database: DatabaseHealthIndicator,
+    // Tylko przy `EMAIL_QUEUE_DRIVER=bullmq` (BullEmailQueueModule).
+    @Optional() @Inject(REDIS_HEALTH_INDICATOR) private readonly redis?: HealthIndicator,
   ) {}
 
   @Get()
@@ -35,7 +41,10 @@ export class HealthController {
     type: ErrorResponseDto,
   })
   check(): Promise<HealthCheckResult> {
-    // M9: wskaźnik `redis`.
-    return this.health.check([() => this.database.pingCheck('database')]);
+    const redis = this.redis;
+    return this.health.check([
+      () => this.database.pingCheck('database'),
+      ...(redis ? [() => redis.check('redis')] : []),
+    ]);
   }
 }

@@ -155,13 +155,27 @@ export interface ReservationsRepository {
     expected: { version?: number; status?: ReservationStatus },
     changes: ReservationChanges,
   ): Promise<boolean>;
-  addEvent(event: {
-    reservationId: string;
-    type: ReservationEventRecord['type'];
-    actorType: ActorType;
-    actorUserId: string | null;
-    payload?: Record<string, unknown>;
-  }): Promise<void>;
+  addEvent(event: NewReservationEvent): Promise<void>;
+  addEvents(events: readonly NewReservationEvent[]): Promise<void>;
+  /** Q-16: nowy hash tokenu gościa; poprzedni link przestaje działać. */
+  setGuestTokenHash(id: string, tokenHash: string): Promise<void>;
+  /** BR-07: `PENDING` z `expiresAt <= now` → `EXPIRED` (zapis warunkowy); id faktycznie zmienionych. */
+  expirePending(now: Date): Promise<string[]>;
+  /** `CONFIRMED` z `checkOut < today` → `COMPLETED`; id faktycznie zmienionych. */
+  completeStays(today: CalendarDate): Promise<string[]>;
+  /**
+   * Q-09: `CONFIRMED` z przyjazdem `checkIn`, gościem z e-mailem i `reminderSentAt IS NULL`
+   * → `reminderSentAt = now` w tym samym `UPDATE`; id faktycznie oznaczonych.
+   */
+  markRemindersDue(checkIn: CalendarDate, now: Date): Promise<string[]>;
+}
+
+export interface NewReservationEvent {
+  reservationId: string;
+  type: ReservationEventRecord['type'];
+  actorType: ActorType;
+  actorUserId: string | null;
+  payload?: Record<string, unknown>;
 }
 
 export const RESERVATIONS_REPOSITORY = Symbol('RESERVATIONS_REPOSITORY');

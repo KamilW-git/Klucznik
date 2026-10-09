@@ -14,7 +14,7 @@
 | M6 | API | Cennik, blokady, dostępność, kalendarz | gotowe |
 | M7 | API | Rezerwacje: reguły, stany, ręczna, optimistic locking, goście | gotowe |
 | M8 | API | Publiczny proces rezerwacji i token gościa | gotowe |
-| M9 | API | Zdarzenia, kolejka e-maili, szablony, scheduler | – |
+| M9 | API | Zdarzenia, kolejka e-maili, szablony, scheduler | gotowe |
 | M10 | UI | Setup frontendu, design system, logowanie | – |
 | M11 | UI | Panel Gospodarza | – |
 | M12 | UI | Strona publiczna i proces rezerwacji | – |
@@ -98,11 +98,11 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M9: Asynchroniczność [API]
 
-- [ ] [API] `EventBus`, zdarzenia domenowe po commicie: [async-and-jobs.md](architecture/async-and-jobs.md)
-- [ ] [API] BullMQ `emails`, `EmailProcessor`, `EmailLog`, szablony Handlebars (7): [notifications.md](features/notifications.md)
-- [ ] [API] Joby: wygasanie (BR-07), `COMPLETED`, przypomnienia
-- [ ] [API] `/admin/email-logs`
-- [ ] [INFRA] Redis w CI dla testów kolejki (jeśli potrzebny)
+- [x] [API] `EventBus`, zdarzenia domenowe po commicie: [async-and-jobs.md](architecture/async-and-jobs.md)
+- [x] [API] BullMQ `emails`, `EmailProcessor`, `EmailLog`, szablony Handlebars (7): [notifications.md](features/notifications.md)
+- [x] [API] Joby: wygasanie (BR-07), `COMPLETED`, przypomnienia
+- [x] [API] `/admin/email-logs`
+- [x] [INFRA] Redis w CI dla testów kolejki (jeśli potrzebny): niepotrzebny, testy używają `EMAIL_QUEUE_DRIVER=inline` ([H-013](handoff.md#zgłoszenia))
 
 ## M10: Setup frontendu [UI]
 

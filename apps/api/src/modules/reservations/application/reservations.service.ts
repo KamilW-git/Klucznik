@@ -4,6 +4,7 @@ import type { AccessScope } from '../../../common/access/access-scope';
 import { OWNERSHIP_POLICY, type OwnershipPolicy } from '../../../common/access/ownership.policy';
 import type { CalendarDate } from '../../../common/domain/calendar-date';
 import { type Clock, CLOCK } from '../../../common/domain/clock';
+import { EVENT_BUS, type EventBus } from '../../../common/events/event-bus';
 import { MANUAL_PAST_CHECK_IN_DAYS, StayRange } from '../../../common/domain/stay-range';
 import { NotFoundError } from '../../../common/errors/not-found.error';
 import {
@@ -23,6 +24,7 @@ import type { BookableRoom } from '../../availability/application/ports';
 import { GuestsService } from '../../guests/application/guests.service';
 import type { GuestInput } from '../../guests/application/ports';
 import { assertEditable, type EditableField } from '../domain/editing-policy';
+import { ReservationCancelled, ReservationConfirmed, ReservationCreated } from '../domain/events';
 import { InvalidStatusTransitionError, VersionConflictError } from '../domain/errors';
 import { formatReservationNumber } from '../domain/reservation-number';
 import { assertCapacity } from '../domain/reservation-policy';
@@ -82,7 +84,7 @@ export interface ListReservationsInput extends PaginationQuery {
 /**
  * Rezerwacje w panelu (docs/features/reservations.md): rezerwacja ręczna, edycja, potwierdzanie
  * i anulowanie. Aktorem jest zalogowany `OWNER` lub `ADMIN` (`AccessScope`); dostęp: BR-12.
- * Zdarzenia domenowe po commicie (`ReservationCreated`, …) dochodzą w M9 razem z `EventBus`.
+ * Zdarzenia domenowe (`ReservationCreated`, …) publikowane po commicie (`EVENT_BUS`).
  */
 @Injectable()
 export class ReservationsService {
@@ -93,6 +95,7 @@ export class ReservationsService {
     @Inject(CLOCK) private readonly clock: Clock,
     private readonly availability: AvailabilityService,
     private readonly guests: GuestsService,
+    @Inject(EVENT_BUS) private readonly events: EventBus,
   ) {}
 
   async list(
@@ -153,7 +156,7 @@ export class ReservationsService {
         internalNotes: input.internalNotes,
         confirmedAt: this.clock.now(),
         expiresAt: null,
-        // M9: token gościa z e-mailem powstaje przy wysyłce e-maila (Q-16).
+        // Q-16: token gościa powstaje przy wysyłce e-maila z linkiem (NotificationsListener).
         guestAccessTokenHash: null,
       });
       await this.reservations.addEvent({
@@ -165,7 +168,7 @@ export class ReservationsService {
       });
       return reservationId;
     });
-    // M9: ReservationCreated po commicie (e-mail do gościa z adresem).
+    await this.events.publish([new ReservationCreated(id, 'MANUAL', this.clock.now())]);
     return this.get(id, scope);
   }
 
@@ -183,7 +186,7 @@ export class ReservationsService {
         actorUserId: scope.userId,
       });
     });
-    // M9: ReservationConfirmed po commicie.
+    await this.events.publish([new ReservationConfirmed(id, this.clock.now())]);
     return this.get(id, scope);
   }
 
@@ -205,7 +208,7 @@ export class ReservationsService {
         payload: reason ? { reason } : undefined,
       });
     });
-    // M9: ReservationCancelled po commicie.
+    await this.events.publish([new ReservationCancelled(id, scope.role, this.clock.now())]);
     return this.get(id, scope);
   }
 
