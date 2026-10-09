@@ -27,6 +27,7 @@
 | Stawka sezonowa | SeasonalRate | cena za noc w zakresie dat |
 | Cennik | pricing | cena bazowa + stawki sezonowe |
 | Blokada terminu | AvailabilityBlock | np. remont, użytek własny |
+| Wycena pobytu | quote, `RoomQuote` | dostępność i cena pobytu w pokoju przed rezerwacją (bez zapisu) |
 | Rezerwacja | Reservation | |
 | Numer rezerwacji | reservation number, `number` | format `KL-RRRR-NNNNNN` |
 | Historia rezerwacji | ReservationEvent | wpisy timeline'u ([Q-05](../open-questions.md#q-05)) |

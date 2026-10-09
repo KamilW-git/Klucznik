@@ -21,9 +21,9 @@ Statusy: `OTWARTE` (obowiązuje rekomendacja), `ZDECYDOWANE` (z datą i decyzją
 | [Q-12](#q-12) | Numeracja rezerwacji | OTWARTE |
 | [Q-13](#q-13) | Struktura adresu obiektu | OTWARTE |
 | [Q-14](#q-14) | Limity zdjęć | OTWARTE |
-| [Q-15](#q-15) | Blokada terminu a istniejąca rezerwacja | OTWARTE |
+| [Q-15](#q-15) | Blokada terminu a istniejąca rezerwacja | ZDECYDOWANE |
 | [Q-16](#q-16) | Link z tokenem w kolejnych e-mailach | OTWARTE |
-| [Q-17](#q-17) | Endpointy wynikające z ekranów Stitch | OTWARTE |
+| [Q-17](#q-17) | Endpointy wynikające z ekranów Stitch | ZDECYDOWANE |
 | [Q-18](#q-18) | Edycja i usuwanie danych gości (RODO) | OTWARTE |
 | [Q-19](#q-19) | Akceptacja regulaminu przy rezerwacji | OTWARTE |
 | [Q-20](#q-20) | Udogodnienia pokoi i obiektu | OTWARTE |
@@ -111,6 +111,7 @@ Rekomendacja: JPG, PNG, WebP; maks. 10 MB na plik; maks. 20 zdjęć obiektu i 20
 
 **Czy można zablokować termin, na który istnieje aktywna rezerwacja?**
 Rekomendacja: nie. 409 `BLOCK_OVERLAPS_RESERVATION` z numerem rezerwacji, a właściciel musi najpierw anulować lub przenieść rezerwację. Blokady mogą nakładać się na siebie.
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M6 ([availability.md](features/availability.md#5-kontrakt-api)): `details` zawiera `conflictingReservationId` i `conflictingReservationNumber`.
 
 ## Q-16
 
@@ -126,6 +127,8 @@ Rekomendacja, wszystkie bez danych wrażliwych:
 - `GET /rooms/:id/quote` dla „Ceny wyliczonej” i kolizji w O5,
 - `GET /public/properties/:slug/occupancy` dla mini-kalendarza zajętości w P2,
 - `GET /public/properties/:slug/availability` zwraca **wszystkie** aktywne pokoje z powodem niedostępności (P2 pokazuje pokój niedostępny i informację o minimalnym pobycie), a nie tylko dostępne.
+
+**Decyzja (2026-10-09):** zgodnie z rekomendacją. `GET /rooms/:id/quote` wdrożone w M6 ([availability.md](features/availability.md#5-kontrakt-api)); oba endpointy publiczne w M8 korzystają z tego samego `AvailabilityService.check`.
 
 ## Q-18
 

@@ -45,9 +45,9 @@ Enhancery (pipe, filtr, guardy) rejestruje `AppModule` przez DI, a ustawienia HT
 
 - Pliki: `http/dto/create-room.dto.ts`, `room.dto.ts`, `list-reservations.query.ts`. Klasy z sufiksem `Dto` lub `Query`.
 - Każde pole ma dekoratory class-validator **i** `@ApiProperty` (typ, przykład, opis po polsku).
-- Daty kalendarzowe: `@IsDateString({ strict: true })` + `@Matches(/^\d{4}-\d{2}-\d{2}$/)`, a w kontrolerze lub mapperze konwersja na `CalendarDate`.
+- Daty kalendarzowe: `@IsCalendarDate()` (`common/http/date-fields.ts`: format `YYYY-MM-DD` i istniejąca data), a w kontrolerze konwersja na `CalendarDate`. Zakres dni włącznie: `@IsRangeEnd('dateFrom', maxDays)` na polu końca (→ 400). Filtr list `?from&to`: `DateRangeQuery` + `toDateRangeFilter()`.
 - Kwoty: `@IsInt() @Min(0)`, liczba groszy.
-- Query: liczby przez `@Type(() => Number)`, listy przez `@Transform` (split po przecinku).
+- Query: liczby przez `@ToInt()`, wartości logiczne przez `@ToBoolean()` (`common/http/query-transforms.ts`; `enableImplicitConversion` jest wyłączone), listy przez `@Transform` (split po przecinku).
 - Walidacja krzyżowa kształtu (np. `dateTo ≥ dateFrom`) jako własny dekorator → 400. Reguły biznesowe (np. BR-04) nie należą do DTO, bo są w domenie → 422.
 - Wspólne (`common/http/pagination.ts`, `common/http/sort.ts`): `PaginationQuery` (`page`, `pageSize`), `SortQuery(pola, domyślne)` (`field:dir` z białej listy, 400 dla nieznanego pola) + `parseSort()`, `Paginated<T>` (typ wyniku serwisu) i `Paginated(ItemDto)` (generyczny DTO odpowiedzi dla Swaggera), `paginate()`, `toSkipTake()`:
 

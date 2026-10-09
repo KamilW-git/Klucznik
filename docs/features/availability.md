@@ -27,14 +27,18 @@ Właściciel blokuje terminy (remont, użytek własny), a system nigdy nie pozwo
 
 | Metoda | Ścieżka | Rola | Request | Response | Błędy |
 |-|-|-|-|-|-|
-| `GET` | `/rooms/:id/blocks` | `OWNER`, `ADMIN` | query: `from?`, `to?` | `200` `{ data: AvailabilityBlockDto[] }` | `404` |
+| `GET` | `/rooms/:id/blocks` | `OWNER`, `ADMIN` | query: `from?`, `to?` (blokady przecinające `[from, to]`) | `200` `{ data: AvailabilityBlockDto[] }` (sort `dateFrom:asc`) | `400`, `404` |
 | `POST` | `/rooms/:id/blocks` | `OWNER`, `ADMIN` | `{ dateFrom, dateTo, reason? }` | `201` `AvailabilityBlockDto` + `Location` | `409 BLOCK_OVERLAPS_RESERVATION` |
-| `DELETE` | `/blocks/:id` | `OWNER`, `ADMIN` | – | `204` | – |
-| `GET` | `/rooms/:id/quote` | `OWNER`, `ADMIN` | query: `checkIn`, `checkOut`, `guests`, `excludeReservationId?` | `200` `RoomQuoteDto` | `422 INVALID_STAY_DATES` ([Q-17](../open-questions.md#q-17)) |
+| `DELETE` | `/blocks/:id` | `OWNER`, `ADMIN` | – | `204` | `404` |
+| `GET` | `/rooms/:id/quote` | `OWNER`, `ADMIN` | query: `checkIn`, `checkOut`, `guests` (1–99), `excludeReservationId?` | `200` `RoomQuoteDto` | `400`, `404`, `422 INVALID_STAY_DATES` ([Q-17](../open-questions.md#q-17)) |
 | `GET` | `/properties/:id/calendar` | `OWNER`, `ADMIN` | query: `from`, `to` (daty dni widoku, włącznie; maks. 93 dni) | `200` `CalendarDto` | `400` (zakres) |
 
-- **`AvailabilityBlockDto`**: `id`, `roomId`, `dateFrom`, `dateTo` (noce włącznie), `reason`, `createdAt`. `reason` ≤ 200 znaków. `dateTo ≥ dateFrom`, maks. 366 nocy.
-- **`RoomQuoteDto`**: `{ roomId, checkIn, checkOut, nights, available, unavailableReason?, conflicts: [{ type: 'RESERVATION' | 'BLOCK', id, number?, dateFrom, dateTo }], minNights, totalPrice, currency, breakdown }`. Służy do „Cena wyliczona” i komunikatu kolizji w O5. Nie rzuca 409, tylko raportuje.
+- **`AvailabilityBlockDto`**: `id`, `roomId`, `dateFrom`, `dateTo` (noce włącznie), `reason`, `createdAt`. `reason` ≤ 200 znaków lub `null`. `dateTo ≥ dateFrom`, maks. 366 nocy (inaczej 400).
+- **`BLOCK_OVERLAPS_RESERVATION`**: `details: { conflictingReservationId, conflictingReservationNumber }` (pierwsza kolidująca rezerwacja `PENDING`/`CONFIRMED`). Blokady mogą nakładać się na siebie ([Q-15](../open-questions.md#q-15)).
+- **`RoomQuoteDto`**: `{ roomId, checkIn, checkOut, nights, available, unavailableReason, conflicts: [{ type: 'RESERVATION' | 'BLOCK', id, number, dateFrom, dateTo }], minNights, totalPrice, currency, breakdown: [{ date, price, rateId }] }`. Służy do „Cena wyliczona” i komunikatu kolizji w O5. Nie rzuca 409, tylko raportuje.
+  - `unavailableReason`: `null` albo pierwsza niespełniona reguła: `ROOM_NOT_BOOKABLE` (BR-13), `CAPACITY_EXCEEDED` (BR-02), `MIN_NIGHTS_NOT_MET` (BR-03), `OCCUPIED` (BR-01). Cena i `conflicts` są liczone także dla terminu niedostępnego.
+  - `conflicts`: dla rezerwacji `dateFrom`/`dateTo` to przyjazd i wyjazd (`[)`), dla blokady pierwsza i ostatnia noc (włącznie); `number` tylko dla rezerwacji.
+  - BR-04 jak dla rezerwacji ręcznej: przyjazd do 30 dni wstecz ([Q-01](../open-questions.md#q-01)); błędne daty → 422.
 - **`CalendarDto`**:
 
 ```json
@@ -48,7 +52,7 @@ Właściciel blokuje terminy (remont, użytek własny), a system nigdy nie pozwo
 }
 ```
 
-Kalendarz zwraca rezerwacje `PENDING`, `CONFIRMED` i `COMPLETED`, których pobyt przecina zakres, oraz blokady przecinające zakres. Pomija pokoje usunięte.
+Kalendarz zwraca pokoje obiektu (także nieaktywne, sort po nazwie), rezerwacje `PENDING`, `CONFIRMED` i `COMPLETED`, których pobyt ma noc w zakresie (`checkIn ≤ to`, `checkOut > from`), oraz blokady przecinające zakres. Pomija pokoje usunięte i ich rezerwacje oraz blokady. `from ≤ to`, maks. 93 dni łącznie z oboma końcami (inaczej 400).
 
 ## Algorytm dostępności (application + domain)
 
@@ -63,13 +67,15 @@ Wspólny serwis `AvailabilityService.check(room, property, stay, guests, options
 
 Kroki 1–4 to czyste funkcje domeny. Krok 5 to zapytanie repozytorium, które przy tworzeniu rezerwacji działa w transakcji z `FOR UPDATE` ([business-rules.md](../architecture/business-rules.md#br-01)). Wynik `check` jest obiektem (dostępny lub powód), a tryb „assert” rzuca błąd domenowy.
 
+Implementacja: kolejność reguł i zamiana błędu na powód w `modules/availability/domain/availability.ts` (`findAvailabilityViolation`, `unavailableReasonOf`); `AvailabilityService.check` / `assertAvailable` pobiera wycenę (`PricingFacade`), aktywne rezerwacje i blokady przecinające noce pobytu. BR-04 zawsze rzuca `InvalidStayDatesError`, bo bez poprawnych dat nie ma wyceny.
+
 ## 6. Backend: zadania
 
-- [ ] Moduł `availability`: `BlocksController`, `BlocksService` (kolizja z rezerwacjami w transakcji z blokadą pokoju), `BlocksRepository`.
-- [ ] `AvailabilityService` (algorytm wyżej) + `CollisionsRepository.findCollisions(roomId, stay, excludeReservationId?)`.
-- [ ] `GET /rooms/:id/quote`.
-- [ ] `CalendarController` + zapytanie kalendarza (2 zapytania: rezerwacje z gośćmi, blokady; bez N+1).
-- [ ] Walidacja zakresu kalendarza (`from ≤ to`, ≤ 93 dni) → 400.
+- [x] Moduł `availability`: `BlocksController`, `BlocksService` (kolizja z rezerwacjami w transakcji z `SELECT … FOR UPDATE` na pokoju, tym samym zamku co BR-10 i tworzenie rezerwacji), `BlocksRepository`.
+- [x] `AvailabilityService` (algorytm wyżej) + `AvailabilityRepository.activeReservations(roomId, nights, excludeReservationId?)`; kolidujące blokady z `BlocksRepository.listByRoom` (filtr przecięcia).
+- [x] `GET /rooms/:id/quote`.
+- [x] `AvailabilityController` (`quote`, `calendar`) + zapytanie kalendarza (3 równoległe zapytania: pokoje, rezerwacje z gośćmi, blokady; bez N+1).
+- [x] Walidacja zakresu kalendarza (`from ≤ to`, ≤ 93 dni) → 400.
 
 ## 7. Frontend: ekrany i zadania
 
@@ -89,8 +95,9 @@ Ekrany: O3 (kalendarz), O7 zakładka „Blokady terminów”, O5 (dostępność 
 | `overlapsBlock`: blokada 10–12 vs pobyty `[12,14)` (kolizja) i `[13,15)` (brak) | unit | BR-01 |
 | `AvailabilityService`: każdy powód niedostępności | unit (fake repo) | BR-01..04, 13 |
 | Blokada na termin z rezerwacją `CONFIRMED` → 409 | int | BR-01 |
-| Rezerwacja na termin z blokadą → 409 | int | BR-01 |
-| Kalendarz: zwraca tylko przecinające się elementy, bez anulowanych | int | – |
+| Rezerwacja na termin z blokadą → 409 (M7; w M6 wycena raportuje `OCCUPIED`) | int | BR-01 |
+| Kalendarz: zwraca tylko przecinające się elementy, bez anulowanych i usuniętych pokoi; limit 93 dni | int | – |
+| Wycena: każdy powód niedostępności, cena na przełomie sezonu, `excludeReservationId`, BR-04 (Q-01) | int | BR-01..05, 13 |
 | Owner B → kalendarz obiektu A → 404 | int | BR-12 |
 | Kalendarz UI: pozycjonowanie pasków, styk dni | ui | – |
 
@@ -104,7 +111,7 @@ Ekrany: O3 (kalendarz), O7 zakładka „Blokady terminów”, O5 (dostępność 
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Gotowe (M6); dostępność publiczna: M8 ([guest-booking.md](guest-booking.md)) |
 | UI | Nie rozpoczęto |
 
-Otwarte: [Q-15](../open-questions.md#q-15) (blokada vs rezerwacja), [Q-17](../open-questions.md#q-17) (`quote`, zajętość publiczna).
+Zdecydowane: [Q-15](../open-questions.md#q-15) (blokada vs rezerwacja), [Q-17](../open-questions.md#q-17) (`quote`, zajętość publiczna).

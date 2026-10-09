@@ -11,6 +11,12 @@ export const ToBoolean = (): PropertyDecorator =>
     return value;
   });
 
+/** Parametr query z liczbą całkowitą → number. Inne wartości zostają bez zmian (`@IsInt()` zwróci 400). */
+export const ToInt = (): PropertyDecorator =>
+  Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' && /^-?\d+$/.test(value) ? Number(value) : value,
+  );
+
 /** Przycina tekst wyszukiwania (`?q=`). */
 export const Trim = (): PropertyDecorator =>
   Transform(({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value));

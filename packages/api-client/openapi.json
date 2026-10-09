@@ -115,6 +115,255 @@
         ],
         "type": "object"
       },
+      "AvailabilityBlockDto": {
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "dateFrom": {
+            "example": "2026-08-20",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Ostatnia noc (włącznie)",
+            "example": "2026-08-22",
+            "format": "date",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "reason": {
+            "example": "Remont",
+            "nullable": true,
+            "type": "string"
+          },
+          "roomId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "roomId",
+          "dateFrom",
+          "dateTo",
+          "reason",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "AvailabilityBlockListDto": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/AvailabilityBlockDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "type": "object"
+      },
+      "CalendarBlockDto": {
+        "properties": {
+          "dateFrom": {
+            "example": "2026-08-20",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Ostatnia noc (włącznie)",
+            "example": "2026-08-22",
+            "format": "date",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "reason": {
+            "example": "Remont",
+            "nullable": true,
+            "type": "string"
+          },
+          "roomId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "roomId",
+          "dateFrom",
+          "dateTo",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "CalendarDto": {
+        "properties": {
+          "blocks": {
+            "items": {
+              "$ref": "#/components/schemas/CalendarBlockDto"
+            },
+            "type": "array"
+          },
+          "from": {
+            "example": "2026-08-01",
+            "format": "date",
+            "type": "string"
+          },
+          "reservations": {
+            "description": "PENDING, CONFIRMED, COMPLETED",
+            "items": {
+              "$ref": "#/components/schemas/CalendarReservationDto"
+            },
+            "type": "array"
+          },
+          "rooms": {
+            "description": "Bez usuniętych, sort po nazwie",
+            "items": {
+              "$ref": "#/components/schemas/CalendarRoomDto"
+            },
+            "type": "array"
+          },
+          "to": {
+            "example": "2026-08-31",
+            "format": "date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "rooms",
+          "reservations",
+          "blocks"
+        ],
+        "type": "object"
+      },
+      "CalendarReservationDto": {
+        "properties": {
+          "checkIn": {
+            "example": "2026-08-14",
+            "format": "date",
+            "type": "string"
+          },
+          "checkOut": {
+            "description": "Dzień wyjazdu (`[)`)",
+            "example": "2026-08-18",
+            "format": "date",
+            "type": "string"
+          },
+          "guestName": {
+            "example": "Anna Kowalska",
+            "type": "string"
+          },
+          "guestsCount": {
+            "example": 3,
+            "type": "number"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "number": {
+            "example": "KL-2026-000123",
+            "type": "string"
+          },
+          "roomId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "source": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReservationSource"
+              }
+            ]
+          },
+          "status": {
+            "enum": [
+              "PENDING",
+              "CONFIRMED",
+              "COMPLETED"
+            ],
+            "type": "string"
+          },
+          "totalPrice": {
+            "description": "Grosze",
+            "example": 164000,
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "roomId",
+          "number",
+          "checkIn",
+          "checkOut",
+          "status",
+          "source",
+          "guestName",
+          "guestsCount",
+          "totalPrice"
+        ],
+        "type": "object"
+      },
+      "CalendarRoomDto": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "name": {
+            "example": "Domek Sosna",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "isActive"
+        ],
+        "type": "object"
+      },
+      "CreateBlockDto": {
+        "properties": {
+          "dateFrom": {
+            "description": "Pierwsza zablokowana noc",
+            "example": "2026-08-20",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Ostatnia zablokowana noc (włącznie), ≥ dateFrom, zakres ≤ 366 nocy",
+            "example": "2026-08-22",
+            "format": "date",
+            "type": "string"
+          },
+          "reason": {
+            "example": "Remont",
+            "maxLength": 200,
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "dateFrom",
+          "dateTo"
+        ],
+        "type": "object"
+      },
       "CreateOwnerDto": {
         "properties": {
           "email": {
@@ -318,6 +567,49 @@
           "name",
           "capacity",
           "basePricePerNight"
+        ],
+        "type": "object"
+      },
+      "CreateSeasonalRateDto": {
+        "properties": {
+          "dateFrom": {
+            "description": "Pierwsza noc stawki",
+            "example": "2026-07-01",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Ostatnia noc objęta stawką (włącznie), ≥ dateFrom, zakres ≤ 366 nocy",
+            "example": "2026-08-31",
+            "format": "date",
+            "type": "string"
+          },
+          "minNights": {
+            "description": "Minimalny pobyt z nocą przyjazdu w tej stawce; `null` = `Room.minNights` (BR-03)",
+            "maximum": 30,
+            "minimum": 1,
+            "nullable": true,
+            "type": "number"
+          },
+          "name": {
+            "example": "Wysoki sezon",
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "pricePerNight": {
+            "description": "Grosze (BR-05)",
+            "example": 45000,
+            "maximum": 10000000,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "dateFrom",
+          "dateTo",
+          "pricePerNight"
         ],
         "type": "object"
       },
@@ -577,6 +869,32 @@
           "firstName",
           "lastName",
           "role"
+        ],
+        "type": "object"
+      },
+      "NightPriceDto": {
+        "properties": {
+          "date": {
+            "example": "2026-08-14",
+            "format": "date",
+            "type": "string"
+          },
+          "price": {
+            "description": "Grosze",
+            "example": 37000,
+            "type": "number"
+          },
+          "rateId": {
+            "description": "Stawka sezonowa; `null` = cena bazowa",
+            "format": "uuid",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "price",
+          "rateId"
         ],
         "type": "object"
       },
@@ -1008,6 +1326,45 @@
         ],
         "type": "object"
       },
+      "QuoteConflictDto": {
+        "properties": {
+          "dateFrom": {
+            "description": "Rezerwacja: przyjazd; blokada: pierwsza noc",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Rezerwacja: wyjazd (`[)`); blokada: ostatnia noc (włącznie)",
+            "format": "date",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "number": {
+            "description": "Tylko rezerwacja",
+            "example": "KL-2026-000123",
+            "nullable": true,
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "RESERVATION",
+              "BLOCK"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "number",
+          "dateFrom",
+          "dateTo"
+        ],
+        "type": "object"
+      },
       "ReservationGuestRefDto": {
         "properties": {
           "email": {
@@ -1269,6 +1626,156 @@
         ],
         "type": "object"
       },
+      "RoomQuoteDto": {
+        "properties": {
+          "available": {
+            "type": "boolean"
+          },
+          "breakdown": {
+            "items": {
+              "$ref": "#/components/schemas/NightPriceDto"
+            },
+            "type": "array"
+          },
+          "checkIn": {
+            "example": "2026-08-14",
+            "format": "date",
+            "type": "string"
+          },
+          "checkOut": {
+            "example": "2026-08-18",
+            "format": "date",
+            "type": "string"
+          },
+          "conflicts": {
+            "items": {
+              "$ref": "#/components/schemas/QuoteConflictDto"
+            },
+            "type": "array"
+          },
+          "currency": {
+            "example": "PLN",
+            "type": "string"
+          },
+          "minNights": {
+            "description": "BR-03: dla nocy przyjazdu",
+            "example": 3,
+            "type": "number"
+          },
+          "nights": {
+            "example": 4,
+            "type": "number"
+          },
+          "roomId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "totalPrice": {
+            "description": "Grosze (BR-05)",
+            "example": 164000,
+            "type": "number"
+          },
+          "unavailableReason": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnavailableReason"
+              }
+            ],
+            "description": "Pierwsza niespełniona reguła: BR-13, BR-02, BR-03, BR-01",
+            "nullable": true
+          }
+        },
+        "required": [
+          "roomId",
+          "checkIn",
+          "checkOut",
+          "nights",
+          "available",
+          "unavailableReason",
+          "conflicts",
+          "minNights",
+          "totalPrice",
+          "currency",
+          "breakdown"
+        ],
+        "type": "object"
+      },
+      "SeasonalRateDto": {
+        "properties": {
+          "currency": {
+            "example": "PLN",
+            "type": "string"
+          },
+          "dateFrom": {
+            "example": "2026-07-01",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Ostatnia noc (włącznie)",
+            "example": "2026-08-31",
+            "format": "date",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "minNights": {
+            "example": 3,
+            "nullable": true,
+            "type": "number"
+          },
+          "name": {
+            "example": "Wysoki sezon",
+            "type": "string"
+          },
+          "pricePerNight": {
+            "description": "Grosze",
+            "example": 45000,
+            "type": "number"
+          },
+          "roomId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "roomId",
+          "name",
+          "dateFrom",
+          "dateTo",
+          "pricePerNight",
+          "minNights",
+          "currency"
+        ],
+        "type": "object"
+      },
+      "SeasonalRateListDto": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/SeasonalRateDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "type": "object"
+      },
+      "UnavailableReason": {
+        "description": "Pierwsza niespełniona reguła: BR-13, BR-02, BR-03, BR-01",
+        "enum": [
+          "ROOM_NOT_BOOKABLE",
+          "CAPACITY_EXCEEDED",
+          "MIN_NIGHTS_NOT_MET",
+          "OCCUPIED"
+        ],
+        "type": "string"
+      },
       "UpdateOwnerDto": {
         "properties": {
           "email": {
@@ -1435,6 +1942,42 @@
             "maxLength": 120,
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateSeasonalRateDto": {
+        "properties": {
+          "dateFrom": {
+            "description": "Razem z `dateTo`",
+            "example": "2026-07-01",
+            "format": "date",
+            "type": "string"
+          },
+          "dateTo": {
+            "description": "Ostatnia noc objęta stawką (włącznie), ≥ dateFrom, zakres ≤ 366 nocy; razem z `dateFrom`",
+            "example": "2026-08-31",
+            "format": "date",
+            "type": "string"
+          },
+          "minNights": {
+            "description": "Minimalny pobyt z nocą przyjazdu w tej stawce; `null` = `Room.minNights` (BR-03)",
+            "maximum": 30,
+            "minimum": 1,
+            "nullable": true,
+            "type": "number"
+          },
+          "name": {
+            "example": "Wysoki sezon",
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "pricePerNight": {
+            "description": "Grosze (BR-05)",
+            "maximum": 10000000,
+            "minimum": 0,
+            "type": "number"
           }
         },
         "type": "object"
@@ -2094,6 +2637,45 @@
         ]
       }
     },
+    "/api/v1/blocks/{id}": {
+      "delete": {
+        "operationId": "Blocks_remove",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Usuwa blokadę terminu",
+        "tags": [
+          "availability"
+        ]
+      }
+    },
     "/api/v1/files/{storageKey}": {
       "get": {
         "operationId": "Files_get",
@@ -2679,6 +3261,74 @@
         ]
       }
     },
+    "/api/v1/properties/{propertyId}/calendar": {
+      "get": {
+        "operationId": "Availability_calendar",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "propertyId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Pierwszy dzień widoku",
+            "in": "query",
+            "name": "from",
+            "required": true,
+            "schema": {
+              "example": "2026-08-01",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ostatni dzień widoku (włącznie), ≥ from, maks. 93 dni",
+            "in": "query",
+            "name": "to",
+            "required": true,
+            "schema": {
+              "example": "2026-08-31",
+              "format": "date",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalendarDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Kalendarz obłożenia: pokoje, rezerwacje i blokady w zakresie dni",
+        "tags": [
+          "availability"
+        ]
+      }
+    },
     "/api/v1/properties/{propertyId}/rooms": {
       "get": {
         "operationId": "Rooms_list",
@@ -2786,6 +3436,109 @@
         "summary": "Dodaje pokój do obiektu",
         "tags": [
           "rooms"
+        ]
+      }
+    },
+    "/api/v1/rates/{id}": {
+      "delete": {
+        "operationId": "Rates_remove",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Usuwa stawkę sezonową",
+        "tags": [
+          "pricing"
+        ]
+      },
+      "patch": {
+        "operationId": "Rates_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSeasonalRateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeasonalRateDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "SEASONAL_RATE_OVERLAP z `conflictingRateId`, `conflictingRateName` (BR-09)"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Edycja stawki sezonowej",
+        "tags": [
+          "pricing"
         ]
       }
     },
@@ -3043,6 +3796,366 @@
         "summary": "Dodaje zdjęcie pokoju (na koniec galerii)",
         "tags": [
           "photos"
+        ]
+      }
+    },
+    "/api/v1/rooms/{id}/quote": {
+      "get": {
+        "operationId": "Availability_quote",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "checkIn",
+            "required": true,
+            "schema": {
+              "example": "2026-08-14",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Dzień wyjazdu; `checkOut ≤ checkIn` → 422 INVALID_STAY_DATES (BR-04)",
+            "in": "query",
+            "name": "checkOut",
+            "required": true,
+            "schema": {
+              "example": "2026-08-18",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "guests",
+            "required": true,
+            "schema": {
+              "example": 2,
+              "maximum": 99,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Edytowana rezerwacja: jej termin nie jest kolizją",
+            "in": "query",
+            "name": "excludeReservationId",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomQuoteDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "INVALID_STAY_DATES (BR-04, przyjazd do 30 dni wstecz: Q-01)"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Dostępność i cena pobytu w pokoju (rezerwacja ręczna, Q-17)",
+        "tags": [
+          "availability"
+        ]
+      }
+    },
+    "/api/v1/rooms/{roomId}/blocks": {
+      "get": {
+        "operationId": "Blocks_list",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roomId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "example": "2026-07-01",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "≥ from",
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "example": "2026-12-31",
+              "format": "date",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityBlockListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Blokady terminów pokoju (sort po dateFrom)",
+        "tags": [
+          "availability"
+        ]
+      },
+      "post": {
+        "operationId": "Blocks_create",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roomId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBlockDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityBlockDto"
+                }
+              }
+            },
+            "description": "Nagłówek `Location: /api/v1/blocks/:id`"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "BLOCK_OVERLAPS_RESERVATION z `conflictingReservationId`, `conflictingReservationNumber` (BR-01, Q-15)"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Blokuje termin pokoju",
+        "tags": [
+          "availability"
+        ]
+      }
+    },
+    "/api/v1/rooms/{roomId}/rates": {
+      "get": {
+        "operationId": "Rates_list",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roomId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "example": "2026-07-01",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "≥ from",
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "example": "2026-12-31",
+              "format": "date",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeasonalRateListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Stawki sezonowe pokoju (sort po dateFrom)",
+        "tags": [
+          "pricing"
+        ]
+      },
+      "post": {
+        "operationId": "Rates_create",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roomId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSeasonalRateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeasonalRateDto"
+                }
+              }
+            },
+            "description": "Nagłówek `Location: /api/v1/rates/:id`"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "SEASONAL_RATE_OVERLAP z `conflictingRateId`, `conflictingRateName` (BR-09)"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Dodaje stawkę sezonową",
+        "tags": [
+          "pricing"
         ]
       }
     }

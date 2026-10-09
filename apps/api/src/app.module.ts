@@ -17,9 +17,11 @@ import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { PrismaService } from './infrastructure/prisma/prisma.service';
 import { SecurityModule } from './infrastructure/security/security.module';
 import { StorageModule } from './infrastructure/storage/storage.module';
+import { AvailabilityModule } from './modules/availability/availability.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
 import { PhotosModule } from './modules/photos/photos.module';
+import { PricingModule } from './modules/pricing/pricing.module';
 import { PropertiesModule } from './modules/properties/properties.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
@@ -64,6 +66,8 @@ import { UsersModule } from './modules/users/users.module';
     PropertiesModule,
     RoomsModule,
     PhotosModule,
+    PricingModule,
+    AvailabilityModule,
     ReservationsModule,
     HealthModule,
   ],

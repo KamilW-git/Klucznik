@@ -52,6 +52,8 @@ export function overlapsBlock(stay: StayRange, block: InclusiveDateRange): boole
 
 export const MAX_DAYS_AHEAD = 365;
 export const MAX_NIGHTS = 30;
+/** Rezerwacja ręczna (`MANUAL`) może mieć przyjazd do 30 dni wstecz. Q-01 */
+export const MANUAL_PAST_CHECK_IN_DAYS = 30;
 
 export interface StayDatesOptions {
   /**

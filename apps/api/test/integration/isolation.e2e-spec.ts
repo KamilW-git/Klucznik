@@ -2,7 +2,14 @@ import request from 'supertest';
 
 import type { ErrorResponseDto } from '../../src/common/http/error-response.dto';
 import type { PropertyListDto } from '../../src/modules/properties/http/property.dto';
-import { createAdmin, createOwner, createProperty, createRoom } from '../factories';
+import {
+  createAdmin,
+  createBlock,
+  createOwner,
+  createProperty,
+  createRoom,
+  createSeasonalRate,
+} from '../factories';
 import { accessTokenFor, bearer } from '../support/auth';
 import { JPEG } from '../support/images';
 import { resetDatabase } from '../support/reset-database';
@@ -17,7 +24,7 @@ describe('Data isolation between owners (BR-12)', () => {
   let tokenA: string;
   let tokenB: string;
   let adminToken: string;
-  const ids = { property: '', room: '', photo: '' };
+  const ids = { property: '', room: '', photo: '', rate: '', block: '' };
   const http = () => request(ctx.app.getHttpServer());
 
   beforeAll(async () => {
@@ -37,10 +44,20 @@ describe('Data isolation between owners (BR-12)', () => {
       .set(bearer(tokenA))
       .attach('file', JPEG, 'a.jpg')
       .expect(201);
+    const rate = await createSeasonalRate(ctx.prisma, room, {
+      dateFrom: '2026-07-01',
+      dateTo: '2026-08-31',
+    });
+    const block = await createBlock(ctx.prisma, room, {
+      dateFrom: '2026-09-10',
+      dateTo: '2026-09-12',
+    });
     Object.assign(ids, {
       property: property.id,
       room: room.id,
       photo: (photo.body as { id: string }).id,
+      rate: rate.id,
+      block: block.id,
     });
   });
 
@@ -77,7 +94,40 @@ describe('Data isolation between owners (BR-12)', () => {
       () => http().post(`/api/v1/rooms/${ids.room}/photos`).attach('file', JPEG, 'x.jpg'),
     ],
     ['PATCH /photos/:id', () => http().patch(`/api/v1/photos/${ids.photo}`).send({ sortOrder: 0 })],
+    ['GET /rooms/:id/rates', () => http().get(`/api/v1/rooms/${ids.room}/rates`)],
+    [
+      'POST /rooms/:id/rates',
+      () =>
+        http()
+          .post(`/api/v1/rooms/${ids.room}/rates`)
+          .send({ name: 'Obca', dateFrom: '2026-10-01', dateTo: '2026-10-31', pricePerNight: 1 }),
+    ],
+    [
+      'PATCH /rates/:id',
+      () => http().patch(`/api/v1/rates/${ids.rate}`).send({ pricePerNight: 1 }),
+    ],
+    ['GET /rooms/:id/blocks', () => http().get(`/api/v1/rooms/${ids.room}/blocks`)],
+    [
+      'POST /rooms/:id/blocks',
+      () =>
+        http()
+          .post(`/api/v1/rooms/${ids.room}/blocks`)
+          .send({ dateFrom: '2026-10-01', dateTo: '2026-10-31' }),
+    ],
+    [
+      'GET /rooms/:id/quote',
+      () =>
+        http().get(
+          `/api/v1/rooms/${ids.room}/quote?checkIn=2026-08-14&checkOut=2026-08-16&guests=2`,
+        ),
+    ],
+    [
+      'GET /properties/:id/calendar',
+      () => http().get(`/api/v1/properties/${ids.property}/calendar?from=2026-08-01&to=2026-08-31`),
+    ],
     // Operacje niszczące na końcu: udany wyciek usunąłby zasób i zamaskował kolejne przypadki.
+    ['DELETE /rates/:id', () => http().delete(`/api/v1/rates/${ids.rate}`)],
+    ['DELETE /blocks/:id', () => http().delete(`/api/v1/blocks/${ids.block}`)],
     ['DELETE /photos/:id', () => http().delete(`/api/v1/photos/${ids.photo}`)],
     ['DELETE /rooms/:id', () => http().delete(`/api/v1/rooms/${ids.room}`)],
     ['DELETE /properties/:id', () => http().delete(`/api/v1/properties/${ids.property}`)],
@@ -98,6 +148,16 @@ describe('Data isolation between owners (BR-12)', () => {
     await http().get(`/api/v1/properties/${ids.property}`).set(bearer(tokenA)).expect(200);
     const room = await http().get(`/api/v1/rooms/${ids.room}`).set(bearer(tokenA)).expect(200);
     expect(room.body).toMatchObject({ capacity: 4, photos: [{ id: ids.photo }] });
+    const rates = await http()
+      .get(`/api/v1/rooms/${ids.room}/rates`)
+      .set(bearer(tokenA))
+      .expect(200);
+    const blocks = await http()
+      .get(`/api/v1/rooms/${ids.room}/blocks`)
+      .set(bearer(tokenA))
+      .expect(200);
+    expect(rates.body).toMatchObject({ data: [{ id: ids.rate, pricePerNight: 45000 }] });
+    expect(blocks.body).toMatchObject({ data: [{ id: ids.block }] });
   });
 
   it('BR-12: GET /properties lists only own properties; ADMIN sees all', async () => {

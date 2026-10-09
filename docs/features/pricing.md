@@ -28,10 +28,10 @@ Ceny noclegów zmieniają się w sezonie, w długie weekendy i w Sylwestra. Wła
 
 | Metoda | Ścieżka | Rola | Request | Response | Błędy |
 |-|-|-|-|-|-|
-| `GET` | `/rooms/:id/rates` | `OWNER`, `ADMIN` | query: `from?`, `to?` | `200` `{ data: SeasonalRateDto[] }` (sort `dateFrom:asc`) | `404` |
+| `GET` | `/rooms/:id/rates` | `OWNER`, `ADMIN` | query: `from?`, `to?` (stawki przecinające `[from, to]`, `to ≥ from`) | `200` `{ data: SeasonalRateDto[] }` (sort `dateFrom:asc`) | `400`, `404` |
 | `POST` | `/rooms/:id/rates` | `OWNER`, `ADMIN` | `CreateSeasonalRateDto` | `201` `SeasonalRateDto` + `Location: /api/v1/rates/:id` | `409 SEASONAL_RATE_OVERLAP` |
-| `PATCH` | `/rates/:id` | `OWNER`, `ADMIN` | `UpdateSeasonalRateDto` | `200` `SeasonalRateDto` | `409 SEASONAL_RATE_OVERLAP` |
-| `DELETE` | `/rates/:id` | `OWNER`, `ADMIN` | – | `204` | – |
+| `PATCH` | `/rates/:id` | `OWNER`, `ADMIN` | `UpdateSeasonalRateDto` (pola opcjonalne; `dateFrom` i `dateTo` razem, inaczej 400) | `200` `SeasonalRateDto` | `409 SEASONAL_RATE_OVERLAP` |
+| `DELETE` | `/rates/:id` | `OWNER`, `ADMIN` | – | `204` | `404` |
 
 | Pole | Walidacja |
 |-|-|
@@ -44,9 +44,11 @@ Ceny noclegów zmieniają się w sezonie, w długie weekendy i w Sylwestra. Wła
 
 Zmiana lub usunięcie stawki nie wpływa na istniejące rezerwacje (BR-05). Dozwolone są także stawki w przeszłości (historia).
 
+Stawka cudzego lub usuniętego pokoju → 404 (BR-12). `details` błędu BR-09 to `conflictingRateId` i `conflictingRateName`; przy wyścigu dwóch zapisów wykrytym dopiero przez constraint `seasonal_rates_no_overlap` `details` jest puste.
+
 ## Algorytm ceny (domena)
 
-`calculatePrice(stay, basePricePerNight, rates) → { nights, total, breakdown: [{ date, price, rateId | null }] }`:
+`calculatePrice(stay, basePricePerNight, rates) → { nights, total, breakdown: [{ date, price, rateId | null }] }` (`domain/calculate-price.ts`):
 
 1. Dla każdej nocy `n` w `[checkIn, checkOut)`:
 2. znajdź stawkę z `dateFrom ≤ n ≤ dateTo`. Dzięki BR-09 jest co najwyżej jedna,
@@ -54,15 +56,15 @@ Zmiana lub usunięcie stawki nie wpływa na istniejące rezerwacje (BR-05). Dozw
 4. `total = Σ price(n)` (grosze, bez zaokrągleń).
 
 `resolveMinNights(room, rates, checkIn) = rateCovering(checkIn)?.minNights ?? room.minNights`.
-Implementacja: `apps/api/src/modules/pricing/domain/`, z czystych funkcji korzystają `availability` i `reservations`.
+Implementacja: `apps/api/src/modules/pricing/domain/` (`calculate-price.ts`, `min-nights.ts`, `seasonal-rate.ts` z `rateCovering` i `findOverlappingRate`). Inne moduły korzystają z `PricingFacade.quote(room, stay) → { minNights, price }`, która pobiera stawki przecinające noce pobytu jednym zapytaniem.
 
 ## 6. Backend: zadania
 
-- [ ] Moduł `pricing`: `domain/calculate-price.ts`, `domain/min-nights.ts` (+ testy); zakresy włączne z `common/domain/date-range.ts`.
-- [ ] `RatesController`, `RatesService` (BR-09 przed zapisem), `RatesRepository`.
-- [ ] Migracja: `EXCLUDE` dla `seasonal_rates` ([data-model.md](../architecture/data-model.md#seasonalrate-stawka-sezonowa)); mapowanie `23P01` → `SeasonalRateOverlapError`.
-- [ ] `details` błędu BR-09: `conflictingRateId`, `conflictingRateName`.
-- [ ] Eksport `PricingFacade` (port) dla innych modułów: `quote(roomId, stay)`.
+- [x] Moduł `pricing`: `domain/calculate-price.ts`, `domain/min-nights.ts` (+ testy); zakresy włączne z `common/domain/date-range.ts`.
+- [x] `RatesController`, `RatesService` (BR-09 przed zapisem), `RatesRepository`.
+- [x] Migracja: `EXCLUDE` dla `seasonal_rates` (już w `init_constraints` z M3, [data-model.md](../architecture/data-model.md#seasonalrate-stawka-sezonowa)); `PrismaRatesRepository` mapuje `23P01` na `seasonal_rates_no_overlap` → `SeasonalRateOverlapError`.
+- [x] `details` błędu BR-09: `conflictingRateId`, `conflictingRateName`.
+- [x] Eksport `PricingFacade` dla innych modułów: `quote(room, stay)` (przyjmuje pokój, który wywołujący już pobrał, zamiast `roomId`).
 
 ## 7. Frontend: ekrany i zadania
 
@@ -83,7 +85,7 @@ Ekrany: O7 zakładka „Cennik”: [screens.md](../../apps/web/docs/screens.md).
 | Noc `dateTo` stawki jest objęta stawką (zakres włączny) | unit | BR-05 |
 | `minNights` z sezonu tylko wtedy, gdy obejmuje noc przyjazdu | unit | BR-03 |
 | `inclusiveRangesOverlap`: styk (31.08 / 01.09) nie koliduje; wspólna noc koliduje | unit | BR-09 |
-| `POST` nakładającej się stawki → 409 | int | BR-09 |
+| `POST` nakładającej się stawki → 409; `PATCH` w cudzy zakres → 409; trzy równoległe `POST` → jeden 201 | int | BR-09 |
 | Zmiana stawki nie zmienia `totalPrice` istniejącej rezerwacji | int | BR-05 |
 
 ## 9. Kryteria akceptacji
@@ -95,7 +97,7 @@ Ekrany: O7 zakładka „Cennik”: [screens.md](../../apps/web/docs/screens.md).
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Gotowe (M6) |
 | UI | Nie rozpoczęto |
 
 Brak otwartych kwestii.

@@ -11,7 +11,7 @@
 | M3 | API | Schemat Prisma, migracje, seed | gotowe |
 | M4 | API | Auth, role, zarządzanie właścicielami | gotowe |
 | M5 | API | Obiekty, pokoje, zdjęcia, izolacja | gotowe |
-| M6 | API | Cennik, blokady, dostępność, kalendarz | – |
+| M6 | API | Cennik, blokady, dostępność, kalendarz | gotowe |
 | M7 | API | Rezerwacje: reguły, stany, ręczna, optimistic locking, goście | – |
 | M8 | API | Publiczny proces rezerwacji i token gościa | – |
 | M9 | API | Zdarzenia, kolejka e-maili, szablony, scheduler | – |
@@ -78,8 +78,8 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M6: Cennik i dostępność [API]
 
-- [ ] [API] Stawki sezonowe (BR-09), `calculatePrice`, `resolveMinNights`: [pricing.md](features/pricing.md)
-- [ ] [API] Blokady, `AvailabilityService`, `/rooms/:id/quote`, kalendarz: [availability.md](features/availability.md)
+- [x] [API] Stawki sezonowe (BR-09), `calculatePrice`, `resolveMinNights`: [pricing.md](features/pricing.md)
+- [x] [API] Blokady, `AvailabilityService`, `/rooms/:id/quote`, kalendarz: [availability.md](features/availability.md)
 
 ## M7: Rezerwacje w panelu [API]
 

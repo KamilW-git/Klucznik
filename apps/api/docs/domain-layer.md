@@ -15,7 +15,7 @@
 | Plik | Zawartość | Reguły |
 |-|-|-|
 | `common/domain/calendar-date.ts` | value object `CalendarDate` (`parse`, `fromInstant(date, timeZone)`, `addDays`, `diffDays`, `compare`, `isBefore`/`isAfter`, `dayOfWeek`, `isWeekend`) | – |
-| `common/domain/stay-range.ts` | `StayRange.of [checkIn, checkOut)` (wyjazd po przyjeździe), `nights()`, `eachNight()`, `toNightsRange()`, `overlaps`, `overlapsBlock`, `assertStayDates(range, today, { allowPastCheckInDays })` | BR-01, BR-04 |
+| `common/domain/stay-range.ts` | `StayRange.of [checkIn, checkOut)` (wyjazd po przyjeździe), `nights()`, `eachNight()`, `toNightsRange()`, `overlaps`, `overlapsBlock`, `assertStayDates(range, today, { allowPastCheckInDays })`, `MANUAL_PAST_CHECK_IN_DAYS` | BR-01, BR-04, Q-01 |
 | `common/domain/date-range.ts` | `InclusiveDateRange.of [from, to]`, `nights()`, `contains`, `inclusiveRangesOverlap` | BR-01, BR-09 |
 | `common/domain/clock.ts` | interfejs `Clock`, token `CLOCK`, `FixedClock` (testy: `at`, `advanceBy`, `setTo`) | – |
 | `common/domain/domain-error.ts` | klasa bazowa `DomainError`, unia `DomainErrorCode` | – |
@@ -26,6 +26,8 @@
 | `modules/photos/domain/photo-order.ts` | `moveToPosition(ids, id, position)`, `PHOTO_LIMIT` | Q-14 |
 | `modules/pricing/domain/calculate-price.ts` | `calculatePrice` | BR-05 |
 | `modules/pricing/domain/min-nights.ts` | `resolveMinNights`, `assertMinNights` | BR-03 |
+| `modules/pricing/domain/seasonal-rate.ts` | typ `PricingRate`, `rateCovering`, `findOverlappingRate` | BR-03, BR-05, BR-09 |
+| `modules/availability/domain/availability.ts` | `Conflict`, `assertNoConflicts`, `findAvailabilityViolation` (kolejność BR-13, BR-02, BR-03, BR-01), `unavailableReasonOf` | BR-01, BR-02, BR-03, BR-13 |
 | `modules/reservations/domain/reservation-status.ts` | enum, tabela przejść, `assertTransition`, `isExpired` | BR-06, BR-07 |
 | `modules/reservations/domain/reservation-policy.ts` | `assertCapacity`, `assertBookable` | BR-02, BR-13 |
 | `modules/reservations/domain/cancellation-policy.ts` | `guestCancellationDeadline`, `assertGuestCanCancel` | BR-08 |
@@ -45,7 +47,7 @@ export class CapacityExceededError extends DomainError {
 }
 ```
 
-- Jedna klasa na kod błędu, w `modules/<f>/domain/errors/` (lub `common/domain/errors/` dla współdzielonych).
+- Jedna klasa na kod błędu, w `modules/<f>/domain/errors.ts` (lub `common/domain/errors/` dla współdzielonych). Od M6: `pricing` (`SeasonalRateOverlapError`, `MinNightsNotMetError`), `availability` (`BlockOverlapsReservationError`), `reservations` (`ReservationOverlapError`, `CapacityExceededError`, `RoomNotBookableError`).
 - `message` po polsku (trafia do odpowiedzi jako pomocniczy), a `details` to dane dla UI (np. `minNights`).
 - Domena **nie zna** kodów HTTP. Mapę `code → status` ma globalny filtr ([http-layer.md](http-layer.md#mapowanie-błędów)).
 

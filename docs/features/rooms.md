@@ -51,7 +51,7 @@ Zmiana `basePricePerNight` nie zmienia cen istniejących rezerwacji (BR-05).
 - [x] Moduł `rooms`: kontroler(y) dla ścieżek zagnieżdżonych i płaskich, `RoomsService`, `RoomsRepository`.
 - [x] Polityka własności: pokój → `property.ownerId` (`OwnershipPolicy`).
 - [x] BR-10: `countFutureActive(roomId)` przed `DELETE` i dezaktywacją, w transakcji z `SELECT … FOR UPDATE` na pokoju (ten sam zamek co tworzenie rezerwacji w M7).
-- [x] Soft delete + wykluczenie usuniętych z list (M5); z dostępności i kalendarza: M6 (historia rezerwacji pozostaje).
+- [x] Soft delete + wykluczenie usuniętych z list (M5), z wyceny i kalendarza (M6); historia rezerwacji pozostaje.
 - [x] `upcomingReservationsCount` jednym zapytaniem grupującym.
 
 ## 7. Frontend: ekrany i zadania
