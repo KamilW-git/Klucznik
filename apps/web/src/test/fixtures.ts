@@ -1,4 +1,9 @@
 import type {
+  AvailabilityResultDto,
+  PublicPropertyDto,
+  PublicReservationCreatedDto,
+  PublicReservationDto,
+  PublicRoomDto,
   CalendarDto,
   DashboardDto,
   GuestListItemDto,
@@ -235,6 +240,129 @@ export const guest: GuestListItemDto = {
   reservationsCount: 2,
   lastStayAt: '2025-08-14',
   createdAt: '2025-07-01T10:00:00.000Z',
+};
+
+/* Strona publiczna (P1–P5) */
+
+export const PUBLIC_SLUG = 'lesna-polana';
+/** Sekretny token z linku w e-mailu (tylko w testach). */
+export const GUEST_TOKEN = 'test-guest-token-0123456789abcdef';
+/** Wyszukiwany pobyt (testy ustawiają „dziś” na 1.08.2027). */
+export const STAY = { checkIn: '2027-08-14', checkOut: '2027-08-18', guests: 2 } as const;
+
+export const publicRoom: PublicRoomDto = {
+  id: ROOM_ID,
+  name: 'Domek Sosna',
+  description: 'Całoroczny domek z kominkiem.',
+  capacity: 4,
+  minNights: 2,
+  priceFrom: 38_000,
+  photos: [photo],
+};
+
+export const publicRoom2: PublicRoomDto = {
+  id: ROOM_2_ID,
+  name: 'Apartament Pod Dębem',
+  description: null,
+  capacity: 2,
+  minNights: 5,
+  priceFrom: 42_000,
+  photos: [],
+};
+
+export const publicProperty: PublicPropertyDto = {
+  name: 'Domki Leśna Polana',
+  slug: PUBLIC_SLUG,
+  description: 'Kameralne domki nad jeziorem, w ciszy mazurskiego lasu.',
+  street: 'ul. Leśna 14',
+  postalCode: '11-700',
+  city: 'Mrągowo',
+  phone: '+48 601 234 567',
+  contactEmail: 'kontakt@lesnapolana.example.com',
+  checkInTime: '15:00',
+  checkOutTime: '11:00',
+  cancellationDeadlineDays: 7,
+  pendingExpiryHours: 48,
+  currency: 'PLN',
+  photos: [{ ...photo, id: '55555555-5555-4555-8555-555555555556', roomId: null }],
+  rooms: [publicRoom, publicRoom2],
+};
+
+export const availabilityResult = (
+  overrides: Partial<AvailabilityResultDto> = {},
+): AvailabilityResultDto => ({
+  checkIn: STAY.checkIn,
+  checkOut: STAY.checkOut,
+  nights: 4,
+  guests: STAY.guests,
+  currency: 'PLN',
+  rooms: [
+    {
+      room: publicRoom,
+      available: true,
+      unavailableReason: null,
+      minNights: 2,
+      totalPrice: 164_000,
+      averagePricePerNight: 41_000,
+      breakdown: [
+        { date: '2027-08-14', price: 45_000 },
+        { date: '2027-08-15', price: 45_000 },
+        { date: '2027-08-16', price: 37_000 },
+        { date: '2027-08-17', price: 37_000 },
+      ],
+    },
+    {
+      room: publicRoom2,
+      available: false,
+      unavailableReason: 'MIN_NIGHTS_NOT_MET',
+      minNights: 5,
+      totalPrice: null,
+      averagePricePerNight: null,
+      breakdown: null,
+    },
+  ],
+  ...overrides,
+});
+
+export const reservationCreated: PublicReservationCreatedDto = {
+  number: 'KL-2027-000123',
+  status: 'PENDING',
+  room: { name: 'Domek Sosna' },
+  checkIn: STAY.checkIn,
+  checkOut: STAY.checkOut,
+  nights: 4,
+  guestsCount: 2,
+  totalPrice: 164_000,
+  currency: 'PLN',
+  expiresAt: '2027-08-03T10:00:00.000Z',
+  guestEmail: 'anna.kowalska@example.com',
+};
+
+export const publicReservation: PublicReservationDto = {
+  number: 'KL-2027-000123',
+  status: 'CONFIRMED',
+  property: {
+    name: publicProperty.name,
+    slug: PUBLIC_SLUG,
+    phone: publicProperty.phone,
+    contactEmail: publicProperty.contactEmail,
+    street: publicProperty.street,
+    postalCode: publicProperty.postalCode,
+    city: publicProperty.city,
+    checkInTime: '15:00',
+    checkOutTime: '11:00',
+  },
+  room: { name: 'Domek Sosna', coverPhoto: photo },
+  checkIn: STAY.checkIn,
+  checkOut: STAY.checkOut,
+  nights: 4,
+  guestsCount: 2,
+  totalPrice: 164_000,
+  currency: 'PLN',
+  guestNotes: 'Przyjedziemy około 17:00.',
+  canCancel: true,
+  cancellableUntil: '2027-08-07',
+  cancelledAt: null,
 };
 
 export const rate: SeasonalRateDto = {

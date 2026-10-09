@@ -10,7 +10,7 @@
 | Wariant stylu | ✔ wariant A „Leśna przystań” / „Warm Cabin Hospitality” dla całej aplikacji (strona publiczna, panel, admin), M10 |
 | Tokeny kolorów, statusów, promieni, cieni | ✔ M10 |
 | Typografia | ✔ M10 (DM Sans) |
-| Komponenty bazowe | ✔ M10–M11 (lista niżej); kolejne dochodzą z widokami M12–M13 |
+| Komponenty bazowe | ✔ M10–M12 (lista niżej); kolejne dochodzą z widokami M13 |
 | Stany S1 | ✔ M10: skeleton, pusty, błąd, 404, toasty, przyciski, pola |
 
 ## Źródła i rozbieżności w Stitch
@@ -153,9 +153,30 @@ Poziom 1 (karty) nie ma cienia: wyróżnia go biel `card` i ramka `border` na tl
 
 Komponenty domenowe (w `features/`): `GuestAutocomplete` (cmdk, `guests`), `PhotoUploader` i `PhotoGallery` (dnd-kit, `photos`), `OccupancyGrid` (siatka pół-dni O3, `calendar`), `OccupancyChart` (słupki CSS, `dashboard`), `SeasonTimeline` (pasek roku, `pricing`), `StatusBadge` w kalendarzu jako paski statusów.
 
-### Do zrealizowania z widokami (M12–M13)
+### Zrealizowane (M12)
 
-Galeria i karty pokoi strony publicznej, licznik gości dorośli / dzieci tylko jeśli specyfikacja go przewidzi ([Q-28](../../../docs/open-questions.md#q-28)). Każdy nowy komponent: tokeny z tej strony, Radix dla zachowań dostępności, cele dotykowe ≥ 44 px.
+| Komponent | Plik | Uwagi |
+|-|-|-|
+| `DateRangePicker` (`inline`) | `shared/ui/date-range-picker.tsx` | ta sama logika zakresu bez popovera (dialog „Zobacz terminy”); 1 miesiąc na telefonie, 2 od 768 px |
+| `PublicLayout`, `PublicContainer` | `app/layouts/public-layout.tsx` | nagłówek z marką obiektu, treść pełnej szerokości (hero), kontener 1200 px, stopka z nazwą obiektu i „Rezerwacje obsługuje Klucznik” |
+
+Komponenty domenowe strony publicznej (`features/public-property`, `guest-booking`, `guest-reservation`):
+
+| Komponent | Uwagi |
+|-|-|
+| `PropertyHeader` | marka obiektu (inicjały w kwadracie `primary`, nazwa, miasto), nawigacja sekcji od 1024 px, telefon (ikona 44 px na telefonie), „Zarezerwuj” od 640 px |
+| `StaySearchForm` | `role="search"`: `DateRangePicker` (bez dat w przeszłości) + `Stepper` gości + przycisk `accent` „Sprawdź dostępność”; w hero na karcie poziomu 3 |
+| `RoomCard` | zdjęcie 4:3 (pionowo w siatce P1, obok treści od 768 px w P2), „do N osób”, „min. N nocy”, opis w 3 liniach, blok ceny i akcje; wariant przygaszony (`grayscale`, tło `muted`) dla pokoi niedostępnych |
+| `PhotoGrid`, `PhotoLightbox` | siatka miniatur (pierwsze zdjęcie 2 × 2, nakładka „+N”) i podgląd w `Dialog` ze strzałkami (także ← → z klawiatury) i licznikiem |
+| `RoomDatesDialog`, `OccupancyMiniCalendar` | kalendarz zajętości pokoju (`/occupancy`): zajęte noce szare i przekreślone, szukany termin `primary`, legenda |
+| `BookingSteps` | „Termin → Dane → Potwierdzenie”, bieżący krok `aria-current="step"`, ukończone z ✓ |
+| `BookingSummary` | zdjęcie, termin i goście na tle `accent`, rozbicie ceny („2 noce × 450 zł”), suma `title-lg` w `primary`, zasady potwierdzenia (tło `highlight/10`) i anulowania |
+
+Licznika dorośli / dzieci nie ma: specyfikacja przewiduje jedną liczbę gości ([Q-28](../../../docs/open-questions.md#q-28)). Udogodnienia pokoi pomijamy do decyzji [Q-20](../../../docs/open-questions.md#q-20).
+
+### Do zrealizowania z widokami (M13)
+
+Tabele panelu admina według wzorca `DataTable`. Każdy nowy komponent: tokeny z tej strony, Radix dla zachowań dostępności, cele dotykowe ≥ 44 px.
 
 ### Przyciski
 
@@ -208,7 +229,7 @@ Arkusz `design/stitch/shared/components.png` (sekcje 01–07).
 |-|-|-|
 | Logowanie (O1) | `AuthLayout` | z lewej panel marki (gradient `primary`, hasło, 3 karty korzyści), z prawej formularz; na telefonie tylko formularz z logo |
 | Panel Gospodarza, admin | `PanelLayout` (`OwnerLayout`, `AdminLayout`) | sidebar 288 px (biały, aktywna pozycja: tło `primary`, biały tekst), górny pasek z menu użytkownika; poniżej 1024 px menu w panelu bocznym (`Sheet`) |
-| Strona publiczna | `PublicLayout` | marka obiektu w nagłówku (M12), treść maks. 1200 px, stopka „Rezerwacje obsługuje Klucznik” |
+| Strona publiczna | `PublicLayout` | przyklejony nagłówek z marką obiektu (`PropertyHeader`), hero pełnej szerokości (zdjęcie obiektu z ciemnym gradientem albo tło `primary`), treść maks. 1200 px, stopka „Rezerwacje obsługuje Klucznik”; na telefonie przyklejony przycisk `accent` „Sprawdź dostępność” (P1) |
 
 ## Dostępność
 

@@ -29,6 +29,8 @@ for (const [name, value] of Object.entries(elementPolyfills)) {
     Object.defineProperty(Element.prototype, name, { value, configurable: true });
   }
 }
+// `ScrollRestoration` routera przewija okno; jsdom zgłasza `window.scrollTo` jako niezaimplementowane.
+Object.defineProperty(window, 'scrollTo', { value: () => undefined, configurable: true });
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 beforeEach(() => {

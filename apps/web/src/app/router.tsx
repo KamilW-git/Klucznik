@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, type RouteObject } from 'react-router';
 
 import { RedirectIfAuthenticated, RequireAuth, RequireRole, RootRedirect } from './guards';
+import { RootShell } from './layouts/root-shell';
 import { ComingSoonPage } from './pages/coming-soon-page';
 import { FullPageLoader } from './pages/full-page-loader';
 import { NotFoundPage } from './pages/not-found-page';
@@ -121,11 +122,51 @@ const areaRoutes: RouteObject[] = [
       },
     ],
   },
+  {
+    // Strona publiczna (P1–P4): bez logowania; layout pobiera obiekt raz dla wszystkich stron.
+    path: paths.public.property,
+    lazy: async () => ({
+      Component: (await import('@/features/public-property/pages/property-layout'))
+        .PublicPropertyLayout,
+    }),
+    children: [
+      {
+        index: true,
+        lazy: async () => ({
+          Component: (await import('@/features/public-property/pages/property-page')).PropertyPage,
+        }),
+      },
+      {
+        path: paths.public.availability,
+        lazy: async () => ({
+          Component: (await import('@/features/public-property/pages/availability-page'))
+            .AvailabilityPage,
+        }),
+      },
+      {
+        path: paths.public.booking,
+        lazy: async () => ({ Component: (await import('@/features/guest-booking')).BookingPage }),
+      },
+      {
+        path: paths.public.bookingSent,
+        lazy: async () => ({
+          Component: (await import('@/features/guest-booking')).BookingSentPage,
+        }),
+      },
+    ],
+  },
+  {
+    path: paths.public.reservation,
+    lazy: async () => ({
+      Component: (await import('@/features/guest-reservation')).GuestReservationPage,
+    }),
+  },
   { path: '*', element: <NotFoundPage /> },
 ];
 
 export const appRoutes: RouteObject[] = [
   {
+    element: <RootShell />,
     hydrateFallbackElement: <FullPageLoader />,
     errorElement: <RouteErrorPage />,
     children: areaRoutes,

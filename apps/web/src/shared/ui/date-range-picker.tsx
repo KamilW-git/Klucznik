@@ -44,9 +44,11 @@ interface DateRangePickerProps {
   defaultMonth?: Date;
   /** Zmiana widocznego miesiąca (np. do pobrania zajętości pokoju). */
   onMonthChange?: (month: Date) => void;
+  /** Kalendarz na stronie (np. w dialogu „Zobacz terminy”) zamiast przycisku z popoverem. */
+  inline?: boolean;
 }
 
-/** Wybór zakresu dat w popoverze (PL, tydzień od poniedziałku). */
+/** Wybór zakresu dat w popoverze albo na stronie (PL, tydzień od poniedziałku). */
 export function DateRangePicker({
   value,
   onChange,
@@ -59,6 +61,7 @@ export function DateRangePicker({
   'aria-label': ariaLabel,
   defaultMonth,
   onMonthChange,
+  inline = false,
 }: DateRangePickerProps) {
   const field = useFieldControlProps();
   const [open, setOpen] = useState(false);
@@ -100,6 +103,39 @@ export function DateRangePicker({
     setOpen(false);
   }
 
+  const picker = (
+    <>
+      <Calendar
+        mode="range"
+        numberOfMonths={numberOfMonths}
+        defaultMonth={committed?.from ?? defaultMonth ?? fromDate}
+        onMonthChange={onMonthChange}
+        selected={start ? { from: start, to: undefined } : committed}
+        disabled={isDayDisabled}
+        onSelect={(_range, day) => handleDay(day)}
+      />
+      <p className="mt-2 max-w-72 text-sm text-muted-foreground" aria-live="polite">
+        {mode === 'stay'
+          ? start
+            ? 'Wybierz dzień wyjazdu.'
+            : inline && value
+              ? `Wybrano: ${label}. Kliknij dzień, aby wybrać inny przyjazd.`
+              : 'Wybierz dzień przyjazdu.'
+          : start
+            ? 'Wybierz ostatnią noc (ten sam dzień = jedna noc).'
+            : 'Wybierz pierwszą noc.'}
+      </p>
+    </>
+  );
+
+  if (inline) {
+    return (
+      <div role="group" aria-label={ariaLabel} className={cn('grid justify-center', className)}>
+        {picker}
+      </div>
+    );
+  }
+
   return (
     <Popover
       open={open}
@@ -123,26 +159,7 @@ export function DateRangePicker({
           <span className="truncate">{label}</span>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-3">
-        <Calendar
-          mode="range"
-          numberOfMonths={numberOfMonths}
-          defaultMonth={committed?.from ?? defaultMonth ?? fromDate}
-          onMonthChange={onMonthChange}
-          selected={start ? { from: start, to: undefined } : committed}
-          disabled={isDayDisabled}
-          onSelect={(_range, day) => handleDay(day)}
-        />
-        <p className="mt-2 max-w-72 text-sm text-muted-foreground" aria-live="polite">
-          {mode === 'stay'
-            ? start
-              ? 'Wybierz dzień wyjazdu.'
-              : 'Wybierz dzień przyjazdu.'
-            : start
-              ? 'Wybierz ostatnią noc (ten sam dzień = jedna noc).'
-              : 'Wybierz pierwszą noc.'}
-        </p>
-      </PopoverContent>
+      <PopoverContent className="w-auto p-3">{picker}</PopoverContent>
     </Popover>
   );
 }

@@ -17,7 +17,7 @@
 | M9 | API | Zdarzenia, kolejka e-maili, szablony, scheduler | gotowe |
 | M10 | UI | Setup frontendu, design system, logowanie | gotowe |
 | M11 | UI | Panel Gospodarza | gotowe |
-| M12 | UI | Strona publiczna i proces rezerwacji | – |
+| M12 | UI | Strona publiczna i proces rezerwacji | gotowe |
 | M13 | UI | Panel admina | – |
 | M14 | DOCS/INFRA | Testy do progów, README, demo, `v1.0.0` | – |
 
@@ -125,8 +125,9 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M12: Strona publiczna [UI]
 
-- [ ] [UI] `PublicLayout`, P1–P5: [guest-booking.md](features/guest-booking.md)
-- [ ] [UI] Test mobilny 375 px całego procesu
+- [x] [UI] `PublicLayout`, P1–P5: [guest-booking.md](features/guest-booking.md)
+- [x] [UI] Test mobilny 375 px całego procesu
+- [ ] [API] Schemat `room` w `PublicReservationCreatedDto` w kontrakcie: [H-016](handoff.md#zgłoszenia)
 
 ## M13: Panel admina [UI]
 

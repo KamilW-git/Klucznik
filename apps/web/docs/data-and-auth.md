@@ -26,12 +26,14 @@ W developmencie Vite przekazuje `/api` do `localhost:3000` (proxy), a w produkcj
 
 | Ustawienie | Wartość |
 |-|-|
-| `staleTime` domyślny | 30 s (panel), 5 min (strona publiczna obiektu) |
+| `staleTime` domyślny | 30 s (panel); strona publiczna: 5 min dla obiektu (`PUBLIC_PROPERTY_QUERY`), 1 min dla dostępności, zajętości i rezerwacji z linku (`PUBLIC_AVAILABILITY_QUERY`, `shared/lib/public-query.ts`) |
 | `retry` | 1 dla zapytań; 0 dla mutacji; brak ponowień dla 4xx |
 | `refetchOnWindowFocus` | `true` w panelu (świeże rezerwacje), `false` w publicznym |
 | Klucze | z orval (`getListReservationsQueryKey(params)`) |
 
 - Po mutacji unieważniamy powiązane klucze (np. potwierdzenie rezerwacji → lista rezerwacji, szczegóły, kalendarz, pulpit). Klucze orval mają postać `[ścieżka, params?]`, więc helpery w `shared/lib/invalidate.ts` (`invalidateReservations`, `invalidateRooms`, `invalidateAvailability`, `invalidateRates`, `invalidateProperty`) unieważniają po wzorcu ścieżki.
+- Strona publiczna: po wysłaniu prośby o rezerwację, kolizji `409 RESERVATION_OVERLAP` (BR-01) i anulowaniu przez gościa `invalidatePublicAvailability` odświeża dostępność i zajętość obiektu. P3 i P2 używają tego samego klucza dostępności (`[ścieżka, { checkIn, checkOut, guests }]`), więc formularz nie pobiera ceny drugi raz.
+- Token gościa (`/r/:token`) jest sekretem: nie trafia do tytułu karty ani logów, strona P5 ma meta `referrer` = `no-referrer` (linki do map nie wysyłają adresu z tokenem) i `robots` = `noindex`.
 - Optymistyczne aktualizacje tylko dla prostych, odwracalnych operacji (np. kolejność zdjęć). Rezerwacje zawsze czekają na odpowiedź serwera.
 - Paginacja: `placeholderData: keepPreviousData`.
 

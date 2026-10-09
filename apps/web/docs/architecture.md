@@ -78,6 +78,18 @@ features/reservations/
   index.ts      publiczny eksport (dialogi i drawer używane na pulpicie i w kalendarzu)
 ```
 
+Strona publiczna (M12):
+
+```
+features/public-property/   PublicPropertyLayout (pobiera obiekt dla /o/:slug/*, 404), PropertyPage (P1),
+                            AvailabilityPage (P2), PropertyHeader, StaySearchForm, RoomCard, PhotoGrid,
+                            PhotoLightbox, RoomDatesDialog, OccupancyMiniCalendar; stay-search.ts (URL ↔ pobyt),
+                            policy.ts (teksty BR-07, BR-08), usePublicProperty (dane z Outlet context)
+features/guest-booking/     BookingPage (P3), BookingSentPage (P4, dane ze state routera), BookingSummary,
+                            BookingSteps, TermsDialogContent (Q-19), schemas.ts
+features/guest-reservation/ GuestReservationPage (P5), GuestCancelDialog
+```
+
 - Feature importuje z innego feature'a tylko przez jego `index.ts`.
 - `shared/` nie importuje z `features/`.
 - Komponenty prezentacyjne bez wywołań API, a dane dostarczają hooki lub strony.
@@ -97,9 +109,13 @@ features/reservations/
 | `lib/invalidate.ts` | unieważnianie zapytań po ścieżce API (`invalidateReservations`, `invalidateRooms`, `invalidateAvailability`, `invalidateRates`, `invalidateProperty`) |
 | `lib/date-matchers.ts` | zajęte noce pokoju (rezerwacje i blokady) jako predykat dla `DateRangePicker` |
 | `lib/file-url.ts` | adres zdjęcia z `PhotoDto.url` z uwzględnieniem `VITE_API_BASE_URL` |
+| `lib/public-query.ts` | ustawienia zapytań strony publicznej i `invalidatePublicAvailability` |
+| `lib/use-document-meta.ts` | tytuł karty i meta `description`, `robots`, `referrer` (przywracane po wyjściu ze strony) |
+| `lib/use-media-query.ts` | dopasowanie media query (np. liczba miesięcy kalendarza na telefonie) |
 
 ## Wydajność i jakość
 
-- Strona publiczna: obrazy `loading="lazy"`, rozmiar bundla obszaru publicznego monitorowany (`vite build --report` w M12).
+- Strona publiczna: obrazy `loading="lazy"`, rozmiar bundla obszaru publicznego sprawdzany w wyniku `vite build`. W M12 strony P1–P5 to osobne chunki po 8–20 kB (gzip 3–7 kB) poza wspólnym `index` (ok. 370 kB, gzip 117 kB); gość nie pobiera kodu panelu.
+- `RootShell` (`app/layouts/root-shell.tsx`) montuje `ScrollRestoration`: nowa strona zaczyna się od góry, a adres z kotwicą (`/o/:slug#pokoje`) przewija do sekcji.
 - ESLint z regułami `react-hooks`, `jsx-a11y` i `react-refresh` (plik `.tsx` eksportuje tylko komponenty; stałe, warianty `cva` i hooki kontekstu są w osobnych plikach `.ts`).
 - Testy: [testing-strategy.md](../../../docs/architecture/testing-strategy.md#frontend).

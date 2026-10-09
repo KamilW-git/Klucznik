@@ -56,7 +56,7 @@ Ekrany: O7 zakładka „Zdjęcia”, O8 karta „Zdjęcia obiektu”, P1 galeria
 - [x] Komponent `PhotoUploader`: drag-and-drop i wybór plików, walidacja typu i rozmiaru po stronie klienta, maks. 3 wysyłki naraz, stan wysyłki per plik (w kolejce / wysyłanie / gotowe / błąd – `fetch` nie raportuje postępu wysyłki, więc bez procentów), komunikaty dla 413, 415 i 422.
 - [x] Siatka zdjęć z przeciąganiem (dnd-kit: mysz, dotyk, klawiatura; zmiana kolejności → `PATCH sortOrder`, optymistycznie), badge „Zdjęcie główne”, ikona usuwania z potwierdzeniem.
 - [x] Edycja opisu (`altText`) inline.
-- [ ] Na stronie publicznej: `loading="lazy"`, `alt` z `altText` lub nazwy pokoju.
+- [x] Na stronie publicznej: `loading="lazy"`, `alt` z `altText` lub nazwy pokoju; galeria obiektu i zdjęcia pokoju w podglądzie (`PhotoLightbox`, M12).
 
 ## 8. Testy
 
@@ -82,6 +82,6 @@ Ekrany: O7 zakładka „Zdjęcia”, O8 karta „Zdjęcia obiektu”, P1 galeria
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M5) |
-| UI | Panel gotowy (M11); strona publiczna M12 |
+| UI | Gotowe (panel M11, strona publiczna M12) |
 
 Otwarte: [Q-14](../open-questions.md#q-14) (limity).

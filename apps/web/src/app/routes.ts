@@ -25,9 +25,39 @@ export const paths = {
   },
   public: {
     property: '/o/:slug',
+    availability: '/o/:slug/dostepnosc',
+    booking: '/o/:slug/rezerwacja',
+    bookingSent: '/o/:slug/rezerwacja/wyslana',
     reservation: '/r/:token',
   },
 } as const;
+
+/** Parametry wyszukiwania pobytu (P2, P3): `checkIn`, `checkOut` (`YYYY-MM-DD`), `guests`. */
+export interface StaySearchParams {
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+}
+
+function stayQuery(search: StaySearchParams, extra: Record<string, string> = {}): string {
+  return new URLSearchParams({
+    ...extra,
+    checkIn: search.checkIn,
+    checkOut: search.checkOut,
+    guests: String(search.guests),
+  }).toString();
+}
+
+/** Sekcje strony obiektu P1 (kotwice w nawigacji nagłówka). */
+export const PROPERTY_SECTIONS = {
+  search: 'termin',
+  about: 'o-nas',
+  rooms: 'pokoje',
+  gallery: 'galeria',
+  location: 'lokalizacja',
+  contact: 'kontakt',
+} as const;
+export type PropertySection = (typeof PROPERTY_SECTIONS)[keyof typeof PROPERTY_SECTIONS];
 
 /** Zakładki edycji pokoju O7 (segment `:tab`). */
 export const ROOM_TABS = ['informacje', 'zdjecia', 'cennik', 'blokady'] as const;
@@ -54,7 +84,13 @@ export const routes = {
     emailLogs: () => paths.admin.emailLogs,
   },
   public: {
-    property: (slug: string) => `/o/${slug}`,
+    property: (slug: string, section?: PropertySection) =>
+      section ? `/o/${slug}#${section}` : `/o/${slug}`,
+    availability: (slug: string, search: StaySearchParams) =>
+      `/o/${slug}/dostepnosc?${stayQuery(search)}`,
+    booking: (slug: string, roomId: string, search: StaySearchParams) =>
+      `/o/${slug}/rezerwacja?${stayQuery(search, { roomId })}`,
+    bookingSent: (slug: string) => `/o/${slug}/rezerwacja/wyslana`,
     reservation: (token: string) => `/r/${token}`,
   },
 };

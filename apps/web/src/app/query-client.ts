@@ -1,7 +1,10 @@
 import { isApiError } from '@klucznik/api-client';
 import { QueryClient } from '@tanstack/react-query';
 
-/** Ustawienia z data-and-auth.md#tanstack-query; strona publiczna nadpisuje `staleTime` w M12. */
+/**
+ * Ustawienia z data-and-auth.md#tanstack-query (panel). Strona publiczna nadpisuje `staleTime`
+ * i `refetchOnWindowFocus` w zapytaniach (`shared/lib/public-query.ts`).
+ */
 export function createQueryClient(): QueryClient {
   return new QueryClient({
     defaultOptions: {

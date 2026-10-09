@@ -62,12 +62,12 @@ Token: `randomBytes(32)` w base64url, w bazie tylko SHA-256 (`guestAccessTokenHa
 
 Ekrany: P1–P5: [screens.md](../../apps/web/docs/screens.md). `PublicLayout`: marka obiektu, a w stopce „Rezerwacje obsługuje Klucznik”. Projekt mobile-first.
 
-- [ ] `/o/:slug` (P1): hero z wyszukiwarką (zakres dat, goście), „O nas”, karty pokoi („do N osób”, „od X zł / noc”, „Zobacz terminy”), galeria, lokalizacja z godzinami, kontakt. Na mobile sticky przycisk „Sprawdź dostępność”.
-- [ ] `/o/:slug/dostepnosc?checkIn&checkOut&guests` (P2): pasek podsumowania z „Zmień”, karty pokoi z ceną „1 640 zł za 4 noce (średnio 410 zł / noc)”, pokoje niedostępne przygaszone, komunikat o minimalnym pobycie, stan pusty „Brak wolnych pokoi w wybranym terminie – spróbuj innych dat”. Na desktopie mini-kalendarz zajętości (`/occupancy`).
-- [ ] `/o/:slug/rezerwacja?roomId&checkIn&checkOut&guests` (P3): kroki „Termin → Dane → Potwierdzenie”, formularz (zod), checkbox regulaminu, sticky podsumowanie z rozbiciem ceny i polityką anulowania. Obsługa 409 (termin właśnie zajęty → powrót do wyników) i 422.
-- [ ] `/o/:slug/rezerwacja/wyslana` (P4): numer, status „Oczekuje na potwierdzenie”, podsumowanie, informacja o czasie potwierdzenia (`pendingExpiryHours`) i e-mailu. Dane pochodzą z odpowiedzi mutacji (state routera), a odświeżenie strony przekierowuje na stronę obiektu.
-- [ ] `/r/:token` (P5): karta rezerwacji, kontakt, sekcja anulowania („Możesz bezpłatnie anulować rezerwację do {cancellableUntil}”), modal potwierdzenia z powodem; po terminie tekst „Termin bezpłatnego anulowania minął – skontaktuj się z gospodarzem”; 404 → „Link jest nieaktualny…”.
-- [ ] Ustaw `document.title` na nazwę obiektu i dodaj meta `description` (podstawowe SEO w SPA).
+- [x] `/o/:slug` (P1): hero z wyszukiwarką (zakres dat bez przeszłości, goście do największej pojemności pokoju), „O nas”, karty pokoi („do N osób”, „min. N nocy”, „od X zł / noc”, „Zobacz terminy” – dialog z kalendarzem zajętości pokoju z `/occupancy`, potem P2), galeria z podglądem, lokalizacja z godzinami i zasadami (BR-07, BR-08) oraz linkiem „Pokaż na mapie”, kontakt. Na mobile sticky przycisk „Sprawdź dostępność”. Obiekt pobiera raz `PublicPropertyLayout` dla wszystkich stron `/o/:slug/*`; nieaktywny lub nieznany → „Nie znaleziono obiektu”.
+- [x] `/o/:slug/dostepnosc?checkIn&checkOut&guests` (P2): pasek podsumowania z „Zmień”, karty pokoi z ceną „1 640 zł za 4 noce (średnio 410 zł / noc)” (dostępne najpierw), pokoje niedostępne przygaszone z powodem (zajęty, za mało miejsc), komunikat o minimalnym pobycie z „Wydłuż pobyt do N nocy”, stan pusty „Brak wolnych pokoi w wybranym terminie – spróbuj innych dat”. Na desktopie mini-kalendarz zajętości (`/occupancy`) z wyborem pokoju. Błędne parametry w URL → wyszukiwarka; `422` → komunikat i „Zmień termin”.
+- [x] `/o/:slug/rezerwacja?roomId&checkIn&checkOut&guests` (P3): kroki „Termin → Dane → Potwierdzenie”, formularz (zod, `VALIDATION_ERROR` na pola), checkbox „Akceptuję warunki rezerwacji” z dialogiem zasad obiektu ([Q-19](../open-questions.md#q-19): bez atrapy regulaminu, tylko UI), sticky podsumowanie z rozbiciem ceny z API i polityką anulowania (na telefonie nad formularzem). Obsługa 409 (termin właśnie zajęty → komunikat, odświeżenie dostępności, powrót do wyników), 422 i 429. Pokój niedostępny w chwili wejścia → powód zamiast formularza.
+- [x] `/o/:slug/rezerwacja/wyslana` (P4): numer z kopiowaniem, status „Oczekuje na potwierdzenie”, podsumowanie, informacja o czasie potwierdzenia (`pendingExpiryHours`, `expiresAt`) i e-mailu, „Co dzieje się dalej?”. Dane pochodzą z odpowiedzi mutacji (state routera, przejście z `replace`), a odświeżenie strony przekierowuje na stronę obiektu.
+- [x] `/r/:token` (P5): nagłówek z marką obiektu, karta rezerwacji (status, termin, goście, godziny, cena, uwagi), kontakt („Zadzwoń”, „Napisz”, adres z mapą), sekcja anulowania („Możesz bezpłatnie anulować rezerwację do {cancellableUntil}”; dla `PENDING` „Możesz anulować prośbę, dopóki gospodarz jej nie potwierdzi”), modal potwierdzenia z powodem; po terminie tekst „Termin bezpłatnego anulowania minął – skontaktuj się z gospodarzem”; 404 → „Link jest nieaktualny…”. Token nie trafia do tytułu ani nagłówka `Referer` (meta `no-referrer`), strona ma `noindex`.
+- [x] Ustaw `document.title` na nazwę obiektu i dodaj meta `description` (podstawowe SEO w SPA): `useDocumentMeta`.
 
 ## 8. Testy
 
@@ -89,15 +89,15 @@ Ekrany: P1–P5: [screens.md](../../apps/web/docs/screens.md). `PublicLayout`: m
 
 ## 9. Kryteria akceptacji
 
-- [ ] Gość przechodzi P1 → P2 → P3 → P4 na telefonie (375 px) bez przewijania w poziomie.
-- [ ] Po wysłaniu prośby właściciel widzi rezerwację `PENDING` w panelu, a gość dostaje e-mail z linkiem `/r/:token` (Mailpit).
-- [ ] Link z e-maila pozwala anulować rezerwację tylko zgodnie z BR-08.
+- [x] Gość przechodzi P1 → P2 → P3 → P4 na telefonie (375 px) bez przewijania w poziomie (M12: test na żywo z API i seedem).
+- [x] Po wysłaniu prośby właściciel widzi rezerwację `PENDING` w panelu, a gość dostaje e-mail z linkiem `/r/:token` (Mailpit). M12 na żywo: e-mail „Nowa rezerwacja do potwierdzenia” do gospodarza i link gościa w Mailpit; lista `PENDING` w panelu działa od M11.
+- [x] Link z e-maila pozwala anulować rezerwację tylko zgodnie z BR-08.
 
 ## 10. Status i otwarte kwestie
 
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M8, e-maile z linkiem: M9) |
-| UI | Nie rozpoczęto |
+| UI | Gotowe (M12) |
 
-Zdecydowane: [Q-04](../open-questions.md#q-04), [Q-11](../open-questions.md#q-11), [Q-17](../open-questions.md#q-17). Zdecydowane też: [Q-16](../open-questions.md#q-16). Otwarte: [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia).
+Zdecydowane: [Q-04](../open-questions.md#q-04), [Q-11](../open-questions.md#q-11), [Q-17](../open-questions.md#q-17). Zdecydowane też: [Q-16](../open-questions.md#q-16). Otwarte: [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia); UI realizuje rekomendacje. Kontrakt: pole `room` w `PublicReservationCreatedDto` bez schematu w `openapi.json` ([H-016](../handoff.md#zgłoszenia)).

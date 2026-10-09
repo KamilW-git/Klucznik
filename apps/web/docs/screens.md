@@ -9,11 +9,11 @@ Statusy: `brak projektu` (ekran ze Stitch nie dostarczony), `projekt` (jest plik
 
 | ID | Ekran | Route | Funkcjonalność | Plik Stitch | Etap | Status |
 |-|-|-|-|-|-|-|
-| P1 | Strona obiektu | `/o/:slug` | [guest-booking.md](../../../docs/features/guest-booking.md), [photos.md](../../../docs/features/photos.md) | `public/01-property-page.png`, `-mobile.png` | M12 | projekt |
-| P2 | Wyniki dostępności | `/o/:slug/dostepnosc` | [guest-booking.md](../../../docs/features/guest-booking.md) | `public/02-availability.png` | M12 | projekt |
-| P3 | Formularz rezerwacji | `/o/:slug/rezerwacja` | [guest-booking.md](../../../docs/features/guest-booking.md) | `public/03-booking-form.png` | M12 | projekt |
-| P4 | Potwierdzenie wysłania | `/o/:slug/rezerwacja/wyslana` | [guest-booking.md](../../../docs/features/guest-booking.md) | `public/04-booking-confirmation.png` (wariant: `04-booking-corfimation.png`) | M12 | projekt |
-| P5 | Zarządzanie rezerwacją (token) | `/r/:token` | [guest-booking.md](../../../docs/features/guest-booking.md) | brak: `public/05-quest-reservation.png` to kopia P4 ([Q-28](../../../docs/open-questions.md#q-28)) | M12 | brak projektu |
+| P1 | Strona obiektu | `/o/:slug` | [guest-booking.md](../../../docs/features/guest-booking.md), [photos.md](../../../docs/features/photos.md) | `public/01-property-page.png`, `-mobile.png` | M12 | gotowe |
+| P2 | Wyniki dostępności | `/o/:slug/dostepnosc` | [guest-booking.md](../../../docs/features/guest-booking.md) | `public/02-availability.png` | M12 | gotowe |
+| P3 | Formularz rezerwacji | `/o/:slug/rezerwacja` | [guest-booking.md](../../../docs/features/guest-booking.md) | `public/03-booking-form.png` | M12 | gotowe |
+| P4 | Potwierdzenie wysłania | `/o/:slug/rezerwacja/wyslana` | [guest-booking.md](../../../docs/features/guest-booking.md) | `public/04-booking-corfimation.png` | M12 | gotowe |
+| P5 | Zarządzanie rezerwacją (token) | `/r/:token` | [guest-booking.md](../../../docs/features/guest-booking.md) | `public/05-quest-reservation.png` (telefon; ten sam ekran co `04-booking-confirmation.png`) | M12 | gotowe |
 
 ## Panel Gospodarza, desktop-first
 
@@ -46,6 +46,8 @@ Statusy: `brak projektu` (ekran ze Stitch nie dostarczony), `projekt` (jest plik
 | – | 404 „Nie znaleziono strony” | wszystkie obszary | w S1 (sekcja 03) | M10 | gotowe |
 
 Nazwy części plików w `design/stitch/` odbiegają od [konwencji](../../../design/README.md#konwencja-nazw) (literówki, `shared/components.*`, folder `emails/`). Tabela podaje faktyczne nazwy; elementy ekranów spoza specyfikacji pomijamy ([Q-28](../../../docs/open-questions.md#q-28)).
+
+Pliki P4 i P5 (sprawdzone w M12): `04-booking-corfimation.png` to potwierdzenie wysłania (P4), a `04-booking-confirmation.png` i `05-quest-reservation.png` to ten sam ekran zarządzania rezerwacją z linku (P5, telefon). Pominięte elementy spoza specyfikacji: przełącznik języka i waluty, FAQ, imię gospodarza, mapa (model nie ma współrzędnych, jest link „Pokaż na mapie”), dorośli / dzieci, zaliczka, PIN, faktura VAT, PDF, „Dodaj do kalendarza”, „Symulacja terminu”, ikony udogodnień ([Q-20](../../../docs/open-questions.md#q-20)).
 
 ## Zasady
 
