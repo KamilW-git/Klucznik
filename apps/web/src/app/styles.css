@@ -146,6 +146,15 @@
 
   --animate-shimmer: shimmer 1.6s ease-in-out infinite;
 
+  @keyframes indeterminate {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(300%);
+    }
+  }
+
   @keyframes shimmer {
     0%,
     100% {
@@ -187,4 +196,32 @@
 
 @utility tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* Pierwsza litera wielka (np. „Poniedziałek, 16 czerwca” z date-fns). */
+@utility capitalize-first {
+  display: inline-block;
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+/* Kalendarz O3: rezerwacja oczekująca w bursztynowe paski. */
+@utility bg-pending-stripes {
+  background-color: var(--status-pending);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 6px,
+    color-mix(in srgb, var(--warning) 14%, transparent) 6px 12px
+  );
+}
+
+/* Kalendarz O3: blokada terminu szaro kreskowana. */
+@utility bg-hatched {
+  background-color: var(--muted);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 5px,
+    color-mix(in srgb, var(--muted-foreground) 18%, transparent) 5px 7px
+  );
 }

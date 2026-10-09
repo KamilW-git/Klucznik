@@ -78,12 +78,12 @@ Rezerwacja ręczna podlega BR-04 z przyjazdem do 30 dni wstecz ([Q-01](../open-q
 
 Ekrany: O4 (lista + drawer), O5 (nowa rezerwacja ręczna), O2 (akcje na pulpicie): [screens.md](../../apps/web/docs/screens.md).
 
-- [ ] `/panel/rezerwacje`: filtry (wyszukiwarka z debounce, statusy multi-select, pokój, zakres „Pobyt od–do”, „Wyczyść filtry”) zsynchronizowane z URL (`useSearchParams`).
-- [ ] Tabela: „Numer”, „Gość”, „Pokój”, „Przyjazd”, „Wyjazd”, „Noce”, „Goście”, „Kwota”, „Status” (badge), „Źródło”; paginacja „1–20 z 134” + wybór rozmiaru strony.
-- [ ] Drawer szczegółów (`/panel/rezerwacje/:id`): kontakt gościa, pobyt, rozbicie ceny, uwagi gościa, edytowalna „Notatka wewnętrzna”, historia (timeline z `events`), akcje „Potwierdź”, „Edytuj”, „Anuluj rezerwację” (dialog z powodem). Dla `PENDING` „Anuluj” ma etykietę „Odrzuć”.
-- [ ] Toast „Rezerwacja została potwierdzona”; `VERSION_CONFLICT` → alert „Ktoś w międzyczasie zmienił tę rezerwację – odśwież dane” z przyciskiem odświeżenia.
-- [ ] Dialog O5 „Nowa rezerwacja”: pokój, zakres dat (zajęte dni wyłączone na podstawie kalendarza), goście, autocomplete gościa (`GET /properties/:id/guests?q=`), notatka; „Cena wyliczona” z `GET /rooms/:id/quote`; kolizja inline z numerem rezerwacji; informacja „Rezerwacja ręczna jest od razu potwierdzona”.
-- [ ] Po mutacjach unieważnij zapytania: lista, szczegóły, kalendarz, pulpit.
+- [x] `/panel/rezerwacje`: filtry (wyszukiwarka z debounce, statusy multi-select, pokój, zakres „Pobyt od–do”, „Wyczyść filtry”) zsynchronizowane z URL (`useSearchParams`).
+- [x] Tabela: „Numer”, „Gość”, „Pokój”, „Przyjazd”, „Wyjazd”, „Noce”, „Goście”, „Kwota”, „Status” (badge), „Źródło”; paginacja „1–20 z 134” + wybór rozmiaru strony.
+- [x] Drawer szczegółów (`/panel/rezerwacje/:id`): kontakt gościa, pobyt, rozbicie ceny, uwagi gościa, edytowalna „Notatka wewnętrzna”, historia (timeline z `events`), akcje „Potwierdź”, „Edytuj” (dialog: termin, pokój, liczba gości, uwagi; cena z `quote` z `excludeReservationId`), „Anuluj rezerwację” (dialog z powodem). Dla `PENDING` „Anuluj” ma etykietę „Odrzuć”. Drawer otwierany także z pulpitu i kalendarza.
+- [x] Toast „Rezerwacja została potwierdzona”; `VERSION_CONFLICT` → alert „Ktoś w międzyczasie zmienił tę rezerwację – odśwież dane” z przyciskiem odświeżenia.
+- [x] Dialog O5 „Nowa rezerwacja”: pokój, zakres dat (zajęte dni wyłączone na podstawie kalendarza), goście, autocomplete gościa (`GET /properties/:id/guests?q=`), notatka; „Cena wyliczona” z `GET /rooms/:id/quote`; kolizja inline z numerem rezerwacji; informacja „Rezerwacja ręczna jest od razu potwierdzona”.
+- [x] Po mutacjach unieważnij zapytania: lista, szczegóły, kalendarz, pulpit (`invalidateReservations` w `shared/lib/invalidate.ts`).
 
 ## 8. Testy
 
@@ -115,6 +115,6 @@ Ekrany: O4 (lista + drawer), O5 (nowa rezerwacja ręczna), O2 (akcje na pulpicie
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M7, zdarzenia i e-maile: M9) |
-| UI | Nie rozpoczęto |
+| UI | Gotowe (M11) |
 
 Zdecydowane: [Q-01](../open-questions.md#q-01), [Q-02](../open-questions.md#q-02), [Q-03](../open-questions.md#q-03), [Q-04](../open-questions.md#q-04), [Q-05](../open-questions.md#q-05), [Q-12](../open-questions.md#q-12).

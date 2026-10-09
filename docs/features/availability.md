@@ -81,12 +81,12 @@ Implementacja: kolejność reguł i zamiana błędu na powód w `modules/availab
 
 Ekrany: O3 (kalendarz), O7 zakładka „Blokady terminów”, O5 (dostępność i cena): [screens.md](../../apps/web/docs/screens.md).
 
-- [ ] `/panel/kalendarz`: siatka pokoje × dni (Pn–Nd, weekendy cieniowane, dziś wyróżnione), nawigacja miesiąca, „Dziś”, przełącznik „2 tygodnie / Miesiąc”.
-- [ ] Paski rezerwacji od `checkIn` do `checkOut` (połowa dnia na styku), kolory statusów, `PENDING` paskowane; blokady szare kreskowane z etykietą.
-- [ ] Tooltip (gość, daty, cena, status); kliknięcie otwiera szczegóły rezerwacji (drawer z O4).
-- [ ] Przyciski „+ Dodaj rezerwację” (O5) i „+ Zablokuj termin” (dialog blokady).
-- [ ] Mobile: uproszczona lista per pokój.
-- [ ] Zakładka „Blokady terminów” pokoju: lista, dodawanie (dialog z zakresem dat), usuwanie; błąd `BLOCK_OVERLAPS_RESERVATION` z numerem rezerwacji.
+- [x] `/panel/kalendarz`: siatka pokoje × dni (Pn–Nd, weekendy cieniowane, dziś wyróżnione), nawigacja miesiąca, „Dziś”, przełącznik „2 tygodnie / Miesiąc”, filtr statusu; stan widoku w URL (`?from&view&status`). Kliknięcie wolnego dnia otwiera O5 z pokojem i datą.
+- [x] Paski rezerwacji od `checkIn` do `checkOut` (połowa dnia na styku), kolory statusów, `PENDING` paskowane; blokady szare kreskowane z etykietą.
+- [x] Tooltip (gość, daty, cena, status); kliknięcie otwiera szczegóły rezerwacji (drawer z O4).
+- [x] Przyciski „+ Dodaj rezerwację” (O5) i „+ Zablokuj termin” (dialog blokady).
+- [x] Mobile: uproszczona lista per pokój.
+- [x] Zakładka „Blokady terminów” pokoju: lista, dodawanie (dialog z zakresem dat), usuwanie; błąd `BLOCK_OVERLAPS_RESERVATION` z numerem rezerwacji.
 
 ## 8. Testy
 
@@ -112,6 +112,6 @@ Ekrany: O3 (kalendarz), O7 zakładka „Blokady terminów”, O5 (dostępność 
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M6); dostępność publiczna: M8 ([guest-booking.md](guest-booking.md)) |
-| UI | Nie rozpoczęto |
+| UI | Gotowe (M11) |
 
 Zdecydowane: [Q-15](../open-questions.md#q-15) (blokada vs rezerwacja), [Q-17](../open-questions.md#q-17) (`quote`, zajętość publiczna).

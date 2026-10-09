@@ -82,11 +82,11 @@ Przy tworzeniu przez admina z `POST /admin/owners` adres może być pusty ([Q-13
 
 Ekrany: O2 (pulpit), O8 (ustawienia obiektu): [screens.md](../../apps/web/docs/screens.md).
 
-- [ ] Przełącznik obiektu w sidebarze (`GET /properties`), wybór zapamiętany w `localStorage`. Gdy obiekt jest jeden, przełącznik jest tylko etykietą.
-- [ ] `/panel`: pulpit z KPI, kartą „Wymagają Twojej decyzji” (przyciski „Potwierdź” i „Odrzuć”, czas do wygaśnięcia), „Najbliższe przyjazdy” i wykresem obłożenia.
-- [ ] `/panel/ustawienia`: karty „Dane obiektu” (z kopiowaniem adresu strony), „Zasady pobytu”, „Rezerwacje”, „Zdjęcia obiektu”; link „Podgląd strony obiektu”.
-- [ ] Błędy: `SLUG_TAKEN` przy polu adresu, `HAS_FUTURE_RESERVATIONS` jako alert z liczbą rezerwacji.
-- [ ] Stan pusty: właściciel bez obiektu widzi komunikat „Skontaktuj się z administratorem” (obiekty zakłada admin).
+- [x] Przełącznik obiektu w sidebarze (`GET /properties`), wybór zapamiętany w `localStorage`. Gdy obiekt jest jeden, przełącznik jest tylko etykietą. Licznik oczekujących przy „Rezerwacje” (z pulpitu).
+- [x] `/panel`: pulpit z KPI, kartą „Wymagają Twojej decyzji” (przyciski „Potwierdź” i „Odrzuć”, czas do wygaśnięcia), „Najbliższe przyjazdy” i wykresem obłożenia.
+- [x] `/panel/ustawienia`: karty „Dane obiektu” (z kopiowaniem adresu strony i podglądem nowego adresu), „Zasady pobytu”, „Rezerwacje” (termin anulowania, czas na potwierdzenie, przyjmowanie rezerwacji), „Zdjęcia obiektu”; link „Podgląd strony obiektu”. `PATCH` wysyła tylko zmienione pola.
+- [x] Błędy: `SLUG_TAKEN` przy polu adresu, `HAS_FUTURE_RESERVATIONS` jako alert z liczbą rezerwacji.
+- [x] Stan pusty: właściciel bez obiektu widzi komunikat „Skontaktuj się z administratorem” (obiekty zakłada admin).
 
 ## 8. Testy
 
@@ -110,6 +110,6 @@ Ekrany: O2 (pulpit), O8 (ustawienia obiektu): [screens.md](../../apps/web/docs/s
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M5); wykluczenie usuniętych z `/public/**` w M8 |
-| UI | Nie rozpoczęto |
+| UI | Gotowe (M11) |
 
 Otwarte: [Q-08](../open-questions.md#q-08) (dashboard), [Q-13](../open-questions.md#q-13) (adres).

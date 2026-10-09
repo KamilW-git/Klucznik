@@ -25,7 +25,7 @@ describe('route protection and session bootstrap', () => {
     server.use(sessionFor(ownerUser));
     const { router } = renderApp('/panel/kalendarz');
 
-    expect(await screen.findByRole('heading', { name: 'Kalendarz' })).toBeVisible();
+    expect(await screen.findByRole('heading', { name: 'Kalendarz obłożenia' })).toBeVisible();
     expect(router.state.location.pathname).toBe('/panel/kalendarz');
     expect(screen.getByText('Jan Nowak')).toBeVisible();
   });
@@ -43,7 +43,7 @@ describe('route protection and session bootstrap', () => {
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/admin/wlasciciele'));
     await router.navigate('/panel');
-    expect(await screen.findByRole('heading', { name: 'Pulpit' })).toBeVisible();
+    expect(await screen.findByRole('heading', { name: /Dzień dobry/ })).toBeVisible();
   });
 
   it('a logged-in user on /logowanie goes to their panel; / redirects by role', async () => {
@@ -89,7 +89,7 @@ describe('route protection and session bootstrap', () => {
       ),
     );
     const { router } = renderApp('/panel');
-    await screen.findByRole('heading', { name: 'Pulpit' });
+    await screen.findByRole('heading', { name: /Dzień dobry/ });
 
     // Dowolne żądanie z wygasłym tokenem: refresh się nie udaje → wylogowanie lokalne.
     const { authMe } = await import('@klucznik/api-client');

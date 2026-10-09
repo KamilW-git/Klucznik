@@ -25,21 +25,25 @@ export interface NavItem {
   icon: LucideIcon;
   /** Aktywny tylko przy dokładnym dopasowaniu (pulpit `/panel`). */
   end?: boolean;
+  /** Licznik przy pozycji (np. oczekujące rezerwacje). */
+  badge?: { count: number; label: string };
 }
 
 interface PanelLayoutProps {
   /** Etykieta obszaru pod logo („Panel Gospodarza”, „Administrator”). */
   areaLabel: string;
   nav: readonly NavItem[];
-  /** Miejsce nad nawigacją (M11: przełącznik obiektu). */
+  /** Miejsce nad nawigacją (przełącznik obiektu). */
   sidebarHeader?: ReactNode;
+  /** Treść obszaru; domyślnie `<Outlet />`. */
+  children?: ReactNode;
 }
 
 /**
  * Wspólny szkielet paneli: sidebar (desktop, ≥ 1024 px), górny pasek z menu w panelu bocznym
  * (tablet, telefon) i menu użytkownika z wylogowaniem.
  */
-export function PanelLayout({ areaLabel, nav, sidebarHeader }: PanelLayoutProps) {
+export function PanelLayout({ areaLabel, nav, sidebarHeader, children }: PanelLayoutProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const sidebar = (
@@ -90,7 +94,7 @@ export function PanelLayout({ areaLabel, nav, sidebarHeader }: PanelLayoutProps)
         </header>
 
         <main className="mx-auto w-full max-w-[90rem] flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
-          <Outlet />
+          {children ?? <Outlet />}
         </main>
       </div>
     </div>
@@ -114,7 +118,13 @@ function SidebarLink({ item, onNavigate }: { item: NavItem; onNavigate: () => vo
       }
     >
       <Icon className="size-5 shrink-0" aria-hidden="true" />
-      {item.label}
+      <span className="flex-1">{item.label}</span>
+      {item.badge && item.badge.count > 0 && (
+        <span className="min-w-6 rounded-full bg-highlight-strong px-2 py-0.5 text-center text-xs font-semibold text-highlight-foreground tabular">
+          {item.badge.count}
+          <span className="sr-only"> {item.badge.label}</span>
+        </span>
+      )}
     </NavLink>
   );
 }

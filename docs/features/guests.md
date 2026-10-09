@@ -54,9 +54,9 @@ Właściciel ma listę swoich gości z historią pobytów. Przy rezerwacji telef
 
 Ekran `/panel/goscie` nie ma projektu w Stitch, więc użyj wzorca tabeli z O4: [screens.md](../../apps/web/docs/screens.md).
 
-- [ ] `/panel/goscie`: tabela („Gość”, „E-mail”, „Telefon”, „Rezerwacje”, „Ostatni pobyt”), wyszukiwarka, paginacja; kliknięcie gościa → lista rezerwacji przefiltrowana `q=<email>`.
-- [ ] Komponent `GuestAutocomplete` dla O5 (debounce 300 ms, min. 2 znaki, opcja „Dodaj nowego gościa”).
-- [ ] Stan pusty: „Nie masz jeszcze gości – pojawią się tu po pierwszej rezerwacji”.
+- [x] `/panel/goscie`: tabela („Gość”, „E-mail”, „Telefon”, „Rezerwacje”, „Ostatni pobyt”), wyszukiwarka, paginacja; kliknięcie gościa → lista rezerwacji przefiltrowana `q=<email>`.
+- [x] Komponent `GuestAutocomplete` dla O5 (debounce 300 ms, min. 2 znaki, opcja „Dodaj nowego gościa”).
+- [x] Stan pusty: „Nie masz jeszcze gości – pojawią się tu po pierwszej rezerwacji”.
 
 ## 8. Testy
 
@@ -80,6 +80,6 @@ Ekran `/panel/goscie` nie ma projektu w Stitch, więc użyj wzorca tabeli z O4: 
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M7) |
-| UI | Nie rozpoczęto |
+| UI | Gotowe (M11) |
 
 Zdecydowane: [Q-03](../open-questions.md#q-03), [Q-04](../open-questions.md#q-04). Otwarte: [Q-18](../open-questions.md#q-18).

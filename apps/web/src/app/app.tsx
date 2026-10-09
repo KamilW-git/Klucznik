@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router/dom';
 
 import { AuthProvider } from '@/features/auth';
 import { Toaster } from '@/shared/ui/toaster';
+import { TooltipProvider } from '@/shared/ui/tooltip';
 
 import { createQueryClient } from './query-client';
 import { createAppRouter } from './router';
@@ -15,7 +16,9 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <TooltipProvider>
+          <RouterProvider router={router} />
+        </TooltipProvider>
         <Toaster />
       </AuthProvider>
     </QueryClientProvider>

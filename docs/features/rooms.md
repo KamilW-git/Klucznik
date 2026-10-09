@@ -58,12 +58,12 @@ Zmiana `basePricePerNight` nie zmienia cen istniejących rezerwacji (BR-05).
 
 Ekrany: O6 (lista pokoi), O7 zakładka „Informacje”: [screens.md](../../apps/web/docs/screens.md).
 
-- [ ] `/panel/pokoje`: siatka kart (zdjęcie, nazwa, „do N osób”, „od X zł / noc”, min. noce, przełącznik „Widoczny na stronie”, liczba nadchodzących rezerwacji). Nieaktywne karty przygaszone.
-- [ ] Stan pusty: „Nie masz jeszcze żadnych pokoi – dodaj pierwszy, aby goście mogli rezerwować”.
-- [ ] „+ Dodaj pokój” → `/panel/pokoje/nowy` (formularz zakładki „Informacje”).
-- [ ] `/panel/pokoje/:roomId`: zakładki „Informacje”, „Zdjęcia”, „Cennik”, „Blokady terminów”; sticky „Zapisz zmiany”.
-- [ ] Pole ceny w złotych z konwersją do groszy (`shared/lib/money.ts`).
-- [ ] Usuwanie z dialogiem potwierdzenia; `HAS_FUTURE_RESERVATIONS` → komunikat z liczbą rezerwacji i linkiem do listy.
+- [x] `/panel/pokoje`: siatka kart (zdjęcie, nazwa, „do N osób”, „od X zł / noc”, min. noce, przełącznik „Widoczny na stronie”, liczba nadchodzących rezerwacji). Nieaktywne karty przygaszone.
+- [x] Stan pusty: „Nie masz jeszcze żadnych pokoi – dodaj pierwszy, aby goście mogli rezerwować”.
+- [x] „+ Dodaj pokój” → `/panel/pokoje/nowy` (formularz zakładki „Informacje”).
+- [x] `/panel/pokoje/:roomId/:tab`: zakładki „Informacje”, „Zdjęcia”, „Cennik”, „Blokady terminów” (zakładka w URL); sticky „Zapisz zmiany”. Nowy pokój: informacje + cena bazowa i minimum nocy, potem zakładka „Zdjęcia”.
+- [x] Pole ceny w złotych z konwersją do groszy (`shared/lib/money.ts`).
+- [x] Usuwanie z dialogiem potwierdzenia; `HAS_FUTURE_RESERVATIONS` → komunikat z liczbą rezerwacji i linkiem do listy.
 
 ## 8. Testy
 
@@ -87,6 +87,6 @@ Ekrany: O6 (lista pokoi), O7 zakładka „Informacje”: [screens.md](../../apps
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M5) |
-| UI | Nie rozpoczęto |
+| UI | Gotowe (M11) |
 
 Otwarte: [Q-20](../open-questions.md#q-20) (udogodnienia pokoi; w MVP tylko w opisie).

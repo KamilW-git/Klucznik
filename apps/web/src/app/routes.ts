@@ -10,7 +10,7 @@ export const paths = {
     root: '/panel',
     calendar: '/panel/kalendarz',
     reservations: '/panel/rezerwacje',
-    reservation: '/panel/rezerwacje/:id',
+    reservation: '/panel/rezerwacje/:id?',
     rooms: '/panel/pokoje',
     roomNew: '/panel/pokoje/nowy',
     room: '/panel/pokoje/:roomId/:tab',
@@ -29,6 +29,10 @@ export const paths = {
   },
 } as const;
 
+/** Zakładki edycji pokoju O7 (segment `:tab`). */
+export const ROOM_TABS = ['informacje', 'zdjecia', 'cennik', 'blokady'] as const;
+export type RoomTab = (typeof ROOM_TABS)[number];
+
 export const routes = {
   root: () => '/',
   login: (next?: string) =>
@@ -39,6 +43,8 @@ export const routes = {
     reservations: () => paths.panel.reservations,
     reservation: (id: string) => `${paths.panel.reservations}/${id}`,
     rooms: () => paths.panel.rooms,
+    roomNew: () => paths.panel.roomNew,
+    room: (roomId: string, tab: RoomTab = 'informacje') => `${paths.panel.rooms}/${roomId}/${tab}`,
     guests: () => paths.panel.guests,
     settings: () => paths.panel.settings,
   },

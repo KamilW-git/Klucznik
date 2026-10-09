@@ -89,7 +89,7 @@ describe('LoginPage (O1)', () => {
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/panel'));
     expect(body).toEqual({ email: 'jan.nowak@example.com', password: 'tajne-haslo' });
-    expect(await screen.findByRole('heading', { name: 'Pulpit' })).toBeVisible();
+    expect(await screen.findByRole('heading', { name: /Dzień dobry/ })).toBeVisible();
   });
 
   it('ADMIN lands on /admin/wlasciciele', async () => {

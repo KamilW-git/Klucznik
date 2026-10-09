@@ -59,20 +59,23 @@ Trasy z kolejnych etapów mają do czasu realizacji zaślepkę `ComingSoonPage` 
 
 ## Kontekst obiektu w panelu
 
-- `CurrentPropertyProvider`: lista obiektów z `GET /properties`, wybrany obiekt zapamiętany w `localStorage` (`kl.currentPropertyId`); domyślnie pierwszy.
-- Wszystkie widoki panelu używają `useCurrentProperty()`. Zmiana obiektu unieważnia zapytania zależne od obiektu.
-- Właściciel bez obiektu widzi stan pusty z informacją o kontakcie z administratorem.
+- `CurrentPropertyProvider` (`features/current-property`, montowany w `OwnerLayout`): lista obiektów z `GET /properties`, wybrany obiekt zapamiętany w `localStorage` (`kl.currentPropertyId`); domyślnie pierwszy. `PropertySwitcher` w sidebarze (przy jednym obiekcie tylko etykieta).
+- `CurrentPropertyGate` renderuje widoki panelu dopiero po wyborze obiektu (szkielet, błąd z ponowieniem albo stan pusty), więc widoki używają `useCurrentProperty()` bez sprawdzania `null`.
+- Klucze zapytań zawierają `propertyId`, więc po zmianie obiektu widoki same pobierają dane nowego obiektu (bez ręcznego unieważniania).
+- Właściciel bez obiektu widzi stan pusty „Nie masz jeszcze obiektu” z informacją o kontakcie z administratorem.
 - `ADMIN` w `/panel` może wybrać dowolny obiekt (podgląd panelu klienta).
 
 ## Feature folders
 
 ```
 features/reservations/
-  components/   ReservationsTable, ReservationDrawer, CancelReservationDialog, ManualReservationDialog
-  hooks/        useReservationFilters (URL ↔ query), useReservationActions
+  components/   ReservationFilters, ReservationDrawer, CancelReservationDialog, EditReservationDialog,
+                ManualReservationDialog (O5), StayQuoteSummary
+  hooks/        useReservationFilters (URL ↔ query), useConfirmReservation, useCancelReservation
   pages/        ReservationsPage
-  schemas.ts    zod: filtry, formularz rezerwacji ręcznej
-  index.ts      publiczny eksport (strony, dialogi używane w innych feature'ach)
+  labels.ts     etykiety źródeł, zdarzeń historii, aktorów
+  schemas.ts    zod: formularz rezerwacji ręcznej i edycji
+  index.ts      publiczny eksport (dialogi i drawer używane na pulpicie i w kalendarzu)
 ```
 
 - Feature importuje z innego feature'a tylko przez jego `index.ts`.
@@ -86,10 +89,14 @@ features/reservations/
 | `StatusBadge` | statusy rezerwacji (kolory z [design-system.md](design-system.md#statusy-rezerwacji)) |
 | `DataTable` | tabela z sortowaniem, paginacją (`meta`), skeletonem, stanem pustym |
 | `EmptyState`, `ErrorState`, `PageSkeleton` | stany widoków |
-| `DateRangePicker` | zakres dat (pobyt `[checkIn, checkOut)` albo zakres włączny, zależnie od trybu), PL, tydzień od poniedziałku |
-| `MoneyInput` | pole w zł ↔ grosze |
-| `ConfirmDialog` | potwierdzenia akcji nieodwracalnych |
+| `DateRangePicker` | zakres dat: `stay` (pobyt `[checkIn, checkOut)`, dzień wyjazdu może być pierwszą zajętą nocą kolejnej rezerwacji) albo `nights` (noce włącznie); zajęte noce z `isNightUnavailable`; PL, tydzień od poniedziałku |
+| `MoneyInput` | pole w zł ↔ grosze (`null` puste, `NaN` niepoprawne – zgłasza `minorPriceSchema`) |
+| `ConfirmDialog`, `Dialog`, `Sheet` | potwierdzenia, formularze w dialogu, drawer szczegółów |
+| `SaveBar` | przyklejony pasek „Zapisz zmiany” przy niezapisanych zmianach |
 | `lib/money.ts`, `lib/dates.ts` | `formatMoney`, `toMinor`, `fromMinor`, `formatDate`, `nightsBetween` |
+| `lib/invalidate.ts` | unieważnianie zapytań po ścieżce API (`invalidateReservations`, `invalidateRooms`, `invalidateAvailability`, `invalidateRates`, `invalidateProperty`) |
+| `lib/date-matchers.ts` | zajęte noce pokoju (rezerwacje i blokady) jako predykat dla `DateRangePicker` |
+| `lib/file-url.ts` | adres zdjęcia z `PhotoDto.url` z uwzględnieniem `VITE_API_BASE_URL` |
 
 ## Wydajność i jakość
 

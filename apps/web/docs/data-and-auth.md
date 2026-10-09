@@ -31,7 +31,7 @@ W developmencie Vite przekazuje `/api` do `localhost:3000` (proxy), a w produkcj
 | `refetchOnWindowFocus` | `true` w panelu (świeże rezerwacje), `false` w publicznym |
 | Klucze | z orval (`getListReservationsQueryKey(params)`) |
 
-- Po mutacji unieważniamy powiązane klucze (np. potwierdzenie rezerwacji → lista rezerwacji, szczegóły, kalendarz, pulpit). Każdy feature ma helper `invalidateReservations(queryClient)`.
+- Po mutacji unieważniamy powiązane klucze (np. potwierdzenie rezerwacji → lista rezerwacji, szczegóły, kalendarz, pulpit). Klucze orval mają postać `[ścieżka, params?]`, więc helpery w `shared/lib/invalidate.ts` (`invalidateReservations`, `invalidateRooms`, `invalidateAvailability`, `invalidateRates`, `invalidateProperty`) unieważniają po wzorcu ścieżki.
 - Optymistyczne aktualizacje tylko dla prostych, odwracalnych operacji (np. kolejność zdjęć). Rezerwacje zawsze czekają na odpowiedź serwera.
 - Paginacja: `placeholderData: keepPreviousData`.
 

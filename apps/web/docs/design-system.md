@@ -10,7 +10,7 @@
 | Wariant stylu | ✔ wariant A „Leśna przystań” / „Warm Cabin Hospitality” dla całej aplikacji (strona publiczna, panel, admin), M10 |
 | Tokeny kolorów, statusów, promieni, cieni | ✔ M10 |
 | Typografia | ✔ M10 (DM Sans) |
-| Komponenty bazowe | ✔ częściowo M10 (lista niżej), pozostałe dochodzą w M11–M13 wraz z widokami |
+| Komponenty bazowe | ✔ M10–M11 (lista niżej); kolejne dochodzą z widokami M12–M13 |
 | Stany S1 | ✔ M10: skeleton, pusty, błąd, 404, toasty, przyciski, pola |
 
 ## Źródła i rozbieżności w Stitch
@@ -135,9 +135,27 @@ Poziom 1 (karty) nie ma cienia: wyróżnia go biel `card` i ramka `border` na tl
 | `Toaster` | `toaster.tsx` | sonner; toasty wywołuje `notifySuccess` / `notifyError` z `shared/lib/notify.ts` |
 | `Logo` | `logo.tsx` | znak Klucznika (platforma); strona publiczna pokazuje markę obiektu |
 
-### Do zrealizowania z widokami (M11–M13)
+### Zrealizowane (M11)
 
-`Textarea`, `Select`, `Checkbox`, `Switch`, `Dialog`, `ConfirmDialog`, `Tabs`, `Table` / `DataTable` (sortowanie, paginacja z `meta`, skeleton, stan pusty), `Popover`, `Calendar` i `DateRangePicker` (`date-fns/locale/pl`, `weekStartsOn: 1`), `Command` (autocomplete gościa), `Tooltip`, `Pagination`, `MoneyInput`, `PhotoUploader`, `OccupancyCalendar` (O3), licznik gości (stepper z okrągłymi przyciskami 44 px). Każdy nowy komponent: tokeny z tej strony, Radix dla zachowań dostępności, cele dotykowe ≥ 44 px.
+| Komponent | Plik (`src/shared/ui`) | Uwagi |
+|-|-|-|
+| `Dialog` | `dialog.tsx` | Radix; nagłówek z tytułem i opisem, przewijana treść, stopka z akcjami; rozmiary `sm`–`xl` (promień 24 px) |
+| `ConfirmDialog` | `confirm-dialog.tsx` | potwierdzenie akcji nieodwracalnej (`tone="destructive"`), miejsce na pole „Powód” i alert błędu |
+| `Tabs` | `tabs.tsx` | podkreślenie aktywnej zakładki w `primary`, zakładki 48 px |
+| `Select` | `select.tsx` | Radix Select w wyglądzie pola (48 px), w `FormField` dostaje `id` i `aria-*` |
+| `Checkbox`, `Switch` | `checkbox.tsx`, `switch.tsx` | pole 20 px w wierszu 44 px; przełącznik z celem dotykowym 44 px |
+| `Textarea` | `textarea.tsx` | jak `Input`, wielowierszowe |
+| `Popover`, `Tooltip` | `popover.tsx`, `tooltip.tsx` | poziom 3 (`shadow-overlay`); tooltip na ciemnym tle `foreground` (wymaga `TooltipProvider` w `App`) |
+| `Calendar`, `DateRangePicker` | `calendar.tsx`, `date-range-picker.tsx` | react-day-picker (PL, poniedziałek); zakres `primary` / `accent`, dni niedostępne szare i przekreślone |
+| `DataTable`, `Pagination` | `data-table.tsx`, `pagination.tsx` | nagłówki `overline`, sortowanie (`aria-sort`), wiersze klikalne z klawiatury, aktywny wiersz z paskiem `primary`; „1–20 z 134”, rozmiar strony |
+| `MoneyInput`, `Stepper` | `money-input.tsx`, `stepper.tsx` | kwota w zł (przecinek dziesiętny) ↔ grosze; licznik z okrągłymi przyciskami − / + |
+| `PageHeader`, `SaveBar` | `page-header.tsx`, `save-bar.tsx` | h1 widoku z akcjami; przyklejony pasek niezapisanych zmian |
+
+Komponenty domenowe (w `features/`): `GuestAutocomplete` (cmdk, `guests`), `PhotoUploader` i `PhotoGallery` (dnd-kit, `photos`), `OccupancyGrid` (siatka pół-dni O3, `calendar`), `OccupancyChart` (słupki CSS, `dashboard`), `SeasonTimeline` (pasek roku, `pricing`), `StatusBadge` w kalendarzu jako paski statusów.
+
+### Do zrealizowania z widokami (M12–M13)
+
+Galeria i karty pokoi strony publicznej, licznik gości dorośli / dzieci tylko jeśli specyfikacja go przewidzi ([Q-28](../../../docs/open-questions.md#q-28)). Każdy nowy komponent: tokeny z tej strony, Radix dla zachowań dostępności, cele dotykowe ≥ 44 px.
 
 ### Przyciski
 
@@ -181,6 +199,7 @@ Arkusz `design/stitch/shared/components.png` (sekcje 01–07).
 | błąd | `ErrorState` | karta z górnym paskiem `destructive`, komunikat z mapy `code`, `requestId` dla 5xx, „Spróbuj ponownie” |
 | 404 | `NotFoundPage` (`app/pages`) | „404” (środkowe „0” w terakocie), „Nie znaleziono strony”, motyw drzew, przycisk do panelu lub logowania |
 | toasty | `Toaster` + `notifySuccess` / `notifyError` | biała karta z ramką w kolorze rodzaju, ikona, tytuł i opis; prawy dół (desktop), góra (telefon) |
+| kalendarz O3 | `OccupancyGrid` | `CONFIRMED` pełny `primary`, `PENDING` bursztynowe paski (`bg-pending-stripes`), `COMPLETED` slate, blokada szara kreskowana (`bg-hatched`), weekendy w odcieniu `sand`, dziś w `primary` |
 | widok w przygotowaniu | `ComingSoonPage` (`app/pages`) | `EmptyState` dla tras z kolejnych etapów |
 
 ## Układ obszarów

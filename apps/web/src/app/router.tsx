@@ -4,6 +4,7 @@ import { RedirectIfAuthenticated, RequireAuth, RequireRole, RootRedirect } from 
 import { ComingSoonPage } from './pages/coming-soon-page';
 import { FullPageLoader } from './pages/full-page-loader';
 import { NotFoundPage } from './pages/not-found-page';
+import { RoomIndexRedirect } from './pages/room-index-redirect';
 import { RouteErrorPage } from './pages/route-error-page';
 import { paths, routes } from './routes';
 
@@ -40,38 +41,53 @@ const areaRoutes: RouteObject[] = [
               Component: (await import('./layouts/owner-layout')).OwnerLayout,
             }),
             children: [
-              { index: true, element: <ComingSoonPage title="Pulpit" milestone="M11" /> },
+              {
+                index: true,
+                lazy: async () => ({
+                  Component: (await import('@/features/dashboard/pages/dashboard-page'))
+                    .DashboardPage,
+                }),
+              },
               {
                 path: paths.panel.calendar,
-                element: <ComingSoonPage title="Kalendarz" milestone="M11" />,
+                lazy: async () => ({
+                  Component: (await import('@/features/calendar/pages/calendar-page')).CalendarPage,
+                }),
               },
               {
-                path: paths.panel.reservations,
-                element: <ComingSoonPage title="Rezerwacje" milestone="M11" />,
-              },
-              {
+                // `/panel/rezerwacje` i `/panel/rezerwacje/:id` (drawer nad listą): jedna trasa,
+                // więc lista nie montuje się od nowa przy otwieraniu szczegółów.
                 path: paths.panel.reservation,
-                element: <ComingSoonPage title="Rezerwacje" milestone="M11" />,
+                lazy: async () => ({
+                  Component: (await import('@/features/reservations/pages/reservations-page'))
+                    .ReservationsPage,
+                }),
               },
               {
                 path: paths.panel.rooms,
-                element: <ComingSoonPage title="Pokoje i domki" milestone="M11" />,
+                lazy: async () => ({ Component: (await import('@/features/rooms')).RoomsPage }),
               },
               {
                 path: paths.panel.roomNew,
-                element: <ComingSoonPage title="Nowy pokój" milestone="M11" />,
+                lazy: async () => ({ Component: (await import('@/features/rooms')).NewRoomPage }),
+              },
+              {
+                path: `${paths.panel.rooms}/:roomId`,
+                element: <RoomIndexRedirect />,
               },
               {
                 path: paths.panel.room,
-                element: <ComingSoonPage title="Edycja pokoju" milestone="M11" />,
+                lazy: async () => ({ Component: (await import('@/features/rooms')).RoomEditPage }),
               },
               {
                 path: paths.panel.guests,
-                element: <ComingSoonPage title="Goście" milestone="M11" />,
+                lazy: async () => ({ Component: (await import('@/features/guests')).GuestsPage }),
               },
               {
                 path: paths.panel.settings,
-                element: <ComingSoonPage title="Ustawienia obiektu" milestone="M11" />,
+                lazy: async () => ({
+                  Component: (await import('@/features/property-settings')).PropertySettingsPage,
+                }),
               },
             ],
           },

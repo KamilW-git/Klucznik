@@ -16,7 +16,7 @@
 | M8 | API | Publiczny proces rezerwacji i token gościa | gotowe |
 | M9 | API | Zdarzenia, kolejka e-maili, szablony, scheduler | gotowe |
 | M10 | UI | Setup frontendu, design system, logowanie | gotowe |
-| M11 | UI | Panel Gospodarza | – |
+| M11 | UI | Panel Gospodarza | gotowe |
 | M12 | UI | Strona publiczna i proces rezerwacji | – |
 | M13 | UI | Panel admina | – |
 | M14 | DOCS/INFRA | Testy do progów, README, demo, `v1.0.0` | – |
@@ -116,12 +116,12 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M11: Panel Gospodarza [UI]
 
-- [ ] [UI] `OwnerLayout`, przełącznik obiektu, pulpit O2: [properties.md](features/properties.md)
-- [ ] [UI] Kalendarz O3 + dialog blokady: [availability.md](features/availability.md)
-- [ ] [UI] Rezerwacje O4 (lista, filtry, drawer, akcje, konflikt wersji): [reservations.md](features/reservations.md)
-- [ ] [UI] Rezerwacja ręczna O5: [reservations.md](features/reservations.md)
-- [ ] [UI] Pokoje O6, edycja pokoju O7 (informacje, zdjęcia, cennik, blokady): [rooms.md](features/rooms.md), [photos.md](features/photos.md), [pricing.md](features/pricing.md)
-- [ ] [UI] Ustawienia obiektu O8, goście: [properties.md](features/properties.md), [guests.md](features/guests.md)
+- [x] [UI] `OwnerLayout`, przełącznik obiektu, pulpit O2: [properties.md](features/properties.md)
+- [x] [UI] Kalendarz O3 + dialog blokady: [availability.md](features/availability.md)
+- [x] [UI] Rezerwacje O4 (lista, filtry, drawer, akcje, konflikt wersji): [reservations.md](features/reservations.md)
+- [x] [UI] Rezerwacja ręczna O5: [reservations.md](features/reservations.md)
+- [x] [UI] Pokoje O6, edycja pokoju O7 (informacje, zdjęcia, cennik, blokady): [rooms.md](features/rooms.md), [photos.md](features/photos.md), [pricing.md](features/pricing.md)
+- [x] [UI] Ustawienia obiektu O8, goście: [properties.md](features/properties.md), [guests.md](features/guests.md)
 
 ## M12: Strona publiczna [UI]
 

@@ -70,11 +70,11 @@ Implementacja: `apps/api/src/modules/pricing/domain/` (`calculate-price.ts`, `mi
 
 Ekrany: O7 zakładka „Cennik”: [screens.md](../../apps/web/docs/screens.md).
 
-- [ ] Pola „Cena bazowa za noc” i „Minimalna liczba nocy” (zapis przez `PATCH /rooms/:id`).
-- [ ] Tabela stawek („Nazwa”, „Od”, „Do”, „Cena za noc”, „Min. nocy”, akcje); „+ Dodaj stawkę sezonową” w dialogu.
-- [ ] Pasek roku z sezonami w kolorach (wizualizacja zakresów).
-- [ ] Błąd `SEASONAL_RATE_OVERLAP` → „Ta stawka nakłada się na stawkę „{conflictingRateName}””.
-- [ ] Daty „Od–Do” w UI oznaczają noce włącznie (podpowiedź pod polem: „ostatnia noc objęta stawką”).
+- [x] Pola „Cena bazowa za noc” i „Minimalna liczba nocy” (zapis przez `PATCH /rooms/:id`).
+- [x] Tabela stawek („Nazwa”, „Od”, „Do”, „Cena za noc”, „Min. nocy”, akcje); „+ Dodaj stawkę sezonową” w dialogu.
+- [x] Pasek roku z sezonami w kolorach (wizualizacja zakresów).
+- [x] Błąd `SEASONAL_RATE_OVERLAP` → „Ta stawka nakłada się na stawkę „{conflictingRateName}””.
+- [x] Daty „Od–Do” w UI oznaczają noce włącznie (podpowiedź pod polem: „ostatnia noc objęta stawką”).
 
 ## 8. Testy
 
@@ -98,6 +98,6 @@ Ekrany: O7 zakładka „Cennik”: [screens.md](../../apps/web/docs/screens.md).
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M6) |
-| UI | Nie rozpoczęto |
+| UI | Gotowe (M11) |
 
 Brak otwartych kwestii.

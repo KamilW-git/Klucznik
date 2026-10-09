@@ -20,14 +20,14 @@ Statusy: `brak projektu` (ekran ze Stitch nie dostarczony), `projekt` (jest plik
 | ID | Ekran | Route | Funkcjonalność | Plik Stitch | Etap | Status |
 |-|-|-|-|-|-|-|
 | O1 | Logowanie | `/logowanie` | [auth.md](../../../docs/features/auth.md) | `owner/01-login.png` | M10 | gotowe |
-| O2 | Pulpit | `/panel` | [properties.md](../../../docs/features/properties.md), [reservations.md](../../../docs/features/reservations.md) | `owner/02-dashboard.png` | M11 | projekt |
-| O3 | Kalendarz obłożenia | `/panel/kalendarz` | [availability.md](../../../docs/features/availability.md) | `owner/03-calendar.png` | M11 | projekt |
-| O4 | Rezerwacje: lista i szczegóły | `/panel/rezerwacje`, `/panel/rezerwacje/:id` | [reservations.md](../../../docs/features/reservations.md) | `owner/04-reservations.png` | M11 | projekt |
-| O5 | Nowa rezerwacja ręczna (dialog) | dialog z O2, O3, O4 | [reservations.md](../../../docs/features/reservations.md), [guests.md](../../../docs/features/guests.md), [availability.md](../../../docs/features/availability.md) | `owner/05-manual-reservation.png` | M11 | projekt |
-| O6 | Lista pokoi | `/panel/pokoje` | [rooms.md](../../../docs/features/rooms.md) | `owner/06-rooms.png` | M11 | projekt |
-| O7 | Edycja pokoju (informacje, zdjęcia, cennik, blokady) | `/panel/pokoje/:roomId/:tab`, `/panel/pokoje/nowy` | [rooms.md](../../../docs/features/rooms.md), [photos.md](../../../docs/features/photos.md), [pricing.md](../../../docs/features/pricing.md), [availability.md](../../../docs/features/availability.md) | `owner/07-room-edit-photos.png` (brak `07-room-edit.png`: pozostałe zakładki według wzorca zdjęć) | M11 | projekt |
-| O8 | Ustawienia obiektu | `/panel/ustawienia` | [properties.md](../../../docs/features/properties.md), [photos.md](../../../docs/features/photos.md) | `owner/08-property-settings.png` | M11 | projekt |
-| – | Goście | `/panel/goscie` | [guests.md](../../../docs/features/guests.md) | brak: wzorzec tabeli z O4 | M11 | brak projektu |
+| O2 | Pulpit | `/panel` | [properties.md](../../../docs/features/properties.md), [reservations.md](../../../docs/features/reservations.md) | `owner/02-dashboard.png` | M11 | gotowe |
+| O3 | Kalendarz obłożenia | `/panel/kalendarz` | [availability.md](../../../docs/features/availability.md) | `owner/03-calendar.png` | M11 | gotowe |
+| O4 | Rezerwacje: lista i szczegóły | `/panel/rezerwacje`, `/panel/rezerwacje/:id` | [reservations.md](../../../docs/features/reservations.md) | `owner/04-reservations.png` | M11 | gotowe |
+| O5 | Nowa rezerwacja ręczna (dialog) | dialog z O2, O3, O4 | [reservations.md](../../../docs/features/reservations.md), [guests.md](../../../docs/features/guests.md), [availability.md](../../../docs/features/availability.md) | `owner/05-manual-reservation.png` | M11 | gotowe |
+| O6 | Lista pokoi | `/panel/pokoje` | [rooms.md](../../../docs/features/rooms.md) | `owner/06-rooms.png` | M11 | gotowe |
+| O7 | Edycja pokoju (informacje, zdjęcia, cennik, blokady) | `/panel/pokoje/:roomId/:tab`, `/panel/pokoje/nowy` | [rooms.md](../../../docs/features/rooms.md), [photos.md](../../../docs/features/photos.md), [pricing.md](../../../docs/features/pricing.md), [availability.md](../../../docs/features/availability.md) | `owner/07-room-edit-photos.png` (brak `07-room-edit.png`: pozostałe zakładki według wzorca zdjęć) | M11 | gotowe |
+| O8 | Ustawienia obiektu | `/panel/ustawienia` | [properties.md](../../../docs/features/properties.md), [photos.md](../../../docs/features/photos.md) | `owner/08-property-settings.png` | M11 | gotowe |
+| – | Goście | `/panel/goscie` | [guests.md](../../../docs/features/guests.md) | brak: wzorzec tabeli z O4 | M11 | gotowe (bez projektu) |
 
 ## Administrator
 
