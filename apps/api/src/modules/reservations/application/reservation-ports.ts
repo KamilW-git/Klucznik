@@ -44,6 +44,37 @@ export interface NewReservation {
   guestNotes: string | null;
   internalNotes: string | null;
   confirmedAt: Date | null;
+  /** BR-07: tylko `PENDING`. */
+  expiresAt: Date | null;
+  /** SHA-256 tokenu gościa; surowy token tylko w linku z e-maila. */
+  guestAccessTokenHash: string | null;
+}
+
+/** Rezerwacja widziana przez gościa z linku `/r/:token` (bez danych wewnętrznych). */
+export interface GuestReservationRecord {
+  id: string;
+  number: string;
+  status: ReservationStatus;
+  checkIn: CalendarDate;
+  checkOut: CalendarDate;
+  guestsCount: number;
+  totalPrice: number;
+  currency: string;
+  guestNotes: string | null;
+  cancelledAt: Date | null;
+  room: { id: string; name: string };
+  property: {
+    name: string;
+    slug: string;
+    phone: string | null;
+    contactEmail: string | null;
+    street: string | null;
+    postalCode: string | null;
+    city: string | null;
+    checkInTime: string;
+    checkOutTime: string;
+    cancellationDeadlineDays: number;
+  };
 }
 
 export interface ReservationChanges {
@@ -113,6 +144,7 @@ export interface ReservationsRepository {
   /** Filtr właściciela w zapytaniu (BR-12); rezerwacje usuniętych obiektów → `null`. */
   findState(id: string, scope: AccessScope): Promise<ReservationState | null>;
   findDetail(id: string, scope: AccessScope): Promise<ReservationDetail | null>;
+  findByGuestTokenHash(tokenHash: string): Promise<GuestReservationRecord | null>;
   list(filter: ReservationsFilter): Promise<{ items: ReservationListItem[]; total: number }>;
   /**
    * Zapis warunkowy `WHERE id AND version [AND status]` z `version + 1` (BR-06, BR-11).

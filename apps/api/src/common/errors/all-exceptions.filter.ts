@@ -23,6 +23,7 @@ import {
   type GenericErrorCode,
 } from './error-http-map';
 import { ValidationFailedException } from './validation';
+import { maskSecretsInUrl } from '../http/mask-url';
 
 interface MappedError {
   status: number;
@@ -62,7 +63,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     if (mapped.status >= 500) {
       const stack = exception instanceof Error ? exception.stack : String(exception);
-      this.logger.error(`[${req.requestId}] ${req.method} ${req.originalUrl} failed`, stack);
+      this.logger.error(
+        `[${req.requestId}] ${req.method} ${maskSecretsInUrl(req.originalUrl)} failed`,
+        stack,
+      );
     }
 
     if (res.headersSent) {

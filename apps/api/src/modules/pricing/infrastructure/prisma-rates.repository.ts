@@ -53,6 +53,22 @@ export class PrismaRatesRepository extends PrismaRepository implements RatesRepo
     return rows.map(toRate);
   }
 
+  async listForRooms(
+    roomIds: readonly string[],
+    nights: { from: CalendarDate; to: CalendarDate },
+  ): Promise<SeasonalRate[]> {
+    const rows = await this.db.seasonalRate.findMany({
+      where: {
+        roomId: { in: [...roomIds] },
+        dateFrom: { lte: toDbDate(nights.to) },
+        dateTo: { gte: toDbDate(nights.from) },
+      },
+      orderBy: [{ dateFrom: 'asc' }, { id: 'asc' }],
+      select: RATE_SELECT,
+    });
+    return rows.map(toRate);
+  }
+
   async findById(id: string): Promise<SeasonalRate | null> {
     const row = await this.db.seasonalRate.findUnique({ where: { id }, select: RATE_SELECT });
     return row && toRate(row);

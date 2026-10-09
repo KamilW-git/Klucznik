@@ -22,6 +22,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { GuestsModule } from './modules/guests/guests.module';
 import { HealthModule } from './modules/health/health.module';
 import { PhotosModule } from './modules/photos/photos.module';
+import { PublicModule } from './modules/public/public.module';
 import { PricingModule } from './modules/pricing/pricing.module';
 import { PropertiesModule } from './modules/properties/properties.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
@@ -71,6 +72,7 @@ import { UsersModule } from './modules/users/users.module';
     AvailabilityModule,
     GuestsModule,
     ReservationsModule,
+    PublicModule,
     HealthModule,
   ],
   providers: [

@@ -21,6 +21,11 @@ export interface RatesRepository {
     roomId: string,
     nights?: { from?: CalendarDate; to?: CalendarDate },
   ): Promise<SeasonalRate[]>;
+  /** Stawki wielu pokoi przecinające `nights` jednym zapytaniem. */
+  listForRooms(
+    roomIds: readonly string[],
+    nights: { from: CalendarDate; to: CalendarDate },
+  ): Promise<SeasonalRate[]>;
   findById(id: string): Promise<SeasonalRate | null>;
   /** Naruszenie `seasonal_rates_no_overlap` (wyścig) → `SeasonalRateOverlapError` (BR-09). */
   create(roomId: string, data: SeasonalRateData): Promise<SeasonalRate>;

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import type { CalendarDate } from '../../../common/domain/calendar-date';
 import type { InclusiveDateRange } from '../../../common/domain/date-range';
+import type { Prisma } from '../../../infrastructure/prisma/generated/client';
 import { fromDbDate, toDbDate } from '../../../infrastructure/prisma/prisma-dates';
 import { PrismaRepository } from '../../../infrastructure/prisma/prisma.repository';
 import type {
@@ -13,6 +14,19 @@ import type {
 import { BLOCK_SELECT, toBlock } from './prisma-blocks.repository';
 
 const ACTIVE_STATUSES = ['PENDING', 'CONFIRMED'] as const;
+
+const BOOKABLE_ROOM_SELECT = {
+  id: true,
+  propertyId: true,
+  name: true,
+  capacity: true,
+  basePricePerNight: true,
+  minNights: true,
+  isActive: true,
+  deletedAt: true,
+  property: { select: { isActive: true, deletedAt: true, currency: true } },
+} as const satisfies Prisma.RoomSelect;
+
 const CALENDAR_STATUSES = ['PENDING', 'CONFIRMED', 'COMPLETED'] as const;
 
 @Injectable()
@@ -21,18 +35,19 @@ export class PrismaAvailabilityRepository
   implements AvailabilityRepository
 {
   findRoom(roomId: string): Promise<BookableRoom | null> {
-    return this.db.room.findUnique({
-      where: { id: roomId },
-      select: {
-        id: true,
-        propertyId: true,
-        capacity: true,
-        basePricePerNight: true,
-        minNights: true,
+    return this.db.room.findUnique({ where: { id: roomId }, select: BOOKABLE_ROOM_SELECT });
+  }
+
+  findBookableRooms(propertyId: string): Promise<BookableRoom[]> {
+    return this.db.room.findMany({
+      where: {
+        propertyId,
         isActive: true,
-        deletedAt: true,
-        property: { select: { isActive: true, deletedAt: true, currency: true } },
+        deletedAt: null,
+        property: { isActive: true, deletedAt: null },
       },
+      orderBy: [{ name: 'asc' }, { id: 'asc' }],
+      select: BOOKABLE_ROOM_SELECT,
     });
   }
 
@@ -41,21 +56,21 @@ export class PrismaAvailabilityRepository
   }
 
   async activeReservations(
-    roomId: string,
+    roomIds: readonly string[],
     nights: InclusiveDateRange,
     excludeReservationId?: string,
   ): Promise<ActiveReservation[]> {
     // BR-01: pobyt [checkIn, checkOut) ma noc w [from, to], gdy checkIn ≤ to i checkOut > from.
     const rows = await this.db.reservation.findMany({
       where: {
-        roomId,
+        roomId: { in: [...roomIds] },
         status: { in: [...ACTIVE_STATUSES] },
         checkIn: { lte: toDbDate(nights.to) },
         checkOut: { gt: toDbDate(nights.from) },
         ...(excludeReservationId && { id: { not: excludeReservationId } }),
       },
       orderBy: [{ checkIn: 'asc' }, { number: 'asc' }],
-      select: { id: true, number: true, checkIn: true, checkOut: true },
+      select: { id: true, roomId: true, number: true, checkIn: true, checkOut: true },
     });
     return rows.map((row) => ({
       ...row,

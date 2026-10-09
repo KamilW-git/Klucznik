@@ -53,3 +53,14 @@ export class VersionConflictError extends DomainError {
     super('Ktoś w międzyczasie zmienił tę rezerwację – odśwież dane.');
   }
 }
+
+/** BR-08: termin bezpłatnego anulowania przez gościa minął (422); `details.cancellableUntil` dla UI. */
+export class CancellationDeadlinePassedError extends DomainError {
+  readonly code = 'CANCELLATION_DEADLINE_PASSED';
+
+  constructor(cancellableUntil: string) {
+    super('Termin bezpłatnego anulowania minął – skontaktuj się z gospodarzem.', {
+      cancellableUntil,
+    });
+  }
+}

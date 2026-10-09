@@ -11,6 +11,7 @@ import type {
   NightPriceRecord,
   ReservationChanges,
   ReservationDetail,
+  GuestReservationRecord,
   ReservationEventRecord,
   ReservationsFilter,
   ReservationsRepository,
@@ -141,6 +142,40 @@ export class PrismaReservationsRepository
         createdAt: event.createdAt,
       })),
     };
+  }
+
+  async findByGuestTokenHash(tokenHash: string): Promise<GuestReservationRecord | null> {
+    const row = await this.db.reservation.findUnique({
+      where: { guestAccessTokenHash: tokenHash },
+      select: {
+        id: true,
+        number: true,
+        status: true,
+        checkIn: true,
+        checkOut: true,
+        guestsCount: true,
+        totalPrice: true,
+        currency: true,
+        guestNotes: true,
+        cancelledAt: true,
+        room: { select: { id: true, name: true } },
+        property: {
+          select: {
+            name: true,
+            slug: true,
+            phone: true,
+            contactEmail: true,
+            street: true,
+            postalCode: true,
+            city: true,
+            checkInTime: true,
+            checkOutTime: true,
+            cancellationDeadlineDays: true,
+          },
+        },
+      },
+    });
+    return row && { ...row, checkIn: fromDbDate(row.checkIn), checkOut: fromDbDate(row.checkOut) };
   }
 
   async list(filter: ReservationsFilter): Promise<{ items: ReservationListItem[]; total: number }> {

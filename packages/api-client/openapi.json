@@ -179,6 +179,48 @@
         ],
         "type": "object"
       },
+      "AvailabilityResultDto": {
+        "properties": {
+          "checkIn": {
+            "example": "2026-08-14",
+            "format": "date",
+            "type": "string"
+          },
+          "checkOut": {
+            "example": "2026-08-18",
+            "format": "date",
+            "type": "string"
+          },
+          "currency": {
+            "example": "PLN",
+            "type": "string"
+          },
+          "guests": {
+            "example": 2,
+            "type": "number"
+          },
+          "nights": {
+            "example": 4,
+            "type": "number"
+          },
+          "rooms": {
+            "description": "Wszystkie aktywne pokoje (Q-17)",
+            "items": {
+              "$ref": "#/components/schemas/RoomAvailabilityDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "checkIn",
+          "checkOut",
+          "nights",
+          "guests",
+          "currency",
+          "rooms"
+        ],
+        "type": "object"
+      },
       "CalendarBlockDto": {
         "properties": {
           "dateFrom": {
@@ -593,6 +635,46 @@
           "street",
           "postalCode",
           "city"
+        ],
+        "type": "object"
+      },
+      "CreatePublicReservationDto": {
+        "properties": {
+          "checkIn": {
+            "example": "2026-08-14",
+            "format": "date",
+            "type": "string"
+          },
+          "checkOut": {
+            "example": "2026-08-18",
+            "format": "date",
+            "type": "string"
+          },
+          "guest": {
+            "$ref": "#/components/schemas/PublicGuestInputDto"
+          },
+          "guestNotes": {
+            "maxLength": 2000,
+            "nullable": true,
+            "type": "string"
+          },
+          "guestsCount": {
+            "example": 2,
+            "maximum": 99,
+            "minimum": 1,
+            "type": "number"
+          },
+          "roomId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "roomId",
+          "checkIn",
+          "checkOut",
+          "guestsCount",
+          "guest"
         ],
         "type": "object"
       },
@@ -1489,6 +1571,463 @@
         ],
         "type": "object"
       },
+      "PublicCancelReservationDto": {
+        "properties": {
+          "reason": {
+            "example": "Zmiana planów",
+            "maxLength": 500,
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PublicGuestInputDto": {
+        "properties": {
+          "email": {
+            "description": "Wymagany online (Q-03)",
+            "example": "anna.kowalska@example.com",
+            "type": "string"
+          },
+          "firstName": {
+            "example": "Anna",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "example": "Kowalska",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "phone": {
+            "example": "+48 600 100 200",
+            "maxLength": 30,
+            "minLength": 3,
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "phone"
+        ],
+        "type": "object"
+      },
+      "PublicNightPriceDto": {
+        "properties": {
+          "date": {
+            "example": "2026-08-14",
+            "format": "date",
+            "type": "string"
+          },
+          "price": {
+            "description": "Grosze",
+            "example": 37000,
+            "type": "number"
+          }
+        },
+        "required": [
+          "date",
+          "price"
+        ],
+        "type": "object"
+      },
+      "PublicOccupancyDto": {
+        "properties": {
+          "from": {
+            "format": "date",
+            "type": "string"
+          },
+          "rooms": {
+            "items": {
+              "$ref": "#/components/schemas/RoomOccupancyDto"
+            },
+            "type": "array"
+          },
+          "to": {
+            "format": "date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "rooms"
+        ],
+        "type": "object"
+      },
+      "PublicPropertyDto": {
+        "properties": {
+          "cancellationDeadlineDays": {
+            "description": "BR-08",
+            "example": 7,
+            "type": "number"
+          },
+          "checkInTime": {
+            "example": "15:00",
+            "type": "string"
+          },
+          "checkOutTime": {
+            "example": "11:00",
+            "type": "string"
+          },
+          "city": {
+            "example": "Mikołajki",
+            "nullable": true,
+            "type": "string"
+          },
+          "contactEmail": {
+            "nullable": true,
+            "type": "string"
+          },
+          "currency": {
+            "example": "PLN",
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "example": "Zielona Zagroda",
+            "type": "string"
+          },
+          "pendingExpiryHours": {
+            "description": "BR-07",
+            "example": 48,
+            "type": "number"
+          },
+          "phone": {
+            "nullable": true,
+            "type": "string"
+          },
+          "photos": {
+            "items": {
+              "$ref": "#/components/schemas/PhotoDto"
+            },
+            "type": "array"
+          },
+          "postalCode": {
+            "example": "11-730",
+            "nullable": true,
+            "type": "string"
+          },
+          "rooms": {
+            "description": "Tylko pokoje aktywne",
+            "items": {
+              "$ref": "#/components/schemas/PublicRoomDto"
+            },
+            "type": "array"
+          },
+          "slug": {
+            "example": "zielona-zagroda",
+            "type": "string"
+          },
+          "street": {
+            "example": "Polna 1",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "description",
+          "street",
+          "postalCode",
+          "city",
+          "phone",
+          "contactEmail",
+          "checkInTime",
+          "checkOutTime",
+          "cancellationDeadlineDays",
+          "pendingExpiryHours",
+          "currency",
+          "photos",
+          "rooms"
+        ],
+        "type": "object"
+      },
+      "PublicReservationCreatedDto": {
+        "properties": {
+          "checkIn": {
+            "format": "date",
+            "type": "string"
+          },
+          "checkOut": {
+            "format": "date",
+            "type": "string"
+          },
+          "currency": {
+            "example": "PLN",
+            "type": "string"
+          },
+          "expiresAt": {
+            "description": "BR-07: bez potwierdzenia rezerwacja wygasa",
+            "format": "date-time",
+            "type": "string"
+          },
+          "guestEmail": {
+            "description": "Tu trafi link do rezerwacji",
+            "example": "anna.kowalska@example.com",
+            "type": "string"
+          },
+          "guestsCount": {
+            "example": 2,
+            "type": "number"
+          },
+          "nights": {
+            "example": 4,
+            "type": "number"
+          },
+          "number": {
+            "example": "KL-2026-000123",
+            "type": "string"
+          },
+          "room": {
+            "example": {
+              "name": "Domek Sosna"
+            },
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "PENDING"
+            ],
+            "type": "string"
+          },
+          "totalPrice": {
+            "description": "Grosze",
+            "example": 164000,
+            "type": "number"
+          }
+        },
+        "required": [
+          "number",
+          "status",
+          "room",
+          "checkIn",
+          "checkOut",
+          "nights",
+          "guestsCount",
+          "totalPrice",
+          "currency",
+          "expiresAt",
+          "guestEmail"
+        ],
+        "type": "object"
+      },
+      "PublicReservationDto": {
+        "properties": {
+          "canCancel": {
+            "description": "BR-08: czy gość może teraz anulować",
+            "type": "boolean"
+          },
+          "cancellableUntil": {
+            "description": "BR-08: ostatni dzień bezpłatnego anulowania (PENDING/CONFIRMED)",
+            "format": "date",
+            "nullable": true,
+            "type": "string"
+          },
+          "cancelledAt": {
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "checkIn": {
+            "format": "date",
+            "type": "string"
+          },
+          "checkOut": {
+            "format": "date",
+            "type": "string"
+          },
+          "currency": {
+            "example": "PLN",
+            "type": "string"
+          },
+          "guestNotes": {
+            "nullable": true,
+            "type": "string"
+          },
+          "guestsCount": {
+            "example": 2,
+            "type": "number"
+          },
+          "nights": {
+            "example": 4,
+            "type": "number"
+          },
+          "number": {
+            "example": "KL-2026-000123",
+            "type": "string"
+          },
+          "property": {
+            "$ref": "#/components/schemas/PublicReservationPropertyDto"
+          },
+          "room": {
+            "$ref": "#/components/schemas/PublicReservationRoomDto"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReservationStatus"
+              }
+            ]
+          },
+          "totalPrice": {
+            "description": "Grosze",
+            "example": 164000,
+            "type": "number"
+          }
+        },
+        "required": [
+          "number",
+          "status",
+          "property",
+          "room",
+          "checkIn",
+          "checkOut",
+          "nights",
+          "guestsCount",
+          "totalPrice",
+          "currency",
+          "guestNotes",
+          "canCancel",
+          "cancellableUntil",
+          "cancelledAt"
+        ],
+        "type": "object"
+      },
+      "PublicReservationPropertyDto": {
+        "properties": {
+          "checkInTime": {
+            "example": "15:00",
+            "type": "string"
+          },
+          "checkOutTime": {
+            "example": "11:00",
+            "type": "string"
+          },
+          "city": {
+            "nullable": true,
+            "type": "string"
+          },
+          "contactEmail": {
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "nullable": true,
+            "type": "string"
+          },
+          "postalCode": {
+            "nullable": true,
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "street": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "phone",
+          "contactEmail",
+          "street",
+          "postalCode",
+          "city",
+          "checkInTime",
+          "checkOutTime"
+        ],
+        "type": "object"
+      },
+      "PublicReservationRoomDto": {
+        "properties": {
+          "coverPhoto": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhotoDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "name": {
+            "example": "Domek Sosna",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "coverPhoto"
+        ],
+        "type": "object"
+      },
+      "PublicRoomDto": {
+        "properties": {
+          "capacity": {
+            "example": 4,
+            "type": "number"
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "minNights": {
+            "description": "Minimalny pobyt poza sezonem (BR-03)",
+            "example": 2,
+            "type": "number"
+          },
+          "name": {
+            "example": "Domek Sosna",
+            "type": "string"
+          },
+          "photos": {
+            "items": {
+              "$ref": "#/components/schemas/PhotoDto"
+            },
+            "type": "array"
+          },
+          "priceFrom": {
+            "description": "Cena „od” za noc w groszach",
+            "example": 37000,
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "capacity",
+          "minNights",
+          "priceFrom",
+          "photos"
+        ],
+        "type": "object"
+      },
+      "PublicUnavailableReason": {
+        "enum": [
+          "OCCUPIED",
+          "CAPACITY_EXCEEDED",
+          "MIN_NIGHTS_NOT_MET"
+        ],
+        "type": "string"
+      },
       "QuoteConflictDto": {
         "properties": {
           "dateFrom": {
@@ -1977,6 +2516,58 @@
         ],
         "type": "string"
       },
+      "RoomAvailabilityDto": {
+        "properties": {
+          "available": {
+            "type": "boolean"
+          },
+          "averagePricePerNight": {
+            "description": "Zaokrąglona",
+            "example": 41000,
+            "nullable": true,
+            "type": "number"
+          },
+          "breakdown": {
+            "items": {
+              "$ref": "#/components/schemas/PublicNightPriceDto"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "minNights": {
+            "description": "BR-03: dla nocy przyjazdu",
+            "example": 3,
+            "type": "number"
+          },
+          "room": {
+            "$ref": "#/components/schemas/PublicRoomDto"
+          },
+          "totalPrice": {
+            "description": "Tylko dostępne",
+            "example": 164000,
+            "nullable": true,
+            "type": "number"
+          },
+          "unavailableReason": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicUnavailableReason"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "room",
+          "available",
+          "unavailableReason",
+          "minNights",
+          "totalPrice",
+          "averagePricePerNight",
+          "breakdown"
+        ],
+        "type": "object"
+      },
       "RoomDto": {
         "properties": {
           "basePricePerNight": {
@@ -2074,6 +2665,30 @@
         },
         "required": [
           "data"
+        ],
+        "type": "object"
+      },
+      "RoomOccupancyDto": {
+        "properties": {
+          "occupiedNights": {
+            "example": [
+              "2026-08-14",
+              "2026-08-15"
+            ],
+            "items": {
+              "format": "date",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "roomId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "roomId",
+          "occupiedNights"
         ],
         "type": "object"
       },
@@ -4103,6 +4718,435 @@
         "summary": "Dodaje pokój do obiektu",
         "tags": [
           "rooms"
+        ]
+      }
+    },
+    "/api/v1/public/properties/{slug}": {
+      "get": {
+        "operationId": "Public_getProperty",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicPropertyDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "RATE_LIMITED"
+          }
+        },
+        "summary": "Strona obiektu z pokojami",
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/api/v1/public/properties/{slug}/availability": {
+      "get": {
+        "operationId": "Public_availability",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "checkIn",
+            "required": true,
+            "schema": {
+              "example": "2026-08-14",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Dzień wyjazdu (`[)`)",
+            "in": "query",
+            "name": "checkOut",
+            "required": true,
+            "schema": {
+              "example": "2026-08-18",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "guests",
+            "required": true,
+            "schema": {
+              "example": 2,
+              "maximum": 99,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "INVALID_STAY_DATES (BR-04)"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "RATE_LIMITED"
+          }
+        },
+        "summary": "Dostępność i ceny wszystkich aktywnych pokoi w terminie",
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/api/v1/public/properties/{slug}/occupancy": {
+      "get": {
+        "operationId": "Public_occupancy",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": true,
+            "schema": {
+              "example": "2026-08-01",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Włącznie, ≥ from, maks. 93 dni",
+            "in": "query",
+            "name": "to",
+            "required": true,
+            "schema": {
+              "example": "2026-08-31",
+              "format": "date",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicOccupancyDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "RATE_LIMITED"
+          }
+        },
+        "summary": "Zajęte noce aktywnych pokoi (mini-kalendarz, Q-17)",
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/api/v1/public/properties/{slug}/reservations": {
+      "post": {
+        "operationId": "Public_createReservation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePublicReservationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicReservationCreatedDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "RESERVATION_OVERLAP (BR-01)"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "CAPACITY_EXCEEDED, MIN_NIGHTS_NOT_MET, INVALID_STAY_DATES, ROOM_NOT_BOOKABLE"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "RATE_LIMITED"
+          }
+        },
+        "summary": "Prośba o rezerwację (PENDING, link w e-mailu)",
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/api/v1/public/reservations/{token}": {
+      "get": {
+        "operationId": "Public_getReservation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicReservationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "RATE_LIMITED"
+          }
+        },
+        "summary": "Rezerwacja gościa z linku",
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/api/v1/public/reservations/{token}/cancel": {
+      "post": {
+        "operationId": "Public_cancelReservation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicCancelReservationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicReservationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "INVALID_STATUS_TRANSITION (BR-06)"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "CANCELLATION_DEADLINE_PASSED z `cancellableUntil` (BR-08)"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": "RATE_LIMITED"
+          }
+        },
+        "summary": "Anulowanie przez gościa (BR-08)",
+        "tags": [
+          "public"
         ]
       }
     },

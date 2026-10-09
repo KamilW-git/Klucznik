@@ -24,37 +24,39 @@ Gość rezerwuje bezpośrednio u gospodarza, bez konta i bez prowizji pośrednik
 
 ## 5. Kontrakt API
 
-Wszystkie endpointy są publiczne (`@Public()`), z limitami z [security.md](../architecture/security.md#rate-limiting). Nieaktywny lub usunięty obiekt → 404.
+Wszystkie endpointy są publiczne (`@Public()`), z limitami z [security.md](../architecture/security.md#rate-limiting) (`GET` 60/min, `POST` 5/min na IP → 429 `RATE_LIMITED`). Nieaktywny lub usunięty obiekt → 404.
 
 | Metoda | Ścieżka | Request | Response | Błędy |
 |-|-|-|-|-|
 | `GET` | `/public/properties/:slug` | – | `200` `PublicPropertyDto` | `404` |
-| `GET` | `/public/properties/:slug/availability` | query: `checkIn`, `checkOut`, `guests` | `200` `AvailabilityResultDto` | `422 INVALID_STAY_DATES` |
+| `GET` | `/public/properties/:slug/availability` | query: `checkIn`, `checkOut`, `guests` (1–99) | `200` `AvailabilityResultDto` | `400`, `404`, `422 INVALID_STAY_DATES` |
 | `GET` | `/public/properties/:slug/occupancy` | query: `from`, `to` (maks. 93 dni) | `200` `PublicOccupancyDto` | `400` ([Q-17](../open-questions.md#q-17)) |
-| `POST` | `/public/properties/:slug/reservations` | `CreatePublicReservationDto` | `201` `PublicReservationCreatedDto` (**bez** `Location`) | `409 RESERVATION_OVERLAP`, `422 …` |
+| `POST` | `/public/properties/:slug/reservations` | `CreatePublicReservationDto` | `201` `PublicReservationCreatedDto` (**bez** `Location`) | `404` (pokój innego obiektu), `409 RESERVATION_OVERLAP`, `422 CAPACITY_EXCEEDED`/`MIN_NIGHTS_NOT_MET`/`INVALID_STAY_DATES`/`ROOM_NOT_BOOKABLE` |
 | `GET` | `/public/reservations/:token` | – | `200` `PublicReservationDto` | `404` |
-| `POST` | `/public/reservations/:token/cancel` | `{ reason? }` (≤ 500) | `200` `PublicReservationDto` | `422 CANCELLATION_DEADLINE_PASSED`, `409 INVALID_STATUS_TRANSITION` |
+| `POST` | `/public/reservations/:token/cancel` | `{ reason? }` (≤ 500) | `200` `PublicReservationDto` | `404`, `422 CANCELLATION_DEADLINE_PASSED` (`details.cancellableUntil`), `409 INVALID_STATUS_TRANSITION` |
 
 **DTO**
 
 - `PublicPropertyDto`: `name`, `slug`, `description`, `street`, `postalCode`, `city`, `phone`, `contactEmail`, `checkInTime`, `checkOutTime`, `cancellationDeadlineDays`, `pendingExpiryHours`, `currency`, `photos: PhotoDto[]`, `rooms: PublicRoomDto[]`. Bez `ownerId` i bez danych wewnętrznych.
 - `PublicRoomDto`: `id`, `name`, `description`, `capacity`, `minNights`, `priceFrom` (min. z ceny bazowej i stawek z `dateTo ≥ today`), `photos`. Tylko pokoje aktywne.
-- `AvailabilityResultDto`: `{ checkIn, checkOut, nights, guests, rooms: [{ room: PublicRoomDto, available, unavailableReason?: 'OCCUPIED' | 'CAPACITY_EXCEEDED' | 'MIN_NIGHTS_NOT_MET', minNights, totalPrice?, averagePricePerNight?, breakdown? }] }`. Zwraca wszystkie aktywne pokoje z powodem niedostępności, bo ekran P2 pokazuje pokoje niedostępne i informację o minimalnym pobycie. Cena tylko dla dostępnych.
-- `PublicOccupancyDto`: `{ from, to, rooms: [{ roomId, occupiedNights: string[] }] }`, bez danych gości.
+- `AvailabilityResultDto`: `{ checkIn, checkOut, nights, guests, currency, rooms: [{ room: PublicRoomDto, available, unavailableReason: 'OCCUPIED' | 'CAPACITY_EXCEEDED' | 'MIN_NIGHTS_NOT_MET' | null, minNights, totalPrice, averagePricePerNight, breakdown: [{ date, price }] }] }`. Zwraca wszystkie aktywne pokoje z powodem niedostępności, bo ekran P2 pokazuje pokoje niedostępne i informację o minimalnym pobycie. Cena, średnia (zaokrąglona do grosza) i rozbicie tylko dla dostępnych, dla pozostałych `null`. Kolizje (numery i daty innych rezerwacji) nie są ujawniane. BR-04 bez wyjątku Q-01: przyjazd w przeszłości → 422.
+- `PublicOccupancyDto`: `{ from, to, rooms: [{ roomId, occupiedNights: string[] }] }`, bez danych gości. Zajęte noce to noce aktywnych rezerwacji (`PENDING`, `CONFIRMED`) i blokad (BR-01), przycięte do `[from, to]`; pokoje aktywne, sort po nazwie.
 - `CreatePublicReservationDto`: `roomId`, `checkIn`, `checkOut`, `guestsCount`, `guest: { firstName (1–100), lastName (1–100), email (wymagany), phone (wymagany, ≤ 30) }`, `guestNotes?` (≤ 2000). Brak pola ceny (BR-05). Akceptacja regulaminu jest tylko po stronie UI.
 - `PublicReservationCreatedDto`: `number`, `status` (`PENDING`), `room: { name }`, `checkIn`, `checkOut`, `nights`, `guestsCount`, `totalPrice`, `currency`, `expiresAt`, `guestEmail`. **Bez tokenu:** link trafia wyłącznie do e-maila.
 - `PublicReservationDto`: `number`, `status`, `property: { name, slug, phone, contactEmail, street, postalCode, city, checkInTime, checkOutTime }`, `room: { name, coverPhoto }`, `checkIn`, `checkOut`, `nights`, `guestsCount`, `totalPrice`, `currency`, `guestNotes`, `canCancel`, `cancellableUntil` (data lub `null`), `cancelledAt`. Bez `internalNotes`.
 
 Wyjątek od konwencji `Location`: `POST /public/properties/:slug/reservations` nie zwraca `Location`, bo adres zasobu zawiera sekretny token.
 
+Token: `randomBytes(32)` w base64url, w bazie tylko SHA-256 (`guestAccessTokenHash`). Nieznany token i link po `checkOut + 30 dni` dają ten sam 404 ([Q-11](../open-questions.md#q-11)). `cancellableUntil` to ostatni dzień bezpłatnego anulowania dla `PENDING` i `CONFIRMED` (gość anuluje `PENDING` zawsze), dla pozostałych statusów `null`. W logach błędów z URL zostaje tylko 6 pierwszych znaków tokenu (`common/http/mask-url.ts`).
+
 ## 6. Backend: zadania
 
-- [ ] Moduł `public` (lub `guest-booking`): `PublicPropertiesController`, `PublicReservationsController`.
-- [ ] `PublicPropertyQuery`: obiekt po `slug` (aktywny, nieusunięty) z pokojami, zdjęciami i `priceFrom`.
-- [ ] Dostępność: `AvailabilityService` w trybie raportu dla wszystkich pokoi (kolizje jednym zapytaniem dla całego obiektu).
-- [ ] `GuestBookingService.create`: transakcja → `FOR UPDATE` pokoju → `AvailabilityService` (assert) → upsert gościa po `(propertyId, email)` ([Q-04](../open-questions.md#q-04)) → numer → token (32 B) + hash → insert `PENDING` z `expiresAt = now + pendingExpiryHours` → `ReservationEvent(CREATED, GUEST)` → po commicie `ReservationCreated` z surowym tokenem.
-- [ ] `GuestReservationService.get` i `cancel`: hash tokenu → rezerwacja; ważność ([Q-11](../open-questions.md#q-11)); BR-08 przez `cancellation-policy.ts`; `cancelledBy = GUEST`.
-- [ ] Throttling per endpoint, a w logach maskowanie tokenu (pokazujemy tylko pierwsze 6 znaków).
+- [x] Moduł `public`: `PublicController`, `PublicBookingService`, `PublicPropertiesRepository` (odczyt strony obiektu). Przypadki użycia rezerwacji gościa w `reservations/application/guest-booking.service.ts` (eksport `GuestBookingService`).
+- [x] `PublicPropertyQuery`: obiekt po `slug` (aktywny, nieusunięty) z pokojami, zdjęciami i `priceFrom`.
+- [x] Dostępność: `AvailabilityService.checkRooms` w trybie raportu dla wszystkich pokoi (stawki, rezerwacje i blokady po jednym zapytaniu dla całego obiektu); zajętość: `AvailabilityService.occupiedNights`.
+- [x] `GuestBookingService.createOnline`: transakcja → `FOR UPDATE` pokoju → `AvailabilityService` (assert) → upsert gościa po `(propertyId, email)` ([Q-04](../open-questions.md#q-04)) → numer → token (32 B) + hash → insert `PENDING` z `expiresAt = now + pendingExpiryHours` → `ReservationEvent(CREATED, GUEST)`. Emisja `ReservationCreated` z surowym tokenem po commicie: M9 (`EventBus`); do tego czasu surowy token nie opuszcza serwera.
+- [x] `GuestBookingService.getByToken` i `cancelByToken`: hash tokenu → rezerwacja; ważność ([Q-11](../open-questions.md#q-11), `guest-access-token.ts`); BR-08 przez `cancellation-policy.ts`; `cancelledBy = GUEST`, wpis historii z aktorem `GUEST`.
+- [x] Throttling per endpoint, a w logach maskowanie tokenu (pokazujemy tylko pierwsze 6 znaków).
 
 ## 7. Frontend: ekrany i zadania
 
@@ -74,7 +76,10 @@ Ekrany: P1–P5: [screens.md](../../apps/web/docs/screens.md). `PublicLayout`: m
 | `GET /public/properties/:slug` nieaktywnego obiektu → 404 | int | BR-13 |
 | Dostępność: pokój zajęty → `available: false, OCCUPIED`; za mało nocy → `MIN_NIGHTS_NOT_MET` | int | BR-01, BR-03 |
 | Dostępność z `checkIn` w przeszłości → 422 | int | BR-04 |
-| Utworzenie → 201 `PENDING`, `expiresAt`, e-mail w kolejce, brak tokenu w odpowiedzi | int | BR-07 |
+| Utworzenie → 201 `PENDING`, `expiresAt`, hash tokenu w bazie, brak tokenu i `Location` w odpowiedzi (e-mail w kolejce: M9) | int | BR-07 |
+| Link po `checkOut + 30 dni` i nieznany token → 404 | int, unit | Q-11 |
+| Szósty `POST /public/**` z jednego IP w minucie → 429 | int | – |
+| Zajętość: rezerwacje i blokady przycięte do zakresu, bez anulowanych | int | BR-01 |
 | Body z `totalPrice` → 400 | int | BR-05 |
 | Gość anuluje `CONFIRMED` po terminie → 422; przed terminem → 200 | int | BR-08 |
 | Ponowne anulowanie → 409 | int | BR-06 |
@@ -92,7 +97,7 @@ Ekrany: P1–P5: [screens.md](../../apps/web/docs/screens.md). `PublicLayout`: m
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Gotowe (M8); e-maile z linkiem `/r/:token`: M9 |
 | UI | Nie rozpoczęto |
 
-Zdecydowane: [Q-04](../open-questions.md#q-04), [Q-17](../open-questions.md#q-17). Otwarte: [Q-11](../open-questions.md#q-11), [Q-16](../open-questions.md#q-16), [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia).
+Zdecydowane: [Q-04](../open-questions.md#q-04), [Q-11](../open-questions.md#q-11), [Q-17](../open-questions.md#q-17). Otwarte: [Q-16](../open-questions.md#q-16) (M9), [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia).

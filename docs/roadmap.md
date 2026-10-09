@@ -13,7 +13,7 @@
 | M5 | API | Obiekty, pokoje, zdjęcia, izolacja | gotowe |
 | M6 | API | Cennik, blokady, dostępność, kalendarz | gotowe |
 | M7 | API | Rezerwacje: reguły, stany, ręczna, optimistic locking, goście | gotowe |
-| M8 | API | Publiczny proces rezerwacji i token gościa | – |
+| M8 | API | Publiczny proces rezerwacji i token gościa | gotowe |
 | M9 | API | Zdarzenia, kolejka e-maili, szablony, scheduler | – |
 | M10 | UI | Setup frontendu, design system, logowanie | – |
 | M11 | UI | Panel Gospodarza | – |
@@ -92,9 +92,9 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M8: Proces gościa [API]
 
-- [ ] [API] `/public/properties/:slug`, `availability`, `occupancy`: [guest-booking.md](features/guest-booking.md)
-- [ ] [API] Rezerwacja online (`PENDING`, token, `expiresAt`)
-- [ ] [API] Podgląd i anulowanie przez token (BR-08)
+- [x] [API] `/public/properties/:slug`, `availability`, `occupancy`: [guest-booking.md](features/guest-booking.md)
+- [x] [API] Rezerwacja online (`PENDING`, token, `expiresAt`)
+- [x] [API] Podgląd i anulowanie przez token (BR-08)
 
 ## M9: Asynchroniczność [API]
 

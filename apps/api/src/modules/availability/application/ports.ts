@@ -5,6 +5,7 @@ import type { InclusiveDateRange } from '../../../common/domain/date-range';
 export interface BookableRoom {
   id: string;
   propertyId: string;
+  name: string;
   capacity: number;
   /** Grosze. */
   basePricePerNight: number;
@@ -31,6 +32,7 @@ export interface BlockData {
 /** Rezerwacja `PENDING`/`CONFIRMED`, która zajmuje termin (BR-01). */
 export interface ActiveReservation {
   id: string;
+  roomId: string;
   number: string;
   checkIn: CalendarDate;
   checkOut: CalendarDate;
@@ -61,9 +63,11 @@ export interface AvailabilityRepository {
   findRoom(roomId: string): Promise<BookableRoom | null>;
   /** `SELECT … FOR UPDATE` na pokoju: ten sam zamek co BR-10 (rooms) i tworzenie rezerwacji (M7). */
   lockRoom(roomId: string): Promise<void>;
-  /** BR-01: aktywne rezerwacje pokoju, których noce przecinają `nights`; sort `checkIn:asc`. */
+  /** Aktywne, nieusunięte pokoje aktywnego obiektu (dostępność publiczna, BR-13); sort `name:asc`. */
+  findBookableRooms(propertyId: string): Promise<BookableRoom[]>;
+  /** BR-01: aktywne rezerwacje pokoi, których noce przecinają `nights`; sort `checkIn:asc`. */
   activeReservations(
-    roomId: string,
+    roomIds: readonly string[],
     nights: InclusiveDateRange,
     excludeReservationId?: string,
   ): Promise<ActiveReservation[]>;
@@ -76,6 +80,11 @@ export interface BlocksRepository {
   listByRoom(
     roomId: string,
     nights?: { from?: CalendarDate; to?: CalendarDate },
+  ): Promise<AvailabilityBlock[]>;
+  /** Blokady wielu pokoi przecinające `nights` jednym zapytaniem; sort `dateFrom:asc`. */
+  listForRooms(
+    roomIds: readonly string[],
+    nights: { from: CalendarDate; to: CalendarDate },
   ): Promise<AvailabilityBlock[]>;
   findById(id: string): Promise<AvailabilityBlock | null>;
   create(roomId: string, data: BlockData): Promise<AvailabilityBlock>;

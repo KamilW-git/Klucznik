@@ -152,6 +152,9 @@ export class ReservationsService {
         guestNotes: input.guestNotes,
         internalNotes: input.internalNotes,
         confirmedAt: this.clock.now(),
+        expiresAt: null,
+        // M9: token gościa z e-mailem powstaje przy wysyłce e-maila (Q-16).
+        guestAccessTokenHash: null,
       });
       await this.reservations.addEvent({
         reservationId,

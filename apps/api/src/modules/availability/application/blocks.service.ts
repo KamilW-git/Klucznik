@@ -43,7 +43,7 @@ export class BlocksService {
       // BR-01, Q-15: blokada nie może objąć nocy aktywnej rezerwacji. Zamek pokoju wyklucza wyścig
       // z tworzeniem rezerwacji, które sprawdza blokady pod tym samym zamkiem. Blokady mogą się nakładać.
       await this.availability.lockRoom(roomId);
-      const [reservation] = await this.availability.activeReservations(roomId, data.nights);
+      const [reservation] = await this.availability.activeReservations([roomId], data.nights);
       if (reservation) {
         throw new BlockOverlapsReservationError(reservation);
       }

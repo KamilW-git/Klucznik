@@ -28,11 +28,30 @@ export class PricingFacade {
   constructor(@Inject(RATES_REPOSITORY) private readonly rates: RatesRepository) {}
 
   async quote(room: PricedRoom, stay: StayRange): Promise<StayPricing> {
+    return (await this.quoteRooms([room], stay)).get(room.id)!;
+  }
+
+  /** Wycena pobytu w wielu pokojach jednym zapytaniem o stawki (dostępność publiczna). */
+  async quoteRooms(
+    rooms: readonly PricedRoom[],
+    stay: StayRange,
+  ): Promise<Map<string, StayPricing>> {
     const nights = stay.toNightsRange();
-    const rates = await this.rates.listByRoom(room.id, { from: nights.from, to: nights.to });
-    return {
-      minNights: resolveMinNights(room, rates, stay.checkIn),
-      price: calculatePrice(stay, room.basePricePerNight, rates),
-    };
+    const rates = await this.rates.listForRooms(
+      rooms.map((room) => room.id),
+      { from: nights.from, to: nights.to },
+    );
+    return new Map(
+      rooms.map((room) => {
+        const roomRates = rates.filter((rate) => rate.roomId === room.id);
+        return [
+          room.id,
+          {
+            minNights: resolveMinNights(room, roomRates, stay.checkIn),
+            price: calculatePrice(stay, room.basePricePerNight, roomRates),
+          },
+        ];
+      }),
+    );
   }
 }

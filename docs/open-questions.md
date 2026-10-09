@@ -17,7 +17,7 @@ Statusy: `OTWARTE` (obowiązuje rekomendacja), `ZDECYDOWANE` (z datą i decyzją
 | [Q-08](#q-08) | Endpoint pulpitu | OTWARTE |
 | [Q-09](#q-09) | Przypomnienia przed przyjazdem | OTWARTE |
 | [Q-10](#q-10) | Semantyka usunięcia właściciela | OTWARTE |
-| [Q-11](#q-11) | Ważność tokenu gościa | OTWARTE |
+| [Q-11](#q-11) | Ważność tokenu gościa | ZDECYDOWANE |
 | [Q-12](#q-12) | Numeracja rezerwacji | ZDECYDOWANE |
 | [Q-13](#q-13) | Struktura adresu obiektu | OTWARTE |
 | [Q-14](#q-14) | Limity zdjęć | OTWARTE |
@@ -96,6 +96,7 @@ Rekomendacja: dezaktywacja (`isActive = false`) + unieważnienie refresh tokenó
 
 **Jak długo działa link z tokenem gościa?**
 Rekomendacja: do `checkOut + 30 dni`, potem 404 „Link jest nieaktualny”. Ważność wyliczana, bez dodatkowego pola.
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M8 (`reservations/domain/guest-access-token.ts`): link działa do `checkOut + 30 dni` włącznie; wygasły i nieznany token dają ten sam 404.
 
 ## Q-12
 

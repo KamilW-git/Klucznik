@@ -2,7 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import type { AccessScope } from '../../../common/access/access-scope';
 import { OWNERSHIP_POLICY, type OwnershipPolicy } from '../../../common/access/ownership.policy';
-import type { CalendarDate } from '../../../common/domain/calendar-date';
+import { CalendarDate } from '../../../common/domain/calendar-date';
+import { InclusiveDateRange } from '../../../common/domain/date-range';
 import { type Clock, CLOCK } from '../../../common/domain/clock';
 import type { DomainError } from '../../../common/domain/domain-error';
 import {
@@ -77,48 +78,116 @@ export class AvailabilityService {
     guests: number,
     options: AvailabilityOptions = {},
   ): Promise<AvailabilityResult> {
-    assertStayDates(stay, this.clock.today(), options); // BR-04
-    const nights = stay.toNightsRange();
-    const [pricing, reservations, blocks] = await Promise.all([
-      this.pricing.quote(room, stay), // BR-03, BR-05
-      this.availability.activeReservations(room.id, nights, options.excludeReservationId), // BR-01
-      this.blocks.listByRoom(room.id, { from: nights.from, to: nights.to }), // BR-01
-    ]);
-    const conflicts: Conflict[] = [
-      ...reservations.map((reservation): Conflict => ({
-        type: 'RESERVATION',
-        id: reservation.id,
-        number: reservation.number,
-        dateFrom: reservation.checkIn,
-        dateTo: reservation.checkOut,
-      })),
-      ...blocks.map((block): Conflict => ({
-        type: 'BLOCK',
-        id: block.id,
-        number: null,
-        dateFrom: block.nights.from,
-        dateTo: block.nights.to,
-      })),
-    ].sort((a, b) => a.dateFrom.compare(b.dateFrom));
+    return (await this.checkRooms([room], stay, guests, options)).get(room.id)!;
+  }
 
-    const violation = findAvailabilityViolation({
-      room,
-      property: room.property,
-      stay,
-      guests,
-      minNights: pricing.minNights,
-      conflicts,
-      ignoreMinNights: options.ignoreMinNights,
-    });
-    return {
-      available: violation === null,
-      unavailableReason: violation && unavailableReasonOf(violation),
-      violation,
-      conflicts,
-      minNights: pricing.minNights,
-      price: pricing.price,
-      currency: room.property.currency,
+  /**
+   * `check` dla wielu pokoi w stałej liczbie zapytań (stawki, rezerwacje, blokady), bez N+1.
+   * Dostępność publiczna obiektu (docs/features/guest-booking.md).
+   */
+  async checkRooms(
+    rooms: readonly BookableRoom[],
+    stay: StayRange,
+    guests: number,
+    options: AvailabilityOptions = {},
+  ): Promise<Map<string, AvailabilityResult>> {
+    assertStayDates(stay, this.clock.today(), options); // BR-04
+    if (rooms.length === 0) {
+      return new Map();
+    }
+    const nights = stay.toNightsRange();
+    const roomIds = rooms.map((room) => room.id);
+    const [pricing, reservations, blocks] = await Promise.all([
+      this.pricing.quoteRooms(rooms, stay), // BR-03, BR-05
+      this.availability.activeReservations(roomIds, nights, options.excludeReservationId), // BR-01
+      this.blocks.listForRooms(roomIds, { from: nights.from, to: nights.to }), // BR-01
+    ]);
+
+    return new Map(
+      rooms.map((room) => {
+        const { minNights, price } = pricing.get(room.id)!;
+        const conflicts: Conflict[] = [
+          ...reservations
+            .filter((reservation) => reservation.roomId === room.id)
+            .map((reservation): Conflict => ({
+              type: 'RESERVATION',
+              id: reservation.id,
+              number: reservation.number,
+              dateFrom: reservation.checkIn,
+              dateTo: reservation.checkOut,
+            })),
+          ...blocks
+            .filter((block) => block.roomId === room.id)
+            .map((block): Conflict => ({
+              type: 'BLOCK',
+              id: block.id,
+              number: null,
+              dateFrom: block.nights.from,
+              dateTo: block.nights.to,
+            })),
+        ].sort((a, b) => a.dateFrom.compare(b.dateFrom));
+
+        const violation = findAvailabilityViolation({
+          room,
+          property: room.property,
+          stay,
+          guests,
+          minNights,
+          conflicts,
+          ignoreMinNights: options.ignoreMinNights,
+        });
+        const result: AvailabilityResult = {
+          available: violation === null,
+          unavailableReason: violation && unavailableReasonOf(violation),
+          violation,
+          conflicts,
+          minNights,
+          price,
+          currency: room.property.currency,
+        };
+        return [room.id, result];
+      }),
+    );
+  }
+
+  /**
+   * Zajęte noce pokoi w dniach `[from, to]`: aktywne rezerwacje i blokady (BR-01), bez danych gości.
+   * Mini-kalendarz strony publicznej (Q-17).
+   */
+  async occupiedNights(
+    roomIds: readonly string[],
+    from: CalendarDate,
+    to: CalendarDate,
+  ): Promise<Map<string, CalendarDate[]>> {
+    const nights = InclusiveDateRange.of(from, to);
+    const [reservations, blocks] =
+      roomIds.length === 0
+        ? [[], []]
+        : await Promise.all([
+            this.availability.activeReservations(roomIds, nights),
+            this.blocks.listForRooms(roomIds, { from, to }),
+          ]);
+    const occupied = new Map(roomIds.map((id) => [id, new Set<string>()]));
+    const mark = (roomId: string, first: CalendarDate, last: CalendarDate): void => {
+      const start = first.isBefore(from) ? from : first;
+      const end = last.isAfter(to) ? to : last;
+      for (let night = start; !night.isAfter(end); night = night.addDays(1)) {
+        occupied.get(roomId)?.add(night.toString());
+      }
     };
+    reservations.forEach((r) => mark(r.roomId, r.checkIn, r.checkOut.addDays(-1)));
+    blocks.forEach((block) => mark(block.roomId, block.nights.from, block.nights.to));
+    return new Map(
+      [...occupied].map(([roomId, set]) => [
+        roomId,
+        [...set].sort().map((night) => CalendarDate.parse(night)),
+      ]),
+    );
+  }
+
+  /** Aktywne pokoje aktywnego obiektu (BR-13); dostęp do obiektu sprawdza wywołujący. */
+  findBookableRooms(propertyId: string): Promise<BookableRoom[]> {
+    return this.availability.findBookableRooms(propertyId);
   }
 
   /** Jak `check`, ale niespełniona reguła rzuca błąd domenowy (BR-01, BR-02, BR-03, BR-13). */

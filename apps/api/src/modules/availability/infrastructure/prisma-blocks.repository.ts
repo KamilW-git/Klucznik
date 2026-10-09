@@ -41,6 +41,22 @@ export class PrismaBlocksRepository extends PrismaRepository implements BlocksRe
     return rows.map(toBlock);
   }
 
+  async listForRooms(
+    roomIds: readonly string[],
+    nights: { from: CalendarDate; to: CalendarDate },
+  ): Promise<AvailabilityBlock[]> {
+    const rows = await this.db.availabilityBlock.findMany({
+      where: {
+        roomId: { in: [...roomIds] },
+        dateFrom: { lte: toDbDate(nights.to) },
+        dateTo: { gte: toDbDate(nights.from) },
+      },
+      orderBy: [{ dateFrom: 'asc' }, { id: 'asc' }],
+      select: BLOCK_SELECT,
+    });
+    return rows.map(toBlock);
+  }
+
   async findById(id: string): Promise<AvailabilityBlock | null> {
     const row = await this.db.availabilityBlock.findUnique({ where: { id }, select: BLOCK_SELECT });
     return row && toBlock(row);

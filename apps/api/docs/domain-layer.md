@@ -30,7 +30,8 @@
 | `modules/availability/domain/availability.ts` | `Conflict`, `assertNoConflicts`, `findAvailabilityViolation` (kolejność BR-13, BR-02, BR-03, BR-01), `unavailableReasonOf` | BR-01, BR-02, BR-03, BR-13 |
 | `modules/reservations/domain/reservation-status.ts` | statusy, źródła, `ActorType`, tabela `TRANSITIONS`, `canTransition`, `assertTransition`, `assertConfirmable`, `isExpired` | BR-06, BR-07 |
 | `modules/reservations/domain/reservation-policy.ts` | `assertCapacity`, `assertBookable` | BR-02, BR-13 |
-| `modules/reservations/domain/cancellation-policy.ts` | `guestCancellationDeadline`, `assertGuestCanCancel` | BR-08 |
+| `modules/reservations/domain/cancellation-policy.ts` | `guestCancellationDeadline`, `assertGuestCanCancel`, `canGuestCancel` | BR-06, BR-08 |
+| `modules/reservations/domain/guest-access-token.ts` | `isGuestTokenValid(checkOut, today)` | Q-11 |
 | `modules/reservations/domain/reservation-number.ts` | `formatReservationNumber(year, seq)` | Q-12 |
 | `modules/reservations/domain/editing-policy.ts` | `assertEditable(reservation, changedFields, today)` | Q-02 |
 | `modules/properties/domain/slug.ts` | `slugify` (transliteracja PL) | – |
@@ -48,7 +49,7 @@ export class CapacityExceededError extends DomainError {
 }
 ```
 
-- Jedna klasa na kod błędu, w `modules/<f>/domain/errors.ts` (lub `common/domain/errors/` dla współdzielonych). Od M6: `pricing` (`SeasonalRateOverlapError`, `MinNightsNotMetError`), `availability` (`BlockOverlapsReservationError`), `reservations` (`ReservationOverlapError`, `CapacityExceededError`, `RoomNotBookableError`, od M7 `InvalidStatusTransitionError`, `ReservationNotEditableError`, `VersionConflictError`).
+- Jedna klasa na kod błędu, w `modules/<f>/domain/errors.ts` (lub `common/domain/errors/` dla współdzielonych). Od M6: `pricing` (`SeasonalRateOverlapError`, `MinNightsNotMetError`), `availability` (`BlockOverlapsReservationError`), `reservations` (`ReservationOverlapError`, `CapacityExceededError`, `RoomNotBookableError`, od M7 `InvalidStatusTransitionError`, `ReservationNotEditableError`, `VersionConflictError`, od M8 `CancellationDeadlinePassedError`).
 - `message` po polsku (trafia do odpowiedzi jako pomocniczy), a `details` to dane dla UI (np. `minNights`).
 - Domena **nie zna** kodów HTTP. Mapę `code → status` ma globalny filtr ([http-layer.md](http-layer.md#mapowanie-błędów)).
 
