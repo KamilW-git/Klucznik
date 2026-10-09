@@ -12,7 +12,7 @@
 | M4 | API | Auth, role, zarządzanie właścicielami | gotowe |
 | M5 | API | Obiekty, pokoje, zdjęcia, izolacja | gotowe |
 | M6 | API | Cennik, blokady, dostępność, kalendarz | gotowe |
-| M7 | API | Rezerwacje: reguły, stany, ręczna, optimistic locking, goście | – |
+| M7 | API | Rezerwacje: reguły, stany, ręczna, optimistic locking, goście | gotowe |
 | M8 | API | Publiczny proces rezerwacji i token gościa | – |
 | M9 | API | Zdarzenia, kolejka e-maili, szablony, scheduler | – |
 | M10 | UI | Setup frontendu, design system, logowanie | – |
@@ -83,12 +83,12 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M7: Rezerwacje w panelu [API]
 
-- [ ] [API] Maszyna stanów (BR-06), polityki (BR-02, BR-13), numer rezerwacji: [reservations.md](features/reservations.md)
-- [ ] [API] Rezerwacja ręczna w transakcji z `FOR UPDATE` (BR-01), historia `ReservationEvent`
-- [ ] [API] Lista z filtrami, wyszukiwaniem, paginacją; szczegóły; `confirm`, `cancel`
-- [ ] [API] `PATCH` z optimistic locking (BR-11)
-- [ ] [API] Goście: lista, `resolveForReservation`: [guests.md](features/guests.md)
-- [ ] [API] Test równoległych rezerwacji (jedna 201, druga 409)
+- [x] [API] Maszyna stanów (BR-06), polityki (BR-02, BR-13), numer rezerwacji: [reservations.md](features/reservations.md)
+- [x] [API] Rezerwacja ręczna w transakcji z `FOR UPDATE` (BR-01), historia `ReservationEvent`
+- [x] [API] Lista z filtrami, wyszukiwaniem, paginacją; szczegóły; `confirm`, `cancel`
+- [x] [API] `PATCH` z optimistic locking (BR-11)
+- [x] [API] Goście: lista, `resolveForReservation`: [guests.md](features/guests.md)
+- [x] [API] Test równoległych rezerwacji (jedna 201, druga 409)
 
 ## M8: Proces gościa [API]
 

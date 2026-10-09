@@ -95,4 +95,4 @@ Ekrany: P1–P5: [screens.md](../../apps/web/docs/screens.md). `PublicLayout`: m
 | API | Nie rozpoczęto |
 | UI | Nie rozpoczęto |
 
-Otwarte: [Q-04](../open-questions.md#q-04), [Q-11](../open-questions.md#q-11), [Q-16](../open-questions.md#q-16), [Q-17](../open-questions.md#q-17), [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia).
+Zdecydowane: [Q-04](../open-questions.md#q-04), [Q-17](../open-questions.md#q-17). Otwarte: [Q-11](../open-questions.md#q-11), [Q-16](../open-questions.md#q-16), [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia).

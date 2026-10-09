@@ -19,6 +19,7 @@ import { SecurityModule } from './infrastructure/security/security.module';
 import { StorageModule } from './infrastructure/storage/storage.module';
 import { AvailabilityModule } from './modules/availability/availability.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { GuestsModule } from './modules/guests/guests.module';
 import { HealthModule } from './modules/health/health.module';
 import { PhotosModule } from './modules/photos/photos.module';
 import { PricingModule } from './modules/pricing/pricing.module';
@@ -68,6 +69,7 @@ import { UsersModule } from './modules/users/users.module';
     PhotosModule,
     PricingModule,
     AvailabilityModule,
+    GuestsModule,
     ReservationsModule,
     HealthModule,
   ],

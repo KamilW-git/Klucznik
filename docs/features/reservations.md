@@ -32,9 +32,11 @@ Właściciel ma wszystkie rezerwacje w jednym miejscu: szuka, filtruje, potwierd
 | `GET` | `/reservations/:id` | `OWNER`, `ADMIN` | – | `200` `ReservationDto` | `404` |
 | `PATCH` | `/reservations/:id` | `OWNER`, `ADMIN` | `UpdateReservationDto` | `200` `ReservationDto` | `409 VERSION_CONFLICT`, `409 RESERVATION_OVERLAP`, `409 RESERVATION_NOT_EDITABLE`, `422 …` |
 | `POST` | `/reservations/:id/confirm` | `OWNER`, `ADMIN` | – | `200` `ReservationDto` | `409 INVALID_STATUS_TRANSITION` |
-| `POST` | `/reservations/:id/cancel` | `OWNER`, `ADMIN` | `{ reason? }` (≤ 500) | `200` `ReservationDto` | `409 INVALID_STATUS_TRANSITION` |
+| `POST` | `/reservations/:id/cancel` | `OWNER`, `ADMIN` | `{ reason? }` (≤ 500 lub `null`) | `200` `ReservationDto` | `409 INVALID_STATUS_TRANSITION` |
 
-**Query `GET /reservations`**: `page`, `pageSize`, `propertyId`, `roomId`, `status` (lista po przecinku), `source`, `from`, `to` (pobyt przecina `[from, to]`), `q` (nazwisko, e-mail gościa, numer), `sort` (`checkIn`, `createdAt`, `number`, `totalPrice`; domyślnie `checkIn:asc`). `OWNER` widzi tylko rezerwacje swoich obiektów (BR-12).
+`INVALID_STATUS_TRANSITION` ma `details: { from, to }`; `confirm` po `expiresAt` dodaje `expired: true` (BR-07), a równoległa zmiana statusu `concurrent: true`. Cudza rezerwacja, nieistniejący pokój lub gość obiektu → 404 (BR-12).
+
+**Query `GET /reservations`**: `page`, `pageSize`, `propertyId`, `roomId`, `status` (lista po przecinku), `source`, `from`, `to` (pobyt ma noc w `[from, to]`: `checkIn ≤ to`, `checkOut > from`), `q` (nazwisko, e-mail gościa, numer; 2–100 znaków), `sort` (`checkIn`, `createdAt`, `number`, `totalPrice`; domyślnie `checkIn:asc`). `OWNER` widzi tylko rezerwacje swoich obiektów (BR-12): cudze `propertyId` daje pustą listę. Rezerwacje usuniętych obiektów są ukryte.
 
 **`CreateManualReservationDto`**:
 
@@ -42,31 +44,35 @@ Właściciel ma wszystkie rezerwacje w jednym miejscu: szuka, filtruje, potwierd
 |-|-|
 | `roomId` | UUID pokoju z tego obiektu (inaczej 404) |
 | `checkIn`, `checkOut` | `YYYY-MM-DD` |
-| `guestsCount` | int ≥ 1 |
-| `guest` | `{ id }` istniejącego gościa obiektu **albo** `{ firstName, lastName, email?, phone? }` ([Q-03](../open-questions.md#q-03)) |
+| `guestsCount` | int 1–99 |
+| `guest` | `{ id }` istniejącego gościa obiektu **albo** `{ firstName, lastName, email?, phone? }` ([Q-03](../open-questions.md#q-03)); `id` razem z danymi → 400 |
 | `guestNotes`, `internalNotes` | ≤ 2000 |
 | `ignoreMinNights` | bool, domyślnie `false` ([Q-01](../open-questions.md#q-01)) |
 
 Gość podany danymi: gdy istnieje gość obiektu z tym e-mailem, rekord jest aktualizowany ([Q-04](../open-questions.md#q-04)), w przeciwnym razie powstaje nowy. Brak ceny w DTO (BR-05).
 
-**`UpdateReservationDto`** ([Q-02](../open-questions.md#q-02)): `version` (wymagane, BR-11), `internalNotes?`, `guestNotes?`, `guestsCount?`, `roomId?`, `checkIn?`, `checkOut?`.
+Rezerwacja ręczna podlega BR-04 z przyjazdem do 30 dni wstecz ([Q-01](../open-questions.md#q-01)). Numer `KL-RRRR-NNNNNN` z licznika roku według „dziś” w `Europe/Warsaw` ([Q-12](../open-questions.md#q-12)); odrzucona rezerwacja nie zużywa numeru (rollback).
+
+**`UpdateReservationDto`** ([Q-02](../open-questions.md#q-02)): `version` (wymagane, BR-11), `internalNotes?`, `guestNotes?`, `guestsCount?`, `roomId?`, `checkIn?`, `checkOut?`, `ignoreMinNights?` (tylko rezerwacje `MANUAL`, [Q-01](../open-questions.md#q-01); dla `ONLINE` ignorowane).
 
 - `internalNotes` można zmieniać w każdym statusie.
 - Pozostałe pola tylko dla `PENDING`/`CONFIRMED` z `checkIn ≥ today`, w przeciwnym razie 409 `RESERVATION_NOT_EDITABLE`.
-- Zmiana dat lub pokoju uruchamia ponownie BR-01…05 i BR-13 (bez kolizji z samą sobą) i **przelicza cenę według aktualnego cennika**.
+- Zmiana dat lub pokoju uruchamia ponownie BR-01…05 i BR-13 (bez kolizji z samą sobą) i **przelicza cenę według aktualnego cennika**. BR-04 bez wyjątku Q-01 (przyjazd nie wcześniej niż dziś). Pokój musi należeć do tego samego obiektu.
+- Zmiana samej liczby gości sprawdza tylko BR-02; cena się nie zmienia.
+- Liczą się tylko pola, które rzeczywiście się zmieniają: `PATCH` bez zmian nie podnosi `version` i nie dodaje historii. Każdy zapis (także `confirm` i `cancel`) podnosi `version`.
 
 **`ReservationListItemDto`**: `id`, `number`, `propertyId`, `room: { id, name }`, `guest: { id, firstName, lastName, email }`, `checkIn`, `checkOut`, `nights`, `guestsCount`, `totalPrice`, `currency`, `status`, `source`, `expiresAt`, `createdAt`.
-**`ReservationDto`**: jak lista + `guest.phone`, `priceBreakdown`, `guestNotes`, `internalNotes`, `confirmedAt`, `cancelledAt`, `cancelledBy`, `cancellationReason`, `version`, `events: [{ type, actorType, actorName?, createdAt, payload? }]`, `updatedAt`.
+**`ReservationDto`**: jak lista + `guest.phone`, `priceBreakdown: [{ date, price }]`, `guestNotes`, `internalNotes`, `confirmedAt`, `cancelledAt`, `cancelledBy`, `cancellationReason`, `version`, `events: [{ type, actorType, actorName, createdAt, payload }]` (od najstarszych; `actorName` dla `OWNER`/`ADMIN`, `payload`: `CREATED` `{ source, status }`, `UPDATED` `{ fields }`, `CANCELLED` `{ reason }`), `updatedAt`.
 
 ## 6. Backend: zadania
 
-- [ ] Domena: `reservation-status.ts` (tabela przejść, `assertTransition`, `isExpired`), `reservation-policy.ts` (`assertCapacity`, `assertBookable`), `ReservationNumber` (format `KL-RRRR-NNNNNN`).
-- [ ] `ReservationsService.createManual`: transakcja → `FOR UPDATE` pokoju → `AvailabilityService` (tryb assert) → upsert gościa → numer z `ReservationCounter` → insert `CONFIRMED` → `ReservationEvent(CREATED)` → po commicie `ReservationCreated`.
-- [ ] `confirm` i `cancel`: zapis warunkowy po statusie, `ReservationEvent`, zdarzenia `ReservationConfirmed` i `ReservationCancelled` (`cancelledBy` = rola aktora).
-- [ ] `update`: BR-11 (`WHERE version = :v`), ponowna walidacja przy zmianie dat, pokoju lub liczby gości, `ReservationEvent(UPDATED)` z listą zmienionych pól.
-- [ ] Mapowanie `23P01` (EXCLUDE) → `ReservationOverlapError` w repozytorium.
-- [ ] Lista z filtrami, wyszukiwaniem (`ILIKE` po `guest.lastName`, `guest.email`, `number`) i sortowaniem z białej listy; indeksy z [data-model.md](../architecture/data-model.md#reservation-rezerwacja).
-- [ ] `ReservationsQueryPort.countFutureActive(roomId | propertyId)` dla BR-10.
+- [x] Domena: `reservation-status.ts` (tabela przejść, `assertTransition`, `assertConfirmable`, `isExpired`), `reservation-policy.ts` (`assertCapacity`, `assertBookable`, od M6), `reservation-number.ts` (`formatReservationNumber`), `editing-policy.ts` (`assertEditable`, Q-02).
+- [x] `ReservationsService.createManual`: transakcja → `FOR UPDATE` pokoju → `AvailabilityService` (tryb assert) → upsert gościa → numer z `ReservationCounter` → insert `CONFIRMED` → `ReservationEvent(CREATED)`. Emisja `ReservationCreated` po commicie: M9 (`EventBus`), w kodzie komentarz `// M9:`.
+- [x] `confirm` i `cancel`: zapis warunkowy po statusie, `ReservationEvent` (`cancelledBy` = rola aktora). Zdarzenia `ReservationConfirmed` i `ReservationCancelled`: M9.
+- [x] `update`: BR-11 (`WHERE version = :v`), ponowna walidacja przy zmianie dat, pokoju lub liczby gości (zamki obu pokoi w stałej kolejności), `ReservationEvent(UPDATED)` z listą zmienionych pól.
+- [x] Mapowanie `23P01` (EXCLUDE) → `ReservationOverlapError` w repozytorium.
+- [x] Lista z filtrami, wyszukiwaniem (`ILIKE` po `guest.lastName`, `guest.email`, `number`) i sortowaniem z białej listy; indeksy z [data-model.md](../architecture/data-model.md#reservation-rezerwacja).
+- [x] `ReservationsQueryService.countFutureActive(roomId | propertyId)` dla BR-10 (od M5).
 
 ## 7. Frontend: ekrany i zadania
 
@@ -88,7 +94,10 @@ Ekrany: O4 (lista + drawer), O5 (nowa rezerwacja ręczna), O2 (akcje na pulpicie
 | `assertCapacity`, `assertBookable` | unit | BR-02, BR-13 |
 | `ReservationNumber.format(2026, 123)` → `KL-2026-000123` | unit | – |
 | Ręczna rezerwacja → 201 `CONFIRMED`, cena z serwera | int | BR-05 |
-| Ręczna rezerwacja na zajęty termin → 409; równoległe → jedna 201 | int | BR-01 |
+| Ręczna rezerwacja na zajęty termin (rezerwacja lub blokada) → 409; trzy równoległe → jedna 201, bez zużytych numerów | int | BR-01 |
+| `confirm` po `expiresAt` → 409; anulowanie z powodem zwalnia termin | int | BR-06, BR-07 |
+| `PATCH` dat: nowa cena wg cennika; przeniesienie na zajęty pokój → 409; przeszła rezerwacja → tylko `internalNotes` | int | BR-01, BR-05, Q-02 |
+| Gość: upsert po e-mailu, nowy bez e-maila, `{ id }` innego obiektu → 404 | int | Q-03, Q-04, BR-12 |
 | `confirm` anulowanej → 409 | int | BR-06 |
 | `PATCH` ze starą `version` → 409 `VERSION_CONFLICT` | int | BR-11 |
 | Owner B → `GET /reservations/:idA` → 404; lista bez cudzych rezerwacji | int | BR-12 |
@@ -105,7 +114,7 @@ Ekrany: O4 (lista + drawer), O5 (nowa rezerwacja ręczna), O2 (akcje na pulpicie
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Gotowe (M7); zdarzenia i e-maile: M9 |
 | UI | Nie rozpoczęto |
 
-Otwarte: [Q-01](../open-questions.md#q-01), [Q-02](../open-questions.md#q-02), [Q-03](../open-questions.md#q-03), [Q-04](../open-questions.md#q-04), [Q-05](../open-questions.md#q-05), [Q-12](../open-questions.md#q-12).
+Zdecydowane: [Q-01](../open-questions.md#q-01), [Q-02](../open-questions.md#q-02), [Q-03](../open-questions.md#q-03), [Q-04](../open-questions.md#q-04), [Q-05](../open-questions.md#q-05), [Q-12](../open-questions.md#q-12).

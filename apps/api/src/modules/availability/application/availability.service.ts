@@ -159,6 +159,15 @@ export class AvailabilityService {
     return { ...result, roomId, stay };
   }
 
+  /**
+   * BR-01: zamek `FOR UPDATE` na pokoju w bieżącej transakcji. Bierze go tworzenie i zmiana terminu
+   * rezerwacji, blokady terminów i BR-10, więc sprawdzenie kolizji i zapis nie wyścigną się.
+   */
+  lockRoom(roomId: string): Promise<void> {
+    return this.availability.lockRoom(roomId);
+  }
+
+  /** Bez sprawdzenia dostępu: wywołujący zweryfikował obiekt lub pokój (BR-12). */
   async findRoomOrFail(roomId: string): Promise<BookableRoom> {
     const room = await this.availability.findRoom(roomId);
     if (!room) {

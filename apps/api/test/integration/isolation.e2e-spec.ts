@@ -5,8 +5,10 @@ import type { PropertyListDto } from '../../src/modules/properties/http/property
 import {
   createAdmin,
   createBlock,
+  createGuest,
   createOwner,
   createProperty,
+  createReservation,
   createRoom,
   createSeasonalRate,
 } from '../factories';
@@ -24,7 +26,16 @@ describe('Data isolation between owners (BR-12)', () => {
   let tokenA: string;
   let tokenB: string;
   let adminToken: string;
-  const ids = { property: '', room: '', photo: '', rate: '', block: '' };
+  const ids = {
+    property: '',
+    room: '',
+    photo: '',
+    rate: '',
+    block: '',
+    guest: '',
+    reservation: '',
+    pending: '',
+  };
   const http = () => request(ctx.app.getHttpServer());
 
   beforeAll(async () => {
@@ -52,7 +63,24 @@ describe('Data isolation between owners (BR-12)', () => {
       dateFrom: '2026-09-10',
       dateTo: '2026-09-12',
     });
+    const guest = await createGuest(ctx.prisma, property);
+    const reservation = await createReservation(ctx.prisma, {
+      room,
+      guest,
+      checkIn: '2026-08-14',
+      checkOut: '2026-08-18',
+    });
+    const pending = await createReservation(ctx.prisma, {
+      room,
+      guest,
+      checkIn: '2026-08-20',
+      checkOut: '2026-08-22',
+      status: 'PENDING',
+    });
     Object.assign(ids, {
+      guest: guest.id,
+      reservation: reservation.id,
+      pending: pending.id,
       property: property.id,
       room: room.id,
       photo: (photo.body as { id: string }).id,
@@ -126,6 +154,36 @@ describe('Data isolation between owners (BR-12)', () => {
       () => http().get(`/api/v1/properties/${ids.property}/calendar?from=2026-08-01&to=2026-08-31`),
     ],
     // Operacje niszczące na końcu: udany wyciek usunąłby zasób i zamaskował kolejne przypadki.
+    ['GET /properties/:id/guests', () => http().get(`/api/v1/properties/${ids.property}/guests`)],
+    [
+      'POST /properties/:id/reservations',
+      () =>
+        http()
+          .post(`/api/v1/properties/${ids.property}/reservations`)
+          .send({
+            roomId: ids.room,
+            checkIn: '2026-09-01',
+            checkOut: '2026-09-03',
+            guestsCount: 2,
+            guest: { id: ids.guest },
+          }),
+    ],
+    ['GET /reservations/:id', () => http().get(`/api/v1/reservations/${ids.reservation}`)],
+    [
+      'PATCH /reservations/:id',
+      () =>
+        http()
+          .patch(`/api/v1/reservations/${ids.reservation}`)
+          .send({ version: 1, internalNotes: 'Przejęta' }),
+    ],
+    [
+      'POST /reservations/:id/confirm',
+      () => http().post(`/api/v1/reservations/${ids.pending}/confirm`),
+    ],
+    [
+      'POST /reservations/:id/cancel',
+      () => http().post(`/api/v1/reservations/${ids.reservation}/cancel`).send({}),
+    ],
     ['DELETE /rates/:id', () => http().delete(`/api/v1/rates/${ids.rate}`)],
     ['DELETE /blocks/:id', () => http().delete(`/api/v1/blocks/${ids.block}`)],
     ['DELETE /photos/:id', () => http().delete(`/api/v1/photos/${ids.photo}`)],
@@ -158,6 +216,21 @@ describe('Data isolation between owners (BR-12)', () => {
       .expect(200);
     expect(rates.body).toMatchObject({ data: [{ id: ids.rate, pricePerNight: 45000 }] });
     expect(blocks.body).toMatchObject({ data: [{ id: ids.block }] });
+    const reservation = await http()
+      .get(`/api/v1/reservations/${ids.reservation}`)
+      .set(bearer(tokenA))
+      .expect(200);
+    const pending = await http()
+      .get(`/api/v1/reservations/${ids.pending}`)
+      .set(bearer(tokenA))
+      .expect(200);
+    expect(reservation.body).toMatchObject({
+      status: 'CONFIRMED',
+      version: 1,
+      internalNotes: null,
+    });
+    expect(pending.body).toMatchObject({ status: 'PENDING', version: 1 });
+    await expect(ctx.prisma.reservation.count()).resolves.toBe(2);
   });
 
   it('BR-12: GET /properties lists only own properties; ADMIN sees all', async () => {
@@ -166,6 +239,12 @@ describe('Data isolation between owners (BR-12)', () => {
 
     expect((own.body as PropertyListDto).data.map((p) => p.name)).toEqual(['Obiekt B']);
     expect((all.body as PropertyListDto).data.map((p) => p.name)).toEqual(['Obiekt A', 'Obiekt B']);
+  });
+
+  it('BR-12: GET /reservations of owner B does not list reservations of owner A', async () => {
+    const res = await http().get('/api/v1/reservations').set(bearer(tokenB)).expect(200);
+
+    expect(res.body).toMatchObject({ data: [], meta: { totalItems: 0 } });
   });
 
   it('BR-12: ADMIN can read resources of any owner', async () => {

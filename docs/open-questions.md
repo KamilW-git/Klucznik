@@ -7,18 +7,18 @@ Statusy: `OTWARTE` (obowiązuje rekomendacja), `ZDECYDOWANE` (z datą i decyzją
 
 | ID | Temat | Status |
 |-|-|-|
-| [Q-01](#q-01) | Reguły przy rezerwacji ręcznej | OTWARTE |
-| [Q-02](#q-02) | Zakres edycji rezerwacji (`PATCH`) | OTWARTE |
-| [Q-03](#q-03) | E-mail gościa przy rezerwacji ręcznej | OTWARTE |
-| [Q-04](#q-04) | Aktualizacja danych powracającego gościa | OTWARTE |
-| [Q-05](#q-05) | Historia rezerwacji (`ReservationEvent`) | OTWARTE |
+| [Q-01](#q-01) | Reguły przy rezerwacji ręcznej | ZDECYDOWANE |
+| [Q-02](#q-02) | Zakres edycji rezerwacji (`PATCH`) | ZDECYDOWANE |
+| [Q-03](#q-03) | E-mail gościa przy rezerwacji ręcznej | ZDECYDOWANE |
+| [Q-04](#q-04) | Aktualizacja danych powracającego gościa | ZDECYDOWANE |
+| [Q-05](#q-05) | Historia rezerwacji (`ReservationEvent`) | ZDECYDOWANE |
 | [Q-06](#q-06) | Reset hasła | OTWARTE |
 | [Q-07](#q-07) | Logi e-maili i obiekt przy zakładaniu właściciela | OTWARTE |
 | [Q-08](#q-08) | Endpoint pulpitu | OTWARTE |
 | [Q-09](#q-09) | Przypomnienia przed przyjazdem | OTWARTE |
 | [Q-10](#q-10) | Semantyka usunięcia właściciela | OTWARTE |
 | [Q-11](#q-11) | Ważność tokenu gościa | OTWARTE |
-| [Q-12](#q-12) | Numeracja rezerwacji | OTWARTE |
+| [Q-12](#q-12) | Numeracja rezerwacji | ZDECYDOWANE |
 | [Q-13](#q-13) | Struktura adresu obiektu | OTWARTE |
 | [Q-14](#q-14) | Limity zdjęć | OTWARTE |
 | [Q-15](#q-15) | Blokada terminu a istniejąca rezerwacja | ZDECYDOWANE |
@@ -40,27 +40,32 @@ Statusy: `OTWARTE` (obowiązuje rekomendacja), `ZDECYDOWANE` (z datą i decyzją
 **Które reguły obowiązują przy rezerwacji ręcznej (`MANUAL`)?**
 Rekomendacja: BR-01, BR-02 i BR-13 zawsze. BR-03 właściciel może pominąć flagą `ignoreMinNights`. BR-04 obowiązuje z wyjątkiem „przyjazd nie wcześniej niż dziś”: dopuszczamy przyjazd do 30 dni wstecz (wpisanie pobytu, który już trwa lub był przyjęty „na słowo”). BR-05 zawsze (cena z serwera).
 Wpływ: [business-rules.md](architecture/business-rules.md#zakres-reguł-wg-źródła-rezerwacji), [reservations.md](features/reservations.md).
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M7 (`MANUAL_PAST_CHECK_IN_DAYS = 30`, `ignoreMinNights` w `POST` i, dla rezerwacji `MANUAL`, w `PATCH`); wycena `quote` (M6) używa tych samych zasad.
 
 ## Q-02
 
 **Co można zmienić przez `PATCH /reservations/:id`?**
 Rekomendacja: `internalNotes` zawsze. `guestNotes`, `guestsCount`, `roomId`, `checkIn`, `checkOut` tylko dla `PENDING`/`CONFIRMED` z `checkIn ≥ dziś`. Zmiana dat lub pokoju ponownie sprawdza BR-01…05 i BR-13 i **przelicza cenę według aktualnego cennika**. Inne przypadki zwracają 409 `RESERVATION_NOT_EDITABLE`.
 Alternatywa: tylko notatki w MVP (prościej, ale O4 ma przycisk „Edytuj”).
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M7 (`editing-policy.ts`). Zmiana samej liczby gości sprawdza tylko BR-02 i nie zmienia ceny.
 
 ## Q-03
 
 **Czy e-mail gościa jest wymagany przy rezerwacji ręcznej (telefonicznej)?**
 Rekomendacja: opcjonalny dla `MANUAL`, wymagany dla `ONLINE`. Bez e-maila nie ma tokenu ani e-maili do gościa. `UNIQUE(propertyId, email)` dopuszcza wiele wartości `NULL`.
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M7 dla `MANUAL` (gość bez e-maila to zawsze nowy rekord); `ONLINE` w M8.
 
 ## Q-04
 
 **Gość rezerwuje ponownie z tym samym e-mailem, ale innymi danymi. Co robimy?**
 Rekomendacja: aktualizujemy `firstName`, `lastName` i `phone` do najnowszych (jeden rekord gościa na e-mail w obiekcie). Historyczne rezerwacje wskazują na tego samego gościa.
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M7, z doprecyzowaniem: brak telefonu w nowych danych nie kasuje znanego numeru (`COALESCE`). Upsert jest atomowy (`ON CONFLICT`), [guests.md](features/guests.md#zasady-upsertu-gościa-application).
 
 ## Q-05
 
 **Czy dodać encję `ReservationEvent` (historia zmian)?**
 Ekran O4 pokazuje timeline („Utworzona online”, „Potwierdzona przez gospodarza”). Rekomendacja: tak, bo to tania tabela z dużą wartością dla właściciela i na obronie (audyt, kto i kiedy zmienił). Alternatywa: timeline z pól `createdAt`, `confirmedAt`, `cancelledAt` (bez edycji).
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M7: wpisy `CREATED`, `UPDATED` (`payload.fields`), `CONFIRMED`, `CANCELLED` (`payload.reason`) w transakcji zmiany; `ReservationDto.events` z `actorName`.
 
 ## Q-06
 
@@ -96,6 +101,7 @@ Rekomendacja: do `checkOut + 30 dni`, potem 404 „Link jest nieaktualny”. Wa�
 
 **Jak generować numer `KL-2026-000123`?**
 Rekomendacja: globalny licznik per rok (`ReservationCounter`), inkrementowany w transakcji tworzenia rezerwacji. Numer jest unikalny w całej platformie. Alternatywa: licznik per obiekt (krótsze numery, ale potrzebny prefiks obiektu).
+**Decyzja (2026-10-09):** zgodnie z rekomendacją, wdrożone w M7: `INSERT … ON CONFLICT (year) DO UPDATE … RETURNING`, rok z „dziś” w `Europe/Warsaw`.
 
 ## Q-13
 

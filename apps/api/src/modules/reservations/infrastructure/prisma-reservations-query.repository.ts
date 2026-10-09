@@ -7,7 +7,7 @@ import { PrismaRepository } from '../../../infrastructure/prisma/prisma.reposito
 import type { DashboardCounts, ReservationsQueryRepository } from '../application/ports';
 import type { ReservationListItem } from '../application/read-models';
 
-const LIST_ITEM_SELECT = {
+export const LIST_ITEM_SELECT = {
   id: true,
   number: true,
   propertyId: true,

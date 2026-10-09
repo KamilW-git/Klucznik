@@ -23,7 +23,7 @@
 
 ## Zakres reguł wg źródła rezerwacji
 
-Decyzja do potwierdzenia: [Q-01](../open-questions.md#q-01). Do czasu decyzji obowiązuje rekomendacja.
+Decyzja: [Q-01](../open-questions.md#q-01) (zdecydowane 2026-10-09, zgodnie z rekomendacją).
 
 | Reguła | `ONLINE` (gość) | `MANUAL` (właściciel/admin) |
 |-|-|-|

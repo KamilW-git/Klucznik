@@ -28,7 +28,8 @@ Właściciel ma listę swoich gości z historią pobytów. Przy rezerwacji telef
 |-|-|-|-|-|-|
 | `GET` | `/properties/:id/guests` | `OWNER`, `ADMIN` | query: `page`, `pageSize`, `q` (imię, nazwisko, e-mail, telefon; min. 2 znaki), `sort` (`lastName`, `createdAt`, `lastStayAt`; domyślnie `lastName:asc`) | `200` `Paginated<GuestListItemDto>` | `404` |
 
-- `GuestListItemDto`: `id`, `firstName`, `lastName`, `email`, `phone`, `reservationsCount`, `lastStayAt` (najpóźniejszy `checkIn` rezerwacji `CONFIRMED`/`COMPLETED` lub `null`), `createdAt`.
+- `GuestListItemDto`: `id`, `firstName`, `lastName`, `email`, `phone`, `reservationsCount` (wszystkie rezerwacje gościa w obiekcie, w każdym statusie), `lastStayAt` (najpóźniejszy `checkIn` rezerwacji `CONFIRMED`/`COMPLETED` lub `null`), `createdAt`.
+- Sort `lastStayAt`: goście bez pobytu zawsze na końcu (`NULLS LAST`). `%` i `_` w `q` są traktowane dosłownie.
 - Gości nie tworzy się osobnym endpointem. Powstają przy rezerwacji online ([guest-booking.md](guest-booking.md)) lub ręcznej ([reservations.md](reservations.md)).
 - Edycja i usuwanie gościa (RODO) są poza MVP ([Q-18](../open-questions.md#q-18)).
 
@@ -39,15 +40,15 @@ Właściciel ma listę swoich gości z historią pobytów. Przy rezerwacji telef
 | Wejście | Działanie |
 |-|-|
 | `{ id }` (tylko `MANUAL`) | gość musi należeć do obiektu, inaczej 404 |
-| dane z e-mailem | szukaj `(propertyId, lower(email))`; gdy istnieje, zaktualizuj `firstName`, `lastName`, `phone` ([Q-04](../open-questions.md#q-04)); gdy nie, utwórz |
+| dane z e-mailem | e-mail małymi literami; atomowy upsert `INSERT … ON CONFLICT (property_id, email) DO UPDATE`: aktualizuje `firstName`, `lastName` i `phone`, gdy podano nowy ([Q-04](../open-questions.md#q-04)); gdy nie ma gościa, tworzy go |
 | dane bez e-maila (tylko `MANUAL`) | zawsze utwórz nowego gościa |
 
 ## 6. Backend: zadania
 
-- [ ] Moduł `guests`: `GuestsController`, `GuestsService` (lista, `resolveForReservation`), `GuestsRepository`.
-- [ ] Wyszukiwanie `ILIKE` po wielu polach; indeks `(propertyId, lastName)`.
-- [ ] `reservationsCount` i `lastStayAt` jednym zapytaniem z agregacją.
-- [ ] Obsługa wyścigu przy upsercie (`P2002` przy równoległym tworzeniu → ponowne odczytanie).
+- [x] Moduł `guests`: `GuestsController`, `GuestsService` (lista, `resolveForReservation`), `GuestsRepository`.
+- [x] Wyszukiwanie `ILIKE` po wielu polach; indeks `(propertyId, lastName)`.
+- [x] `reservationsCount` i `lastStayAt` jednym zapytaniem z agregacją.
+- [x] Obsługa wyścigu przy upsercie: `ON CONFLICT DO UPDATE` zamiast łapania `P2002`, bo błąd wewnątrz transakcji rezerwacji przerwałby całą transakcję w PostgreSQL.
 
 ## 7. Frontend: ekrany i zadania
 
@@ -64,7 +65,8 @@ Ekran `/panel/goscie` nie ma projektu w Stitch, więc użyj wzorca tabeli z O4: 
 | Ponowna rezerwacja z tym samym e-mailem nie tworzy duplikatu i aktualizuje dane | int | – |
 | Ten sam e-mail w dwóch obiektach → dwa rekordy | int | BR-12 |
 | Owner B → `GET /properties/:idA/guests` → 404 | int | BR-12 |
-| `resolveForReservation` z `{ id }` gościa innego obiektu → 404 | unit | BR-12 |
+| `resolveForReservation` z `{ id }` gościa innego obiektu → 404 (przez `POST /properties/:id/reservations`) | int | BR-12 |
+| Sort `lastStayAt` (bez pobytu na końcu), `reservationsCount`, wyszukiwanie po telefonie | int | – |
 | Wyszukiwanie `q` po nazwisku i e-mailu | int | – |
 | `GuestAutocomplete`: debounce, wybór, „Dodaj nowego” | ui | – |
 
@@ -77,7 +79,7 @@ Ekran `/panel/goscie` nie ma projektu w Stitch, więc użyj wzorca tabeli z O4: 
 
 | Warstwa | Status |
 |-|-|
-| API | Nie rozpoczęto |
+| API | Gotowe (M7) |
 | UI | Nie rozpoczęto |
 
-Otwarte: [Q-03](../open-questions.md#q-03), [Q-04](../open-questions.md#q-04), [Q-18](../open-questions.md#q-18).
+Zdecydowane: [Q-03](../open-questions.md#q-03), [Q-04](../open-questions.md#q-04). Otwarte: [Q-18](../open-questions.md#q-18).

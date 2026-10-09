@@ -1,6 +1,4 @@
-export type ReservationStatusValue =
-  'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'EXPIRED' | 'COMPLETED';
-export type ReservationSourceValue = 'ONLINE' | 'MANUAL';
+import type { ReservationSource, ReservationStatus } from '../domain/reservation-status';
 
 /** Wiersz listy rezerwacji (docs/features/reservations.md: `ReservationListItemDto`). */
 export interface ReservationListItem {
@@ -17,8 +15,8 @@ export interface ReservationListItem {
   guestsCount: number;
   totalPrice: number;
   currency: string;
-  status: ReservationStatusValue;
-  source: ReservationSourceValue;
+  status: ReservationStatus;
+  source: ReservationSource;
   expiresAt: Date | null;
   createdAt: Date;
 }
