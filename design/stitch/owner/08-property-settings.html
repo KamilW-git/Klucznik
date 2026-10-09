@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ustawienia obiektu – Panel Gospodarza Klucznik</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary": "#924b23",
+            "background": "#f0fdf3",
+            "outline-variant": "#c0c8c4",
+            "surface-container-high": "#dfebe2",
+            "on-primary-fixed-variant": "#204f42",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#e7f4ea",
+            "secondary-fixed-dim": "#ffb692",
+            "surface-container": "#e4f1e7",
+            "on-surface": "#131e18",
+            "inverse-surface": "#28332d",
+            "on-tertiary-fixed-variant": "#4f4539",
+            "on-tertiary-container": "#d7c7b8",
+            "primary": "#154539",
+            "on-secondary-container": "#783610",
+            "outline": "#717975",
+            "secondary-container": "#ffa273",
+            "surface-tint": "#396759",
+            "tertiary-container": "#5e5347",
+            "inverse-primary": "#a0d1c0",
+            "error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#d3c4b4",
+            "surface-container-lowest": "#ffffff",
+            "surface": "#f0fdf3",
+            "on-primary-fixed": "#002019",
+            "on-secondary-fixed": "#341100",
+            "surface-variant": "#d9e6dc",
+            "surface-dim": "#d0ddd4",
+            "on-secondary-fixed-variant": "#75340e",
+            "on-primary-container": "#a3d4c3",
+            "on-background": "#131e18",
+            "on-error-container": "#93000a",
+            "surface-container-highest": "#d9e6dc",
+            "on-tertiary": "#ffffff",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#f0e0d0",
+            "primary-fixed-dim": "#a0d1c0",
+            "primary-container": "#2f5d50",
+            "on-surface-variant": "#404945",
+            "on-tertiary-fixed": "#221a10",
+            "error": "#ba1a1a",
+            "surface-container-low": "#eaf7ed",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#bceddc",
+            "secondary-fixed": "#ffdbcb",
+            "tertiary": "#463c31",
+            "surface-bright": "#f0fdf3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1.25rem",
+            "margin": "2.5rem",
+            "space-md": "1rem",
+            "gutter-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "body-md": ["DM Sans"],
+            "headline-md": ["DM Sans"],
+            "headline-sm": ["DM Sans"],
+            "label-lg": ["DM Sans"],
+            "display-lg": ["DM Sans"],
+            "display-lg-mobile": ["DM Sans"],
+            "body-lg": ["DM Sans"],
+            "label-md": ["DM Sans"],
+            "label-sm": ["DM Sans"],
+            "title-md": ["DM Sans"],
+            "headline-lg-mobile": ["DM Sans"],
+            "headline-lg": ["DM Sans"]
+          },
+          "fontSize": {
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-[#FAF7F2] text-on-surface antialiased font-body-md text-body-md min-h-screen flex selection:bg-primary selection:text-white">
+<!-- Persistent Host Shell Left Sidebar -->
+<aside class="w-72 bg-surface-container-lowest border-r border-[rgba(31,42,36,0.08)] flex-shrink-0 flex flex-col justify-between hidden lg:flex sticky top-0 h-screen z-20">
+<div class="p-6">
+<!-- Brand Logo / Wordmark -->
+<div class="flex items-center justify-between pb-6 border-b border-[rgba(31,42,36,0.08)]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined text-2xl" data-icon="key">key</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md font-bold tracking-tight text-primary">Klucznik</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant font-medium">Twój e-recepcjonista</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-0.5 rounded-full bg-surface-container-high text-primary font-semibold">Gospodarz</span>
+</div>
+<!-- Property Switcher Select -->
+<div class="mt-5 p-3 rounded-xl bg-surface-container-low border border-[rgba(31,42,36,0.06)] hover:border-primary/30 transition-all duration-150 cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-primary-container text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-lg" data-icon="cabin">cabin</span>
+</div>
+<div class="text-left">
+<h2 class="font-label-lg text-label-lg font-bold text-on-surface leading-snug">Domki Leśna Polana</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Mazury • 4 jednostki</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav aria-label="Nawigacja panelu" class="mt-6 space-y-1.5">
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/50 hover:text-primary transition-all duration-150 font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="dashboard">dashboard</span>
+<span>Pulpit</span>
+</a>
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/50 hover:text-primary transition-all duration-150 font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="calendar_month">calendar_month</span>
+<span>Kalendarz</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/50 hover:text-primary transition-all duration-150 font-label-lg text-label-lg" href="#">
+<div class="flex items-center gap-3.5">
+<span class="material-symbols-outlined text-xl" data-icon="receipt_long">receipt_long</span>
+<span>Rezerwacje</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] font-label-sm text-label-sm font-semibold">3</span>
+</a>
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/50 hover:text-primary transition-all duration-150 font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="holiday_village">holiday_village</span>
+<span>Pokoje i domki</span>
+</a>
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/50 hover:text-primary transition-all duration-150 font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="group">group</span>
+<span>Goście</span>
+</a>
+<!-- ACTIVE item -->
+<a aria-current="page" class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl bg-primary-container text-white shadow-sm font-label-lg text-label-lg font-bold" href="#">
+<span class="material-symbols-outlined text-xl fill-icon" data-icon="settings">settings</span>
+<span>Ustawienia obiektu</span>
+</a>
+</nav>
+</div>
+<!-- Bottom sidebar section -->
+<div class="p-6 border-t border-[rgba(31,42,36,0.08)] bg-surface-container-lowest">
+<div class="p-3.5 rounded-xl bg-surface-container-low mb-3">
+<p class="font-label-sm text-label-sm font-semibold text-primary">Pomoc techniczna Klucznik</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">+48 800 123 456</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-80">pn–pt 8:00 – 20:00</p>
+</div>
+<button class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-on-surface-variant hover:text-error hover:bg-error-container/20 transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-lg" data-icon="logout">logout</span>
+<span>Wyloguj się</span>
+</button>
+</div>
+</aside>
+<!-- Main Canvas / Workflow Area -->
+<div class="flex-1 flex flex-col min-w-0 pb-28">
+<!-- Top Navigation Header -->
+<header class="sticky top-0 z-30 bg-[#FAF7F2]/90 backdrop-blur-md border-b border-[rgba(31,42,36,0.08)]">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<nav aria-label="Okruszki chleba" class="flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant mb-1">
+<span>Panel Gospodarza</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-semibold">Ustawienia obiektu</span>
+</nav>
+<h1 class="font-headline-md text-headline-md font-bold text-on-background tracking-tight">Ustawienia obiektu</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">Zarządzaj danymi wizytówki, polityką rezerwacji, godzinami zameldowania i wyglądem strony publicznej.</p>
+</div>
+<!-- Top Right Meta & Status Cluster -->
+<div class="flex items-center gap-3 self-end sm:self-center flex-wrap">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E6F3EE] border border-primary/20 text-[#215844]">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+</span>
+<span class="font-label-sm text-label-sm font-semibold">Status: Aktywna online</span>
+</div>
+<a class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-surface-container-lowest border border-outline-variant/60 hover:border-primary text-primary font-label-md text-label-md transition-colors shadow-sm" href="#" target="_blank">
+<span>Podgląd strony obiektu</span>
+<span class="material-symbols-outlined text-base" data-icon="open_in_new">open_in_new</span>
+</a>
+<!-- Host Avatar Profile -->
+<div class="flex items-center gap-3 pl-2 border-l border-outline-variant/40">
+<div class="w-10 h-10 rounded-full bg-primary-container text-white font-bold flex items-center justify-center font-label-md text-label-md shadow-sm">
+              JN
+            </div>
+<div class="hidden xl:block text-left">
+<p class="font-label-md text-label-md font-semibold text-on-surface leading-tight">Jan Nowak</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Właściciel obiektu</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Container with Organic Bento-Grid Layout -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
+<!-- CARD 1: Dane obiektu -->
+<section class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.08)] p-6 md:p-8 shadow-sm">
+<div class="flex items-center gap-3 pb-5 border-b border-[rgba(31,42,36,0.08)]">
+<div class="w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="domain">domain</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Dane obiektu</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Podstawowe informacje wyświetlane gościom w procesie rezerwacji i na potwierdzeniach.</p>
+</div>
+</div>
+<div class="mt-6 space-y-6">
+<!-- Property Name & Public URL in 2 cols -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block font-label-md text-label-md font-medium text-on-surface mb-1.5" for="prop-name">Nazwa obiektu</label>
+<input class="w-full h-12 px-4 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] focus:border-primary focus:ring-2 focus:ring-primary/15 font-body-md text-body-md text-on-surface transition-all" id="prop-name" type="text" value="Domki Leśna Polana"/>
+</div>
+<!-- Public page address with copy link action -->
+<div>
+<label class="block font-label-md text-label-md font-medium text-on-surface mb-1.5">Publiczny adres wizytówki online</label>
+<div class="relative flex rounded-xl border border-[rgba(31,42,36,0.15)] overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/15 bg-surface-container-low/40">
+<span class="inline-flex items-center px-3.5 text-on-surface-variant font-label-md text-label-md select-none bg-surface-container-low border-r border-[rgba(31,42,36,0.1)]">
+                  https://
+                </span>
+<input class="w-full h-12 px-3 bg-transparent border-0 font-body-md text-body-md font-semibold text-primary focus:ring-0" id="public-url-input" readonly="" type="text" value="klucznik.pl/o/lesna-polana"/>
+<button class="px-4 bg-surface-container-lowest border-l border-[rgba(31,42,36,0.1)] hover:bg-surface-container-low text-primary font-label-md text-label-md font-semibold flex items-center gap-1.5 transition-colors" onclick="navigator.clipboard.writeText('https://klucznik.pl/o/lesna-polana'); alert('Skopiowano link do schowka!');" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="content_copy">content_copy</span>
+<span>Kopiuj link</span>
+</button>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="info">info</span>
+                Ten adres możesz umieścić na wizytówkach, profilu Facebook i Google Moja Firma.
+              </p>
+</div>
+</div>
+<!-- Description -->
+<div>
+<label class="block font-label-md text-label-md font-medium text-on-surface mb-1.5" for="prop-desc">Krótki opis / zajawka dla gości</label>
+<textarea class="w-full p-4 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] focus:border-primary focus:ring-2 focus:ring-primary/15 font-body-md text-body-md text-on-surface transition-all resize-y" id="prop-desc" rows="3">Kameralne domki całoroczne w sercu Puszczy Piskiej nad Jeziorem Nidzkim. Prywatna balia, cisza i bezpośredni kontakt z naturą.</textarea>
+<div class="flex justify-between items-center mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Optymalna długość na stronę główną wizytówki (134/250 znaków).</span>
+<span class="font-label-sm text-label-sm font-semibold text-primary">PL</span>
+</div>
+</div>
+<!-- Address Fields Grid -->
+<div class="pt-2">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg text-primary" data-icon="location_on">location_on</span>
+              Dokładny adres lokalizacji
+            </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div>
+<label class="block font-label-sm text-label-sm font-medium text-on-surface mb-1">Ulica i numer</label>
+<input class="w-full h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] focus:border-primary font-body-md text-body-md text-on-surface" type="text" value="Leśna 14A"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm font-medium text-on-surface mb-1">Kod pocztowy</label>
+<input class="w-full h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] focus:border-primary font-body-md text-body-md text-on-surface" type="text" value="12-220"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm font-medium text-on-surface mb-1">Miejscowość</label>
+<input class="w-full h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] focus:border-primary font-body-md text-body-md text-on-surface" type="text" value="Ruciane-Nida"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm font-medium text-on-surface mb-1">Region / Województwo</label>
+<input class="w-full h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] focus:border-primary font-body-md text-body-md text-on-surface" type="text" value="Mazury (Warmińsko-Mazurskie)"/>
+</div>
+</div>
+</div>
+<!-- Contact Fields Grid -->
+<div class="pt-2">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg text-primary" data-icon="contact_phone">contact_phone</span>
+              Dane kontaktowe dla gości
+            </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block font-label-sm text-label-sm font-medium text-on-surface mb-1">Telefon kontaktowy do recepcji</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-on-surface-variant text-lg" data-icon="call">call</span>
+<input class="w-full h-11 pl-11 pr-3.5 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] focus:border-primary font-body-md text-body-md text-on-surface" type="tel" value="+48 601 234 567"/>
+</div>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm font-medium text-on-surface mb-1">E-mail rezerwacyjny</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-on-surface-variant text-lg" data-icon="mail">mail</span>
+<input class="w-full h-11 pl-11 pr-3.5 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] focus:border-primary font-body-md text-body-md text-on-surface" type="email" value="kontakt@domkilesnapolana.pl"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CARD 2: Zasady pobytu i doba hotelowa -->
+<section class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.08)] p-6 md:p-8 shadow-sm">
+<div class="flex items-center gap-3 pb-5 border-b border-[rgba(31,42,36,0.08)]">
+<div class="w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="nest_clock_farsight_analog">nest_clock_farsight_analog</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Zasady pobytu i doba hotelowa</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Konfiguracja godzin zameldowania i powiązanych automatyzacji e-zamków Klucznik.</p>
+</div>
+</div>
+<div class="mt-6 space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Check-in card -->
+<div class="p-5 rounded-2xl bg-surface-container-low/50 border border-[rgba(31,42,36,0.08)] hover:border-primary/30 transition-all">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Zameldowanie (od godziny)</span>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="login">login</span>
+</div>
+<div class="flex items-center gap-3">
+<select class="h-12 w-44 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] font-headline-sm text-headline-sm font-bold text-primary px-3 focus:border-primary focus:ring-2 focus:ring-primary/15">
+<option value="14:00">14:00</option>
+<option selected="" value="15:00">15:00</option>
+<option value="16:00">16:00</option>
+<option value="17:00">17:00</option>
+</select>
+<span class="font-body-md text-body-md text-on-surface-variant">czasu lokalnego</span>
+</div>
+<div class="mt-4 p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-base mt-0.5" data-icon="sms">sms</span>
+<p class="font-label-sm text-label-sm text-on-surface">Goście otrzymują SMS z kodem PIN do zamka Klucznik automatycznie o <strong>14:30</strong> (30 min przed startem doby).</p>
+</div>
+</div>
+<!-- Check-out card -->
+<div class="p-5 rounded-2xl bg-surface-container-low/50 border border-[rgba(31,42,36,0.08)] hover:border-primary/30 transition-all">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Wymeldowanie (do godziny)</span>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="logout">logout</span>
+</div>
+<div class="flex items-center gap-3">
+<select class="h-12 w-44 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] font-headline-sm text-headline-sm font-bold text-primary px-3 focus:border-primary focus:ring-2 focus:ring-primary/15">
+<option value="10:00">10:00</option>
+<option selected="" value="11:00">11:00</option>
+<option value="12:00">12:00</option>
+</select>
+<span class="font-body-md text-body-md text-on-surface-variant">czasu lokalnego</span>
+</div>
+<div class="mt-4 p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base mt-0.5" data-icon="lock_clock">lock_clock</span>
+<p class="font-label-sm text-label-sm text-on-surface">Kod PIN do zamka wygasa automatycznie o godzinie <strong>11:15</strong> z zachowaniem 15-minutowego bufora.</p>
+</div>
+</div>
+</div>
+<!-- Stay Rules Toggles -->
+<div class="p-5 rounded-2xl border border-[rgba(31,42,36,0.08)] bg-surface-container-lowest">
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface mb-3">Dodatkowe reguły regulaminowe</h3>
+<div class="space-y-3.5">
+<label class="flex items-center gap-3.5 cursor-pointer">
+<input checked="" class="w-5 h-5 rounded text-primary focus:ring-primary/30 border-outline/40" type="checkbox"/>
+<div>
+<span class="font-label-lg text-label-lg font-medium text-on-surface block">Cisza nocna (22:00 – 06:00)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Wyświetlaj informację o zachowaniu spokoju w regulaminie i powitaniu SMS.</span>
+</div>
+</label>
+<label class="flex items-center gap-3.5 cursor-pointer">
+<input checked="" class="w-5 h-5 rounded text-primary focus:ring-primary/30 border-outline/40" type="checkbox"/>
+<div>
+<span class="font-label-lg text-label-lg font-medium text-on-surface block">Zwierzęta domowe dozwolone (wymagane wcześniejsze zgłoszenie)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Umożliwia gościom dodanie psa/kota podczas składania rezerwacji online (+50 zł / doba).</span>
+</div>
+</label>
+<label class="flex items-center gap-3.5 cursor-pointer">
+<input checked="" class="w-5 h-5 rounded text-primary focus:ring-primary/30 border-outline/40" type="checkbox"/>
+<div>
+<span class="font-label-lg text-label-lg font-medium text-on-surface block">Zakaz palenia wyrobów tytoniowych wewnątrz domków</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Strefy palenia wyznaczone wyłącznie na tarasach zewnętrznych.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- CARD 3: Zasady rezerwacji i automatyzacja Klucznika -->
+<section class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.08)] p-6 md:p-8 shadow-sm">
+<div class="flex items-center gap-3 pb-5 border-b border-[rgba(31,42,36,0.08)]">
+<div class="w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="policy">policy</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Zasady rezerwacji i automatyzacja Klucznika</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Określ ramy finansowe, warunki rezygnacji oraz automatyczne uwalnianie zablokowanych terminów.</p>
+</div>
+</div>
+<div class="mt-6 space-y-5">
+<!-- Setting 1: Bezpłatne anulowanie -->
+<div class="p-5 rounded-2xl bg-surface-container-low/40 border border-[rgba(31,42,36,0.08)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Bezpłatne anulowanie</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high font-label-sm text-label-sm text-primary font-semibold">Standard elastyczny</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                Po tym terminie wpłacony zadatek (30%) nie podlega zwrotowi na rzecz obiektu.
+              </p>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-lowest p-2 rounded-xl border border-[rgba(31,42,36,0.12)]">
+<span class="font-label-md text-label-md text-on-surface-variant pl-2">do</span>
+<div class="flex items-center">
+<button class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-primary flex items-center justify-center font-bold" type="button">−</button>
+<input class="w-12 text-center border-0 font-title-md text-title-md font-bold text-primary p-0 focus:ring-0" type="number" value="14"/>
+<button class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-primary flex items-center justify-center font-bold" type="button">+</button>
+</div>
+<span class="font-label-md text-label-md font-medium text-on-surface pr-2">dni przed przyjazdem</span>
+</div>
+</div>
+<!-- Setting 2: Czas na potwierdzenie rezerwacji -->
+<div class="p-5 rounded-2xl bg-surface-container-low/40 border border-[rgba(31,42,36,0.08)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Czas na opłacenie rezerwacji wstępnej</span>
+<span class="px-2.5 py-0.5 rounded-full bg-[#E6F3EE] text-[#215844] font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="sync">sync</span>
+                  Automatyczny powrót terminu do kalendarza
+                </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                Brak opłaty zadatku w tym oknie czasowym automatycznie zdejmuje rezerwację wstępną.
+              </p>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-lowest p-2 rounded-xl border border-[rgba(31,42,36,0.12)]">
+<span class="font-label-md text-label-md text-on-surface-variant pl-2">wygasa po</span>
+<div class="flex items-center">
+<button class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-primary flex items-center justify-center font-bold" type="button">−</button>
+<input class="w-12 text-center border-0 font-title-md text-title-md font-bold text-primary p-0 focus:ring-0" type="number" value="24"/>
+<button class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-primary flex items-center justify-center font-bold" type="button">+</button>
+</div>
+<span class="font-label-md text-label-md font-medium text-on-surface pr-2">godzinach</span>
+</div>
+</div>
+<!-- Setting 3: Wymagana zaliczka online -->
+<div class="p-5 rounded-2xl bg-surface-container-low/40 border border-[rgba(31,42,36,0.08)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Wymagana zaliczka online</span>
+<span class="px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] font-label-sm text-label-sm font-semibold">Klucznik Pay</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                Błyskawiczne płatności BLIK, kartą i szybkim przelewem bankowym gwarantujące rezerwację.
+              </p>
+</div>
+<div class="flex items-center gap-3">
+<select class="h-12 rounded-xl bg-surface-container-lowest border border-[rgba(31,42,36,0.15)] font-label-lg text-label-lg font-bold text-primary px-4 focus:border-primary focus:ring-2 focus:ring-primary/15 shadow-sm">
+<option value="20">20% wartości pobytu</option>
+<option selected="" value="30">30% wartości pobytu (zalecane)</option>
+<option value="50">50% wartości pobytu</option>
+<option value="100">100% pełna przedpłata</option>
+</select>
+</div>
+</div>
+</div>
+</section>
+<!-- CARD 4: Zdjęcia i wizerunek obiektu -->
+<section class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.08)] p-6 md:p-8 shadow-sm">
+<div class="flex items-center gap-3 pb-5 border-b border-[rgba(31,42,36,0.08)]">
+<div class="w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="photo_library">photo_library</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Zdjęcia i wizerunek obiektu</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Okładka strony obiektu i miniatura logotypu wyświetlane w wyszukiwarkach i serwisie publicznym.</p>
+</div>
+</div>
+<div class="mt-6 space-y-6">
+<!-- Main Cover Photo Preview Container -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-lg text-label-lg font-semibold text-on-surface">Główne zdjęcie okładkowe (Hero Banner)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Zalecana rozdzielczość: 1920 × 600 px (Format panoramiczny 16:5)</span>
+</div>
+<div class="relative w-full h-72 md:h-80 rounded-2xl overflow-hidden border border-[rgba(31,42,36,0.12)] group shadow-inner">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A tranquil, high-end wooden modern cabin nestled among tall fragrant pine trees on the edge of a calm Masurian lake in Poland. The morning mist lightly hovers over the still water reflecting the warm timber facade and expansive glass windows. The atmosphere is peaceful, natural, and inviting, captured during the golden hour with soft warm morning light illuminating pine cones and forest floor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ8ONPXkEHu2fYN80ddX1JjEwRt8lUIrfEzZq2HndtmvBWn8QI2Sfd1jeU2k2voFMdjDir0KwHJnYgEY69UCDlseaz3BgiOrXf7keqi1Bb0al-p2RDD_YAXfT3tCa35u5XES-HsXO_DVUtPq2Eig8L3Y1K3WduMp4pGdygvVNCduOPvt_h5hYVWXeKe6qrBTpXM5oB1SriprZRAXTbW3Gbxsm6mJSp1ZErLScoL7Os2n86zJpbIYJDjw"/>
+<!-- Badge on photo -->
+<div class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-sm border border-outline-variant/30 text-on-surface font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-primary text-base" data-icon="photo_camera">photo_camera</span>
+<span>Aktualne zdjęcie główne (1920 × 600 px)</span>
+</div>
+<!-- Floating Quick Actions -->
+<div class="absolute bottom-4 right-4 z-10 flex items-center gap-2">
+<button class="px-4 py-2 rounded-xl bg-surface-container-lowest/95 hover:bg-surface-container-lowest backdrop-blur-md text-primary font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+<span>Zmień zdjęcie główne</span>
+</button>
+<button class="p-2 rounded-xl bg-surface-container-lowest/95 hover:bg-error hover:text-white backdrop-blur-md text-on-surface-variant font-label-md text-label-md shadow-md transition-all" title="Usuń zdjęcie" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+<!-- Gradient overlay at the bottom for readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+</div>
+</div>
+<!-- Drag and Drop Dropzone -->
+<div class="border-2 border-dashed border-outline-variant/70 hover:border-primary rounded-2xl p-6 text-center bg-surface-container-low/30 hover:bg-surface-container-low/60 transition-colors cursor-pointer">
+<div class="w-12 h-12 mx-auto rounded-full bg-surface-container-high/60 flex items-center justify-center text-primary mb-3">
+<span class="material-symbols-outlined text-2xl" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Przeciągnij nowe zdjęcie okładkowe lub <span class="text-primary underline">kliknij, aby wybrać z dysku</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Obsługiwane pliki: JPG, PNG, WEBP (maksymalnie do 10 MB)</p>
+</div>
+<!-- Logo / Avatar obiektu -->
+<div class="pt-2 border-t border-[rgba(31,42,36,0.08)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center shadow-sm flex-shrink-0 border-2 border-white">
+<span class="material-symbols-outlined text-3xl" data-icon="forest">forest</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Znak graficzny / Mini-logo obiektu</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Widoczne w wizytówce e-recepcji oraz w powiadomieniach e-mail do gości.</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-4 py-2 rounded-xl bg-surface-container-lowest border border-outline-variant/60 hover:border-primary text-primary font-label-md text-label-md font-semibold transition-colors" type="button">
+                Wymień logo
+              </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Sticky Bottom Action Bar -->
+<aside aria-label="Pasek zapisu zmian" class="fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md border-t border-[rgba(31,42,36,0.1)] shadow-lg">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="lock_reset">lock_reset</span>
+<span>Wszystkie zmiany są zapisywane w czasie rzeczywistym lub zatwierdzane zbiorczo</span>
+</div>
+<div class="flex items-center gap-3 self-end sm:self-center">
+<button class="px-5 py-2.5 rounded-xl border border-outline-variant/60 hover:bg-surface-container-high/40 text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg font-medium transition-colors" type="button">
+          Odrzuć zmiany
+        </button>
+<button class="px-6 py-2.5 rounded-xl bg-primary-container hover:bg-primary text-white font-label-lg text-label-lg font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2 active:scale-[0.98]" onclick="showToast()" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle">check_circle</span>
+<span>Zapisz zmiany</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Success Toast Alert in Bottom Corner -->
+<div class="fixed bottom-20 right-6 z-50 transform translate-y-8 opacity-0 pointer-events-none transition-all duration-300 ease-out flex items-center gap-3 px-4 py-3 rounded-2xl bg-surface-container-lowest border border-primary/20 text-on-surface shadow-xl" id="toast-notification">
+<div class="w-8 h-8 rounded-full bg-[#E6F3EE] text-[#215844] flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-lg fill-icon" data-icon="verified">verified</span>
+</div>
+<div>
+<p class="font-label-md text-label-md font-bold text-primary">Sukces</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Ustawienia obiektu zostały pomyślnie zaktualizowane.</p>
+</div>
+<button class="ml-2 text-on-surface-variant hover:text-on-surface" onclick="hideToast()" type="button">
+<span class="material-symbols-outlined text-base" data-icon="close">close</span>
+</button>
+</div>
+<script>
+    function showToast() {
+      const toast = document.getElementById('toast-notification');
+      toast.classList.remove('translate-y-8', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        hideToast();
+      }, 4000);
+    }
+
+    function hideToast() {
+      const toast = document.getElementById('toast-notification');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+      toast.classList.add('translate-y-8', 'opacity-0', 'pointer-events-none');
+    }
+  </script>
+</body></html>

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kalendarz obłożenia • Domki Leśna Polana | Klucznik</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#e7f4ea",
+            "on-primary-fixed-variant": "#204f42",
+            "on-secondary": "#ffffff",
+            "tertiary-container": "#5e5347",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed-variant": "#75340e",
+            "on-secondary-container": "#783610",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff",
+            "on-surface-variant": "#404945",
+            "inverse-primary": "#a0d1c0",
+            "secondary": "#924b23",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#eaf7ed",
+            "surface-dim": "#d0ddd4",
+            "secondary-container": "#ffa273",
+            "primary-fixed-dim": "#a0d1c0",
+            "on-surface": "#131e18",
+            "on-background": "#131e18",
+            "primary-container": "#2f5d50",
+            "surface-tint": "#396759",
+            "background": "#f0fdf3",
+            "surface-bright": "#f0fdf3",
+            "inverse-surface": "#28332d",
+            "primary-fixed": "#bceddc",
+            "surface-variant": "#d9e6dc",
+            "error-container": "#ffdad6",
+            "on-primary-fixed": "#002019",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed": "#f0e0d0",
+            "secondary-fixed-dim": "#ffb692",
+            "outline": "#717975",
+            "on-tertiary-container": "#d7c7b8",
+            "surface-container": "#e4f1e7",
+            "tertiary": "#463c31",
+            "surface-container-highest": "#d9e6dc",
+            "secondary-fixed": "#ffdbcb",
+            "on-tertiary-fixed": "#221a10",
+            "on-primary-container": "#a3d4c3",
+            "primary": "#154539",
+            "surface-container-high": "#dfebe2",
+            "outline-variant": "#c0c8c4",
+            "on-secondary-fixed": "#341100",
+            "tertiary-fixed-dim": "#d3c4b4",
+            "on-tertiary-fixed-variant": "#4f4539",
+            "surface": "#f0fdf3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "1.25rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "gutter-mobile": "1rem",
+            "space-md": "1rem",
+            "margin": "2.5rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-md": ["DM Sans"],
+            "headline-lg-mobile": ["DM Sans"],
+            "headline-lg": ["DM Sans"],
+            "display-lg": ["DM Sans"],
+            "display-lg-mobile": ["DM Sans"],
+            "headline-sm": ["DM Sans"],
+            "label-lg": ["DM Sans"],
+            "body-md": ["DM Sans"],
+            "title-md": ["DM Sans"],
+            "body-lg": ["DM Sans"],
+            "label-md": ["DM Sans"],
+            "label-sm": ["DM Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #f0fdf3;
+      color: #131e18;
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Custom striped/hatched textures for reservations */
+    .bg-striped-amber {
+      background-color: #FEF3C7;
+      background-image: repeating-linear-gradient(45deg, rgba(217, 119, 6, 0.12), rgba(217, 119, 6, 0.12) 8px, transparent 8px, transparent 16px);
+      border: 1.5px solid #d97706;
+      color: #92400E;
+    }
+    .bg-hatched-blocked {
+      background-color: #e4f1e7;
+      background-image: repeating-linear-gradient(135deg, rgba(113, 121, 117, 0.2), rgba(113, 121, 117, 0.2) 6px, transparent 6px, transparent 12px);
+      border: 1px dashed #717975;
+      color: #404945;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: #eaf7ed;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: #c0c8c4;
+      border-radius: 9999px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+      background: #717975;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex h-screen overflow-hidden">
+<!-- LEFT SIDEBAR: Klucznik Host App Shell -->
+<aside class="w-72 bg-surface-container-low flex flex-col justify-between shrink-0 shadow-sm z-30">
+<div>
+<!-- Brand & Platform identity -->
+<div class="p-6 pb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-surface-container-lowest flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-surface-container-lowest" data-icon="key">key</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md font-bold text-primary tracking-tight">Klucznik</span>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded-full font-semibold">Gospodarz</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Twój e-recepcjonista</p>
+</div>
+</div>
+</div>
+<!-- Property Switcher Dropdown -->
+<div class="px-5 mb-5">
+<div class="p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/50 hover:border-primary/40 transition-colors cursor-pointer group shadow-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant font-medium">Aktywny obiekt</p>
+<div class="flex items-center justify-between mt-1">
+<div class="truncate pr-2">
+<p class="font-label-lg text-label-lg font-bold text-on-surface truncate">Domki Leśna Polana</p>
+<p class="font-label-sm text-label-sm text-outline">Mazury • 4 jednostki</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors shrink-0" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+</div>
+<!-- Nav Items -->
+<nav class="px-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="dashboard">dashboard</span>
+<span>Pulpit</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl font-label-lg text-label-lg font-bold bg-primary-container text-surface-container-lowest shadow-sm" href="#">
+<span class="material-symbols-outlined text-surface-container-lowest" data-icon="calendar_month">calendar_month</span>
+<span class="flex-1">Kalendarz</span>
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline" data-icon="book_online">book_online</span>
+<span>Rezerwacje</span>
+</div>
+<span class="bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold px-2 py-0.5 rounded-full">3</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="cottage">cottage</span>
+<span>Pokoje i domki</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="group">group</span>
+<span>Goście</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="settings">settings</span>
+<span>Ustawienia obiektu</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Bottom: Support & Logout -->
+<div class="p-5 border-t border-outline-variant/30 space-y-3">
+<div class="p-3 bg-surface-container rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="support_agent">support_agent</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant font-medium">Pomoc techniczna</p>
+<a class="font-label-md text-label-md font-bold text-primary hover:underline" href="tel:+48800123456">+48 800 123 456</a>
+</div>
+</div>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-left rounded-xl font-label-lg text-label-lg text-error hover:bg-error-container/50 transition-colors">
+<span class="material-symbols-outlined text-error" data-icon="logout">logout</span>
+<span>Wyloguj się</span>
+</button>
+</div>
+</aside>
+<!-- MAIN VIEW CANVAS -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-background">
+<!-- TOP APP BAR -->
+<header class="h-20 bg-surface-container-lowest px-8 flex items-center justify-between shrink-0 shadow-sm z-20">
+<div class="flex items-center gap-6">
+<div>
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">Kalendarz obłożenia</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Widok osi czasu rezerwacji i blokad technicznych</p>
+</div>
+</div>
+<!-- Search & Profile -->
+<div class="flex items-center gap-4">
+<!-- Global Search -->
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low text-on-surface text-body-md rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-outline" placeholder="Szukaj rezerwacji, gościa lub pokoju..." type="text"/>
+</div>
+<!-- Notification Bell -->
+<button class="relative w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center hover:bg-surface-container transition-colors text-on-surface">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-secondary"></span>
+</button>
+<!-- Host Avatar & Info -->
+<div class="flex items-center gap-3 pl-2 border-l border-outline-variant/50">
+<div class="w-10 h-10 rounded-xl bg-primary text-surface-container-lowest font-title-md flex items-center justify-center font-bold shadow-sm">
+            JN
+          </div>
+<div class="text-left">
+<p class="font-label-md text-label-md font-bold text-on-surface">Jan Nowak</p>
+<p class="font-label-sm text-label-sm text-outline">Właściciel obiektu</p>
+</div>
+</div>
+</div>
+</header>
+<!-- CALENDAR TOOLBAR & METRICS -->
+<div class="px-8 py-4 bg-surface-container-lowest/80 border-b border-outline-variant/30 flex flex-wrap items-center justify-between gap-4 shrink-0 backdrop-blur-sm z-10">
+<div class="flex items-center gap-4">
+<!-- Month Navigator -->
+<div class="flex items-center bg-surface-container-low rounded-xl p-1 border border-outline-variant/40">
+<button class="w-9 h-9 rounded-lg hover:bg-surface-container-lowest flex items-center justify-center text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<div class="px-4 font-title-md text-title-md font-bold text-primary min-w-[170px] text-center">
+            Sierpień 2026
+          </div>
+<button class="w-9 h-9 rounded-lg hover:bg-surface-container-lowest flex items-center justify-center text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<!-- Jump to Today -->
+<button class="px-3.5 py-2 rounded-xl bg-surface-container border border-outline-variant/50 font-label-lg text-label-lg font-semibold text-primary hover:bg-surface-container-high transition-colors">
+          Dziś
+        </button>
+<!-- View Segment -->
+<div class="flex items-center p-1 bg-surface-container-low rounded-xl border border-outline-variant/40 font-label-md text-label-md">
+<button class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface transition-colors">2 tygodnie</button>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-bold shadow-sm">Miesiąc</button>
+</div>
+<!-- Filter Statuses Dropdown -->
+<div class="relative">
+<button class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-outline" data-icon="filter_list">filter_list</span>
+<span>Wszystkie statusy (aktywne)</span>
+<span class="material-symbols-outlined text-outline" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Quick Metrics Pill & Actions -->
+<div class="flex items-center gap-3">
+<!-- Compact Metrics Pill -->
+<div class="flex items-center gap-3 px-4 py-2 bg-surface-container rounded-xl border border-outline-variant/40 font-label-sm text-label-sm text-on-surface">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-base" data-icon="pie_chart">pie_chart</span>
+<span>Średnie obłożenie: <strong class="text-primary font-bold">78%</strong></span>
+</div>
+<span class="text-outline-variant">•</span>
+<span><strong>18</strong> rezerwacji</span>
+<span class="text-outline-variant">•</span>
+<span><strong>4</strong> blokady techniczne</span>
+</div>
+<!-- Block Dates Action -->
+<button class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-primary/25 text-primary font-label-lg text-label-lg font-semibold hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-primary" data-icon="block">block</span>
+<span>Zablokuj termin</span>
+</button>
+<!-- New Booking CTA -->
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-secondary text-on-secondary font-label-lg text-label-lg font-bold shadow hover:bg-secondary/90 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span>Dodaj rezerwację</span>
+</button>
+</div>
+</div>
+<!-- TIMELINE CONTAINER / GANTT GRID -->
+<div class="flex-1 overflow-auto scrollbar-thin relative bg-surface-container-lowest">
+<!-- Timeline Header & Rows Wrapper (Width = unit column + 31 days * 44px) -->
+<div class="min-w-[1640px]">
+<!-- HEADER ROW: Month Days (Aug 1 - 31) -->
+<div class="flex sticky top-0 bg-surface-container-lowest z-20 border-b border-outline-variant/40 shadow-sm">
+<!-- Sticky Unit Header Column -->
+<div class="w-72 shrink-0 p-4 border-r border-outline-variant/40 bg-surface-container-low sticky left-0 z-30 flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Jednostka / Pokój</span>
+<span class="font-label-sm text-label-sm text-outline">4 domki i pokoje</span>
+</div>
+<!-- Day Columns (1..31 for August 2026) -->
+<!-- Note: 01.08.2026 is Saturday (So) -->
+<div class="flex-1 flex">
+<!-- 1: So (Weekend) -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20 bg-surface-container/60">
+<span class="block font-label-sm text-label-sm text-secondary font-medium">So</span>
+<span class="font-title-md text-title-md font-bold text-secondary">01</span>
+</div>
+<!-- 2: Nd (Weekend) -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20 bg-surface-container/60">
+<span class="block font-label-sm text-label-sm text-secondary font-medium">Nd</span>
+<span class="font-title-md text-title-md font-bold text-secondary">02</span>
+</div>
+<!-- 3..7: Pn-Pt -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Pn</span><span class="font-title-md text-title-md font-bold text-on-surface">03</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Wt</span><span class="font-title-md text-title-md font-bold text-on-surface">04</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Śr</span><span class="font-title-md text-title-md font-bold text-on-surface">05</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Cz</span><span class="font-title-md text-title-md font-bold text-on-surface">06</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Pt</span><span class="font-title-md text-title-md font-bold text-on-surface">07</span></div>
+<!-- 8, 9: Weekend -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20 bg-surface-container/60"><span class="block font-label-sm text-label-sm text-secondary font-medium">So</span><span class="font-title-md text-title-md font-bold text-secondary">08</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20 bg-surface-container/60"><span class="block font-label-sm text-label-sm text-secondary font-medium">Nd</span><span class="font-title-md text-title-md font-bold text-secondary">09</span></div>
+<!-- 10..14: Pn-Pt -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Pn</span><span class="font-title-md text-title-md font-bold text-on-surface">10</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Wt</span><span class="font-title-md text-title-md font-bold text-on-surface">11</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Śr</span><span class="font-title-md text-title-md font-bold text-on-surface">12</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Cz</span><span class="font-title-md text-title-md font-bold text-on-surface">13</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Pt</span><span class="font-title-md text-title-md font-bold text-on-surface">14</span></div>
+<!-- 15: So (Holiday/Weekend) -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20 bg-surface-container/60"><span class="block font-label-sm text-label-sm text-secondary font-medium">So</span><span class="font-title-md text-title-md font-bold text-secondary">15</span></div>
+<!-- 16: TODAY! (Nd, 16th August) -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-primary/30 bg-primary-fixed/40 relative">
+<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary text-surface-container-lowest leading-none mb-0.5">Dziś</span>
+<span class="block font-title-md text-title-md font-extrabold text-primary">16</span>
+</div>
+<!-- 17..21: Pn-Pt -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Pn</span><span class="font-title-md text-title-md font-bold text-on-surface">17</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Wt</span><span class="font-title-md text-title-md font-bold text-on-surface">18</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Śr</span><span class="font-title-md text-title-md font-bold text-on-surface">19</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Cz</span><span class="font-title-md text-title-md font-bold text-on-surface">20</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Pt</span><span class="font-title-md text-title-md font-bold text-on-surface">21</span></div>
+<!-- 22, 23: Weekend -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20 bg-surface-container/60"><span class="block font-label-sm text-label-sm text-secondary font-medium">So</span><span class="font-title-md text-title-md font-bold text-secondary">22</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20 bg-surface-container/60"><span class="block font-label-sm text-label-sm text-secondary font-medium">Nd</span><span class="font-title-md text-title-md font-bold text-secondary">23</span></div>
+<!-- 24..28: Pn-Pt -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Pn</span><span class="font-title-md text-title-md font-bold text-on-surface">24</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Wt</span><span class="font-title-md text-title-md font-bold text-on-surface">25</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Śr</span><span class="font-title-md text-title-md font-bold text-on-surface">26</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Cz</span><span class="font-title-md text-title-md font-bold text-on-surface">27</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Pt</span><span class="font-title-md text-title-md font-bold text-on-surface">28</span></div>
+<!-- 29, 30: Weekend -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20 bg-surface-container/60"><span class="block font-label-sm text-label-sm text-secondary font-medium">So</span><span class="font-title-md text-title-md font-bold text-secondary">29</span></div>
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20 bg-surface-container/60"><span class="block font-label-sm text-label-sm text-secondary font-medium">Nd</span><span class="font-title-md text-title-md font-bold text-secondary">30</span></div>
+<!-- 31: Pn -->
+<div class="w-11 shrink-0 text-center py-2 border-r border-outline-variant/20"><span class="block font-label-sm text-label-sm text-outline">Pn</span><span class="font-title-md text-title-md font-bold text-on-surface">31</span></div>
+</div>
+</div>
+<!-- TIMELINE BODY: 4 UNIT ROWS -->
+<div class="divide-y divide-outline-variant/30 relative">
+<!-- TODAY VERTICAL ACCENT LINE (Col 16: left = 288px + 15 * 44px + 22px = 970px) -->
+<div class="absolute top-0 bottom-0 left-[970px] w-0.5 bg-primary/70 z-10 pointer-events-none"></div>
+<!-- ================= UNIT 1: Domek Sosna ================= -->
+<div class="flex items-stretch min-h-[110px] group hover:bg-surface-container-low/30 transition-colors">
+<!-- Sticky Unit Sidebar Card -->
+<div class="w-72 shrink-0 p-4 border-r border-outline-variant/40 bg-surface-container-lowest sticky left-0 z-20 flex flex-col justify-center">
+<div class="flex items-center justify-between mb-1">
+<span class="font-title-md text-title-md font-bold text-primary">Domek Sosna</span>
+<span class="material-symbols-outlined text-outline" data-icon="forest">forest</span>
+</div>
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-surface-container text-on-surface-variant">4 os.</span>
+<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary-fixed text-on-primary-fixed">Całoroczny</span>
+<span class="font-label-sm text-label-sm text-outline ml-auto">450 zł/d</span>
+</div>
+</div>
+<!-- Gantt Canvas Row for Domek Sosna -->
+<div class="flex-1 relative flex items-center h-[110px]">
+<!-- Background grid day markers (31 days * 44px) -->
+<div class="absolute inset-0 flex pointer-events-none">
+<!-- Day backgrounds replicating weekend highlights -->
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<!-- Col 16 Today -->
+<div class="w-11 border-r border-primary/20 bg-primary-fixed/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+</div>
+<!-- RESERVATION 1: Lewicki (2 os.) 11.08 - 14.08 (days 11, 12, 13 = 3 nights, width: 3*44 = 132px, left: 10*44 = 440px) -->
+<div class="absolute left-[440px] w-[132px] h-[52px] bg-primary-container text-surface-container-lowest rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-110 transition-transform active:scale-[0.99] z-10 border border-primary" title="Lewicki • 11-14.08.2026">
+<div class="flex items-center justify-between text-xs font-bold leading-tight">
+<span class="truncate">Lewicki</span>
+<span class="text-[10px] bg-primary/40 px-1.5 py-0.2 rounded font-medium">2 os.</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-primary-fixed font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>1 350 zł</span>
+</div>
+</div>
+<!-- RESERVATION 2: Kowalska (3 os.) 14.08 - 18.08 (days 14, 15, 16, 17 = 4 nights, left: 13*44 = 572px, width: 4*44 = 176px) -->
+<!-- ACTIVE HOVER TOOLTIP VISIBLE! -->
+<div class="absolute left-[572px] w-[176px] h-[52px] bg-striped-amber rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer z-10 border-2 border-amber-600 transition-all ring-4 ring-amber-400/20">
+<div class="flex items-center justify-between text-xs font-bold leading-tight text-amber-950">
+<span class="truncate">Kowalska (3 os.)</span>
+<span class="text-[10px] bg-amber-200/80 text-amber-900 px-1 py-0.2 rounded font-bold">Zaliczka</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-amber-900 font-semibold mt-0.5">
+<span class="material-symbols-outlined text-[14px] text-amber-700" data-icon="hourglass_top">hourglass_top</span>
+<span>Oczekuje: 1 640 zł</span>
+</div>
+<!-- PINNED HOVER TOOLTIP CARD -->
+<div class="absolute left-1/2 -translate-x-1/2 bottom-[62px] w-80 bg-surface-container-lowest rounded-2xl p-4 shadow-2xl border border-outline-variant/50 text-left z-50 pointer-events-auto">
+<!-- Tooltip Pointer Arrow -->
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-surface-container-lowest border-r border-b border-outline-variant/50 transform rotate-45"></div>
+<!-- Header inside tooltip -->
+<div class="flex items-start justify-between gap-2 border-b border-outline-variant/30 pb-2.5 mb-2.5">
+<div>
+<h4 class="font-title-md text-title-md font-bold text-on-surface">Anna Kowalska</h4>
+<p class="font-label-sm text-label-sm text-outline">3 osoby (2 dorosłych, 1 dziecko)</p>
+</div>
+<span class="bg-amber-100 text-amber-900 font-label-sm text-label-sm font-semibold px-2.5 py-1 rounded-full border border-amber-300">
+                      Wygasa za 21h
+                    </span>
+</div>
+<!-- Details -->
+<div class="space-y-2 text-label-md text-on-surface-variant mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="date_range">date_range</span>
+<span class="font-medium text-on-surface">14.08 (pt) – 18.08.2026 (wt) • 4 noce</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="payments">payments</span>
+<span>Suma: <strong class="text-on-surface font-bold">1 640 zł</strong> (wpłacono: 492 zł)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-base" data-icon="phone">phone</span>
+<a class="hover:text-primary underline" href="tel:+48601234567">+48 601 234 567</a>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-base" data-icon="mail">mail</span>
+<span class="truncate">anna.kowalska@example.com</span>
+</div>
+<div class="flex items-center gap-1.5 text-label-sm text-outline pt-1">
+<span class="material-symbols-outlined text-sm" data-icon="public">public</span>
+<span>Źródło: Klucznik Direct Booking</span>
+</div>
+</div>
+<!-- Quick Tooltip Actions -->
+<div class="flex items-center gap-2 pt-2 border-t border-outline-variant/30">
+<button class="flex-1 py-1.5 px-2 bg-primary text-surface-container-lowest font-label-md font-bold rounded-lg hover:bg-primary/90 text-center text-xs transition-colors">
+                      Potwierdź
+                    </button>
+<button class="py-1.5 px-3 bg-surface-container-low text-primary font-label-md font-semibold rounded-lg hover:bg-surface-container text-center text-xs transition-colors">
+                      Szczegóły
+                    </button>
+<button class="p-1.5 bg-surface-container-low text-on-surface rounded-lg hover:bg-surface-container transition-colors" title="Skontaktuj się">
+<span class="material-symbols-outlined text-sm" data-icon="chat">chat</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RESERVATION 3: Zieliński (4 os.) 20.08 - 25.08 (days 20, 21, 22, 23, 24 = 5 nights, left: 19*44 = 836px, width: 5*44 = 220px) -->
+<div class="absolute left-[836px] w-[220px] h-[52px] bg-primary-container text-surface-container-lowest rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-110 transition-transform z-10 border border-primary" title="Zieliński • 20-25.08.2026">
+<div class="flex items-center justify-between text-xs font-bold leading-tight">
+<span class="truncate">Zieliński (4 os.)</span>
+<span class="text-[10px] bg-primary/40 px-1.5 py-0.2 rounded font-medium">Opłacona</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-primary-fixed font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>2 250 zł</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ================= UNIT 2: Domek Brzoza ================= -->
+<div class="flex items-stretch min-h-[110px] group hover:bg-surface-container-low/30 transition-colors">
+<!-- Sticky Unit Sidebar Card -->
+<div class="w-72 shrink-0 p-4 border-r border-outline-variant/40 bg-surface-container-lowest sticky left-0 z-20 flex flex-col justify-center">
+<div class="flex items-center justify-between mb-1">
+<span class="font-title-md text-title-md font-bold text-primary">Domek Brzoza</span>
+<span class="material-symbols-outlined text-outline" data-icon="hot_tub">hot_tub</span>
+</div>
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-surface-container text-on-surface-variant">6 os.</span>
+<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-secondary-fixed text-on-secondary-fixed">Balia ogrodowa</span>
+<span class="font-label-sm text-label-sm text-outline ml-auto">580 zł/d</span>
+</div>
+</div>
+<!-- Gantt Canvas Row for Domek Brzoza -->
+<div class="flex-1 relative flex items-center h-[110px]">
+<!-- Background grid day markers -->
+<div class="absolute inset-0 flex pointer-events-none">
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<!-- Col 16 Today -->
+<div class="w-11 border-r border-primary/20 bg-primary-fixed/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+</div>
+<!-- RESERVATION 1: Kamiński (6 os.) 07.08 - 13.08 (days 7,8,9,10,11,12 = 6 nights, left: 6*44 = 264px, width: 6*44 = 264px) -->
+<div class="absolute left-[264px] w-[264px] h-[52px] bg-primary-container text-surface-container-lowest rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-110 transition-transform z-10 border border-primary" title="Kamiński (6 os.) • 07-13.08">
+<div class="flex items-center justify-between text-xs font-bold leading-tight">
+<span class="truncate">Kamiński (6 os.)</span>
+<span class="text-[10px] bg-primary/40 px-1.5 py-0.2 rounded font-medium">Potwierdzona</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-primary-fixed font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>3 480 zł</span>
+</div>
+</div>
+<!-- TECHNICAL BLOCK: Serwis balii i pieca 14.08 - 16.08 (days 14, 15 = 2 days, left: 13*44 = 572px, width: 2*44 = 88px) -->
+<div class="absolute left-[572px] w-[88px] h-[52px] bg-hatched-blocked rounded-xl px-2 py-1 flex flex-col justify-center cursor-pointer shadow-sm z-10 border border-outline hover:border-on-surface transition-colors" title="Blokada techniczna – serwis balii i wymiana pieca">
+<div class="flex items-center gap-1 text-[11px] font-bold text-on-surface leading-tight truncate">
+<span class="material-symbols-outlined text-[14px] text-outline shrink-0" data-icon="build">build</span>
+<span class="truncate">Serwis balii</span>
+</div>
+<span class="text-[10px] text-outline truncate">Blokada gosp.</span>
+</div>
+<!-- RESERVATION 2: Wójcik (5 os.) 17.08 - 23.08 (days 17, 18, 19, 20, 21, 22 = 6 nights, left: 16*44 = 704px, width: 6*44 = 264px) -->
+<div class="absolute left-[704px] w-[264px] h-[52px] bg-primary-container text-surface-container-lowest rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-110 transition-transform z-10 border border-primary" title="Wójcik (5 os.) • 17-23.08">
+<div class="flex items-center justify-between text-xs font-bold leading-tight">
+<span class="truncate">Wójcik (5 os.)</span>
+<span class="text-[10px] bg-primary/40 px-1.5 py-0.2 rounded font-medium">Potwierdzona</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-primary-fixed font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>3 480 zł</span>
+</div>
+</div>
+<!-- RESERVATION 3: Dąbrowska (4 os.) 25.08 - 30.08 (days 25, 26, 27, 28, 29 = 5 nights, left: 24*44 = 1056px, width: 5*44 = 220px) -->
+<div class="absolute left-[1056px] w-[220px] h-[52px] bg-primary-container text-surface-container-lowest rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-110 transition-transform z-10 border border-primary" title="Dąbrowska (4 os.) • 25-30.08">
+<div class="flex items-center justify-between text-xs font-bold leading-tight">
+<span class="truncate">Dąbrowska (4 os.)</span>
+<span class="text-[10px] bg-primary/40 px-1.5 py-0.2 rounded font-medium">Potwierdzona</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-primary-fixed font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>2 900 zł</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ================= UNIT 3: Pokój Jeziorny ================= -->
+<div class="flex items-stretch min-h-[110px] group hover:bg-surface-container-low/30 transition-colors">
+<!-- Sticky Unit Sidebar Card -->
+<div class="w-72 shrink-0 p-4 border-r border-outline-variant/40 bg-surface-container-lowest sticky left-0 z-20 flex flex-col justify-center">
+<div class="flex items-center justify-between mb-1">
+<span class="font-title-md text-title-md font-bold text-primary">Pokój Jeziorny</span>
+<span class="material-symbols-outlined text-outline" data-icon="water">water</span>
+</div>
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-surface-container text-on-surface-variant">2 os.</span>
+<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary-fixed text-on-primary-fixed">Widok na jezioro</span>
+<span class="font-label-sm text-label-sm text-outline ml-auto">280 zł/d</span>
+</div>
+</div>
+<!-- Gantt Canvas Row for Pokój Jeziorny -->
+<div class="flex-1 relative flex items-center h-[110px]">
+<!-- Background grid day markers -->
+<div class="absolute inset-0 flex pointer-events-none">
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<!-- Col 16 Today -->
+<div class="w-11 border-r border-primary/20 bg-primary-fixed/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+</div>
+<!-- RESERVATION 1: Wójcik (2 os.) 14.08 - 17.08 (days 14, 15, 16 = 3 nights, left: 13*44 = 572px, width: 3*44 = 132px) -->
+<div class="absolute left-[572px] w-[132px] h-[52px] bg-primary-container text-surface-container-lowest rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-110 transition-transform z-10 border border-primary" title="Wójcik (2 os.) • 14-17.08">
+<div class="flex items-center justify-between text-xs font-bold leading-tight">
+<span class="truncate">Wójcik (2 os.)</span>
+<span class="text-[10px] bg-primary/40 px-1 py-0.2 rounded font-medium">Opł.</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-primary-fixed font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>840 zł</span>
+</div>
+</div>
+<!-- TECHNICAL BLOCK: Malowanie i odświeżenie 18.08 - 21.08 (days 18, 19, 20 = 3 days, left: 17*44 = 748px, width: 3*44 = 132px) -->
+<div class="absolute left-[748px] w-[132px] h-[52px] bg-hatched-blocked rounded-xl px-3 py-1.5 flex flex-col justify-center cursor-pointer shadow-sm z-10 border border-outline hover:border-on-surface transition-colors" title="Blokada – malowanie i odświeżenie ścian">
+<div class="flex items-center gap-1 text-[11px] font-bold text-on-surface leading-tight">
+<span class="material-symbols-outlined text-[14px] text-outline shrink-0" data-icon="format_paint">format_paint</span>
+<span class="truncate">Blokada – remont</span>
+</div>
+<span class="text-[10px] text-outline truncate">Malowanie i serwis</span>
+</div>
+<!-- RESERVATION 2: Nowakowski (2 os.) 22.08 - 26.08 (days 22, 23, 24, 25 = 4 nights, left: 21*44 = 924px, width: 4*44 = 176px) -->
+<div class="absolute left-[924px] w-[176px] h-[52px] bg-striped-amber rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-105 transition-transform z-10 border-2 border-amber-600" title="Nowakowski • Oczekuje na potwierdzenie">
+<div class="flex items-center justify-between text-xs font-bold leading-tight text-amber-950">
+<span class="truncate">Nowakowski (2 os.)</span>
+<span class="text-[10px] bg-amber-200/80 text-amber-900 px-1 py-0.2 rounded font-bold">Oczekuje</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-amber-900 font-semibold mt-0.5">
+<span class="material-symbols-outlined text-[14px] text-amber-700" data-icon="hourglass_empty">hourglass_empty</span>
+<span>1 120 zł</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ================= UNIT 4: Apartament Pod Dębem ================= -->
+<div class="flex items-stretch min-h-[110px] group hover:bg-surface-container-low/30 transition-colors">
+<!-- Sticky Unit Sidebar Card -->
+<div class="w-72 shrink-0 p-4 border-r border-outline-variant/40 bg-surface-container-lowest sticky left-0 z-20 flex flex-col justify-center">
+<div class="flex items-center justify-between mb-1">
+<span class="font-title-md text-title-md font-bold text-primary">Apartament Pod Dębem</span>
+<span class="material-symbols-outlined text-outline" data-icon="yard">yard</span>
+</div>
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-surface-container text-on-surface-variant">4 os.</span>
+<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-secondary-fixed text-on-secondary-fixed">Taras i ogród</span>
+<span class="font-label-sm text-label-sm text-outline ml-auto">420 zł/d</span>
+</div>
+</div>
+<!-- Gantt Canvas Row for Apartament Pod Dębem -->
+<div class="flex-1 relative flex items-center h-[110px]">
+<!-- Background grid day markers -->
+<div class="absolute inset-0 flex pointer-events-none">
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<!-- Col 16 Today -->
+<div class="w-11 border-r border-primary/20 bg-primary-fixed/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15 bg-surface-container/20"></div>
+<div class="w-11 border-r border-outline-variant/15"></div>
+</div>
+<!-- RESERVATION 1: Wiśniewski (4 os.) 08.08 - 14.08 (days 8,9,10,11,12,13 = 6 nights, left: 7*44 = 308px, width: 6*44 = 264px) -->
+<div class="absolute left-[308px] w-[264px] h-[52px] bg-primary-container text-surface-container-lowest rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-110 transition-transform z-10 border border-primary" title="Wiśniewski (4 os.) • 08-14.08">
+<div class="flex items-center justify-between text-xs font-bold leading-tight">
+<span class="truncate">Wiśniewski (4 os.)</span>
+<span class="text-[10px] bg-primary/40 px-1.5 py-0.2 rounded font-medium">Opłacona</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-primary-fixed font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>2 520 zł</span>
+</div>
+</div>
+<!-- RESERVATION 2: Michalski (3 os.) 17.08 - 22.08 (days 17, 18, 19, 20, 21 = 5 nights, left: 16*44 = 704px, width: 5*44 = 220px) -->
+<div class="absolute left-[704px] w-[220px] h-[52px] bg-primary-container text-surface-container-lowest rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-110 transition-transform z-10 border border-primary" title="Michalski (3 os.) • 17-22.08">
+<div class="flex items-center justify-between text-xs font-bold leading-tight">
+<span class="truncate">Michalski (3 os.)</span>
+<span class="text-[10px] bg-primary/40 px-1.5 py-0.2 rounded font-medium">Potwierdzona</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-primary-fixed font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+<span>2 100 zł</span>
+</div>
+</div>
+<!-- RESERVATION 3: Szymański (4 os.) 24.08 - 29.08 (days 24, 25, 26, 27, 28 = 5 nights, left: 23*44 = 1012px, width: 5*44 = 220px) -->
+<div class="absolute left-[1012px] w-[220px] h-[52px] bg-striped-amber rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-md cursor-pointer hover:brightness-105 transition-transform z-10 border-2 border-amber-600" title="Szymański • Oczekuje na potwierdzenie">
+<div class="flex items-center justify-between text-xs font-bold leading-tight text-amber-950">
+<span class="truncate">Szymański (4 os.)</span>
+<span class="text-[10px] bg-amber-200/80 text-amber-900 px-1 py-0.2 rounded font-bold">Oczekuje</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-amber-900 font-semibold mt-0.5">
+<span class="material-symbols-outlined text-[14px] text-amber-700" data-icon="hourglass_top">hourglass_top</span>
+<span>2 100 zł</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- TIMELINE BOTTOM LEGEND BAR -->
+<footer class="h-14 bg-surface-container-low px-8 border-t border-outline-variant/40 flex items-center justify-between shrink-0 text-label-sm text-label-sm">
+<!-- Status Legend -->
+<div class="flex items-center gap-6">
+<span class="font-bold text-on-surface">Legenda:</span>
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 rounded bg-primary-container border border-primary"></span>
+<span class="text-on-surface-variant">Potwierdzona (zadatek opłacony)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 rounded bg-striped-amber border border-amber-600"></span>
+<span class="text-on-surface-variant">Oczekuje na decyzję gospodarza</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 rounded bg-hatched-blocked border border-outline"></span>
+<span class="text-on-surface-variant">Blokada techniczna / remont</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 rounded bg-surface-container-lowest border border-outline-variant"></span>
+<span class="text-on-surface-variant">Termin wolny</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-primary-fixed"></span>
+<span class="text-primary font-bold">Dzisiejszy dzień (16.08)</span>
+</div>
+</div>
+<!-- Quick Responsive Switch Helper Note -->
+<div class="flex items-center gap-2 text-outline">
+<span class="material-symbols-outlined text-sm" data-icon="devices">devices</span>
+<span>Widok mobilny: przełącz na listę kafelkową per pokój</span>
+</div>
+</footer>
+</div>
+</body></html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Logowanie – Panel Gospodarza | Klucznik</title>
+<!-- Google Fonts: DM Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface-variant": "#404945",
+            "outline": "#717975",
+            "on-secondary-fixed-variant": "#75340e",
+            "on-error-container": "#93000a",
+            "tertiary-fixed-dim": "#d3c4b4",
+            "on-primary-container": "#a3d4c3",
+            "primary-fixed-dim": "#a0d1c0",
+            "on-tertiary": "#ffffff",
+            "surface-container-high": "#dfebe2",
+            "surface-container-lowest": "#ffffff",
+            "secondary-container": "#ffa273",
+            "primary-fixed": "#bceddc",
+            "tertiary-container": "#5e5347",
+            "primary": "#154539",
+            "secondary-fixed-dim": "#ffb692",
+            "surface": "#f0fdf3",
+            "on-tertiary-fixed": "#221a10",
+            "error-container": "#ffdad6",
+            "on-primary-fixed-variant": "#204f42",
+            "on-tertiary-fixed-variant": "#4f4539",
+            "on-background": "#131e18",
+            "surface-variant": "#d9e6dc",
+            "inverse-on-surface": "#e7f4ea",
+            "secondary-fixed": "#ffdbcb",
+            "inverse-primary": "#a0d1c0",
+            "surface-container-highest": "#d9e6dc",
+            "on-primary-fixed": "#002019",
+            "background": "#f0fdf3",
+            "on-secondary": "#ffffff",
+            "on-primary": "#ffffff",
+            "surface-container": "#e4f1e7",
+            "on-error": "#ffffff",
+            "surface-container-low": "#eaf7ed",
+            "outline-variant": "#c0c8c4",
+            "error": "#ba1a1a",
+            "tertiary-fixed": "#f0e0d0",
+            "primary-container": "#2f5d50",
+            "surface-dim": "#d0ddd4",
+            "secondary": "#924b23",
+            "surface-bright": "#f0fdf3",
+            "on-surface": "#131e18",
+            "surface-tint": "#396759",
+            "on-secondary-container": "#783610",
+            "tertiary": "#463c31",
+            "inverse-surface": "#28332d",
+            "on-tertiary-container": "#d7c7b8",
+            "on-secondary-fixed": "#341100"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2.5rem",
+            "space-sm": "0.5rem",
+            "margin-mobile": "1.25rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2.5rem",
+            "space-md": "1rem",
+            "gutter-mobile": "1rem"
+          },
+          "fontFamily": {
+            "display-lg-mobile": ["DM Sans"],
+            "label-sm": ["DM Sans"],
+            "headline-sm": ["DM Sans"],
+            "headline-lg": ["DM Sans"],
+            "title-md": ["DM Sans"],
+            "body-md": ["DM Sans"],
+            "label-md": ["DM Sans"],
+            "body-lg": ["DM Sans"],
+            "headline-lg-mobile": ["DM Sans"],
+            "display-lg": ["DM Sans"],
+            "headline-md": ["DM Sans"],
+            "label-lg": ["DM Sans"]
+          },
+          "fontSize": {
+            "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary-container selection:text-on-primary">
+<main class="w-full min-h-screen flex flex-col lg:flex-row">
+<!-- LEFT PANEL: Brand Atmosphere & Trust Badges -->
+<section class="relative w-full lg:w-[48%] xl:w-[45%] bg-primary-container text-on-primary flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden min-h-[460px] lg:min-h-screen">
+<!-- Atmospheric Background Image with Warm Forest Mist Aesthetic -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center mix-blend-overlay opacity-30 transform scale-105 pointer-events-none" data-alt="A peaceful Polish agritourism lakeside lodge surrounded by pine trees during a soft golden morning mist. Warm sunlight filters through natural wooden porch beams, reflecting serene clear water. The aesthetic is grounded and tactile with rich forest green and terracotta tones evoking tranquil Masurian hospitality." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCg0vN0-530pmiuoHvfzdhkcYORmsUwdD3zIUS50qXuZl8K6Uel2bFu76UQzGJBqai1Eg-YKx21xFmZBt_b5Rvtj2J6Zf2Lgjb_fJN1t48tChdrdEJPBKJaSd6swuDL8rzteNCDB0wmWFrqnvAFh0TBQMl7t_dR4Ac6EuFWutjv9QugXh6rloMvl3bnXefY7wXgh1MHtCmfr8uLaivgEnIKwYRrf2-oKuDuOkjXd6mV')">
+</div>
+<!-- Subtle Gradient Overlay to Ensure High Contrast -->
+<div class="absolute inset-0 bg-gradient-to-b from-primary/90 via-primary-container/85 to-primary/95 pointer-events-none"></div>
+<!-- Top Header / Brand Sygnet & Badge -->
+<div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex items-center gap-3.5">
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest/15 backdrop-blur-md flex items-center justify-center border border-surface-container-lowest/20 shadow-sm text-secondary-fixed">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">key</span>
+</div>
+<div>
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-white block leading-tight">Klucznik</span>
+<span class="font-label-sm text-label-sm text-on-primary-container tracking-wider uppercase">System dla Gospodarzy</span>
+</div>
+</div>
+<!-- Distinct Badge: Panel Gospodarza -->
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-lowest/15 backdrop-blur-md border border-white/20 text-white w-fit">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim animate-pulse"></span>
+<span class="font-label-md text-label-md font-medium tracking-wide">Panel Gospodarza</span>
+</div>
+</div>
+<!-- Center Copy: Slogan and Value Propositions -->
+<div class="relative z-10 my-auto py-10 lg:py-14 max-w-xl">
+<h1 class="font-headline-lg text-headline-lg font-bold text-white tracking-tight leading-snug lg:leading-tight mb-6">
+          Twój e-recepcjonista – przyjmuje rezerwacje, także gdy śpisz
+        </h1>
+<p class="font-body-lg text-body-lg text-inverse-on-surface/90 leading-relaxed mb-8 text-balance">
+          Stworzony specjalnie dla właścicieli domków, pensjonatów i agroturystyk w całej Polsce. Prosty w obsłudze, bezpieczny i zawsze pod ręką.
+        </p>
+<!-- Reassuring Feature Cards / Bullet Points -->
+<div class="space-y-4">
+<div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-lowest/10 backdrop-blur-sm border border-white/10">
+<div class="w-9 h-9 rounded-lg bg-surface-container-lowest/15 flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<p class="font-title-md text-title-md font-semibold text-white">Bezpieczne zarządzanie rezerwacjami</p>
+<p class="font-body-md text-body-md text-inverse-on-surface/80 mt-0.5">Wszystkie zaliczki, terminy i dane gości w jednym chronionym miejscu bez ryzyka pomyłek.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-lowest/10 backdrop-blur-sm border border-white/10">
+<div class="w-9 h-9 rounded-lg bg-surface-container-lowest/15 flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined text-[20px]">devices</span>
+</div>
+<div>
+<p class="font-title-md text-title-md font-semibold text-white">Dostęp 24/7 z telefonu i komputera</p>
+<p class="font-body-md text-body-md text-inverse-on-surface/80 mt-0.5">Przejrzysty widok kalendarza dostosowany do każdego ekranu, bez konieczności instalowania trudnych programów.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-lowest/10 backdrop-blur-sm border border-white/10">
+<div class="w-9 h-9 rounded-lg bg-surface-container-lowest/15 flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined text-[20px]">mark_email_read</span>
+</div>
+<div>
+<p class="font-title-md text-title-md font-semibold text-white">Automatyczne powiadomienia SMS i e-mail</p>
+<p class="font-body-md text-body-md text-inverse-on-surface/80 mt-0.5">Potwierdzenia wpłaty i instrukcje dojazdu wysyłają się same, oszczędzając Twój cenny czas.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Left Bottom Host Testimonial / Community Anchor -->
+<div class="relative z-10 pt-6 border-t border-white/15 flex items-center gap-4">
+<div class="w-11 h-11 rounded-full bg-secondary-container/80 flex items-center justify-center text-on-secondary-fixed font-title-md text-title-md font-bold shrink-0">
+          LP
+        </div>
+<div>
+<p class="font-label-lg text-label-lg font-semibold text-white">„Wreszcie spokojne wieczory bez ciągłego odbierania telefonów”</p>
+<p class="font-label-sm text-label-sm text-on-primary-container">Teresa i Marek, Gospodarstwo Leśna Polana (Mazury)</p>
+</div>
+</div>
+</section>
+<!-- RIGHT PANEL: Login Form Canvas -->
+<section class="w-full lg:w-[52%] xl:w-[55%] bg-surface flex flex-col justify-between p-6 sm:p-10 lg:p-14 xl:p-18 overflow-y-auto">
+<!-- Top Secondary Bar / Back Link -->
+<div class="w-full max-w-lg mx-auto flex items-center justify-between pb-6 sm:pb-8">
+<a class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors duration-150 font-label-lg text-label-lg group" href="#powrot">
+<span class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform duration-150">arrow_back</span>
+<span>Wróć do strony głównej</span>
+</a>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-primary">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="font-label-sm text-label-sm font-semibold tracking-wide">Bezpieczne połączenie SSL</span>
+</div>
+</div>
+<!-- Main Login Card Container -->
+<div class="w-full max-w-lg mx-auto my-auto py-2">
+<!-- Welcome Card Header -->
+<div class="mb-8">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight mb-2">
+            Witaj ponownie
+          </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+            Zaloguj się do swojego <strong class="text-on-surface font-semibold">Panelu Gospodarza</strong>, aby sprawdzić grafik i rezerwacje.
+          </p>
+</div>
+<!-- ERROR ALERT BANNER: Warm Terracotta / Soft-Red Organic Alert -->
+<div class="mb-7 p-4 sm:p-5 rounded-xl bg-error-container/50 border border-error/25 flex items-start gap-4 transition-all duration-200 shadow-sm" id="error-banner" role="alert">
+<div class="w-10 h-10 rounded-full bg-error/15 text-error flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[24px]">error_outline</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-title-md text-title-md font-bold text-on-error-container">Nieprawidłowy e-mail lub hasło</h3>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-1" onclick="document.getElementById('error-banner').style.display='none'" title="Zamknij komunikat" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-1 leading-relaxed">
+              Sprawdź wprowadzone dane lub zresetuj hasło poniżej. Upewnij się, że klawisz Caps Lock jest wyłączony.
+            </p>
+</div>
+</div>
+<!-- Login Form Element -->
+<form action="#" class="space-y-6" method="POST" onsubmit="event.preventDefault();">
+<!-- Email Input Group -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<label class="block font-title-md text-title-md font-semibold text-on-surface" for="email">
+                Adres e-mail <span aria-hidden="true" class="text-secondary">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Twój login</span>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[22px]">mail</span>
+</div>
+<input class="w-full h-[52px] pl-12 pr-4 bg-surface-container-lowest text-on-surface font-body-lg text-body-lg rounded-xl border border-error focus:border-error focus:ring-4 focus:ring-error-container/40 transition-all outline-none placeholder:text-outline/70 shadow-sm" id="email" name="email" placeholder="np. jan.nowak@lesnapolana.pl" required="" type="email" value="jan.nowak@lesnapolana.pl"/>
+</div>
+<p class="font-label-sm text-label-sm text-error flex items-center gap-1.5 mt-1.5">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span>Konto powiązane z tym adresem wymaga podania poprawnego hasła.</span>
+</p>
+</div>
+<!-- Password Input Group with Reveal Toggle -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<label class="block font-title-md text-title-md font-semibold text-on-surface" for="password">
+                Hasło <span aria-hidden="true" class="text-secondary">*</span>
+</label>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[22px]">lock</span>
+</div>
+<input class="w-full h-[52px] pl-12 pr-14 bg-surface-container-lowest text-on-surface font-body-lg text-body-lg rounded-xl border border-error focus:border-error focus:ring-4 focus:ring-error-container/40 transition-all outline-none placeholder:text-outline/70 shadow-sm" id="password" name="password" placeholder="••••••••••••" required="" type="password" value="tajnehaslo123"/>
+<!-- Toggle Visibility Button -->
+<button aria-label="Pokaż lub ukryj hasło" class="absolute inset-y-0 right-0 pr-4 flex items-center text-on-surface-variant hover:text-primary transition-colors focus:outline-none" id="togglePassword" onclick="togglePasswordVisibility()" title="Pokaż hasło" type="button">
+<span class="material-symbols-outlined text-[24px]" id="eyeIcon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Remember Me Checkbox & Forgot Password Row -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+<label class="flex items-center gap-3 cursor-pointer select-none group">
+<input checked="" class="w-5 h-5 rounded border-outline/40 text-primary-container focus:ring-primary-container/20 focus:ring-offset-0 focus:ring-2 cursor-pointer bg-surface-container-lowest" id="remember" name="remember" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">
+                Zapamiętaj mnie na tym urządzeniu
+              </span>
+</label>
+<a class="font-label-lg text-label-lg text-secondary hover:text-on-secondary-fixed-variant font-semibold underline underline-offset-4 transition-colors" href="#reset-hasla">
+              Nie pamiętasz hasła?
+            </a>
+</div>
+<!-- Primary CTA Button (Forest Green #2F5D50, large min-h, tactile) -->
+<div class="pt-2">
+<button class="w-full h-[54px] bg-primary-container hover:bg-primary text-white font-title-md text-title-md font-bold rounded-xl flex items-center justify-center gap-3 shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98] focus:ring-4 focus:ring-primary-container/30 focus:outline-none" type="submit">
+<span>Zaloguj się</span>
+<span class="material-symbols-outlined text-[22px]">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Supportive Technical Help Box (Custom tailored for older hospitality hosts) -->
+<div class="mt-8 p-5 rounded-xl bg-surface-container-low border border-outline-variant/40 flex items-start sm:items-center gap-4">
+<div class="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">support_agent</span>
+</div>
+<div class="flex-1">
+<p class="font-title-md text-title-md font-semibold text-on-surface">Potrzebujesz pomocy z logowaniem?</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+              Zadzwoń do polskiego wsparcia technicznego: 
+              <a class="font-semibold text-primary hover:underline ml-1 inline-block" href="tel:+48800123456">+48 800 123 456</a>
+<span class="block text-label-sm text-label-sm text-outline mt-0.5">(pon.–pt. w godzinach 8:00–20:00)</span>
+</p>
+</div>
+</div>
+<!-- Registration Link Container -->
+<div class="mt-8 pt-6 border-t border-outline-variant/30 text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Nie masz jeszcze konta w Kluczniku? 
+            <a class="font-semibold text-primary hover:text-primary-container underline underline-offset-4 ml-1 transition-colors" href="#rejestracja">
+              Załóż bezpłatne konto próbne
+            </a>
+</p>
+</div>
+</div>
+<!-- Legal Links Footer -->
+<footer class="w-full max-w-lg mx-auto pt-8 border-t border-outline-variant/30 mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+          © 2025 Klucznik – Twój e-recepcjonista
+        </p>
+<div class="flex items-center gap-4">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-2" href="#regulamin">
+            Regulamin usługi
+          </a>
+<span aria-hidden="true" class="text-outline-variant">•</span>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-2" href="#prywatnosc">
+            Polityka prywatności
+          </a>
+</div>
+</footer>
+</section>
+</main>
+<!-- Interactive script for password reveal toggle -->
+<script>
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+      const toggleBtn = document.getElementById('togglePassword');
+      
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        eyeIcon.textContent = 'visibility_off';
+        toggleBtn.setAttribute('title', 'Ukryj hasło');
+        toggleBtn.setAttribute('aria-label', 'Ukryj hasło');
+      } else {
+        passInput.type = 'password';
+        eyeIcon.textContent = 'visibility';
+        toggleBtn.setAttribute('title', 'Pokaż hasło');
+        toggleBtn.setAttribute('aria-label', 'Pokaż hasło');
+      }
+    }
+  </script>
+</body></html>

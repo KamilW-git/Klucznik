@@ -1,0 +1,995 @@
+<!DOCTYPE html><html lang="pl"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Pulpit Gospodarza – Klucznik | Domki Leśna Polana</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-primary": "#a0d1c0",
+            "surface-container": "#e4f1e7",
+            "surface-variant": "#d9e6dc",
+            "surface-container-high": "#dfebe2",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed": "#221a10",
+            "inverse-on-surface": "#e7f4ea",
+            "on-secondary-container": "#783610",
+            "on-error-container": "#93000a",
+            "secondary-fixed": "#ffdbcb",
+            "tertiary": "#463c31",
+            "on-primary": "#ffffff",
+            "tertiary-fixed-dim": "#d3c4b4",
+            "on-tertiary-fixed-variant": "#4f4539",
+            "surface-container-low": "#eaf7ed",
+            "on-secondary-fixed": "#341100",
+            "surface": "#f0fdf3",
+            "tertiary-container": "#5e5347",
+            "on-primary-container": "#a3d4c3",
+            "secondary-fixed-dim": "#ffb692",
+            "surface-dim": "#d0ddd4",
+            "primary-fixed": "#bceddc",
+            "on-surface-variant": "#404945",
+            "on-secondary": "#ffffff",
+            "secondary": "#924b23",
+            "on-surface": "#131e18",
+            "on-primary-fixed": "#002019",
+            "tertiary-fixed": "#f0e0d0",
+            "outline-variant": "#c0c8c4",
+            "error-container": "#ffdad6",
+            "surface-bright": "#f0fdf3",
+            "surface-tint": "#396759",
+            "outline": "#717975",
+            "surface-container-highest": "#d9e6dc",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-container": "#d7c7b8",
+            "primary-fixed-dim": "#a0d1c0",
+            "background": "#f0fdf3",
+            "primary-container": "#2f5d50",
+            "primary": "#154539",
+            "on-background": "#131e18",
+            "error": "#ba1a1a",
+            "on-primary-fixed-variant": "#204f42",
+            "on-secondary-fixed-variant": "#75340e",
+            "on-tertiary": "#ffffff",
+            "secondary-container": "#ffa273",
+            "inverse-surface": "#28332d"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "gutter-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "margin-mobile": "1.25rem"
+          },
+          "fontFamily": {
+            "headline-md": ["DM Sans"],
+            "headline-lg": ["DM Sans"],
+            "body-lg": ["DM Sans"],
+            "label-md": ["DM Sans"],
+            "label-lg": ["DM Sans"],
+            "body-md": ["DM Sans"],
+            "title-md": ["DM Sans"],
+            "display-lg": ["DM Sans"],
+            "headline-lg-mobile": ["DM Sans"],
+            "display-lg-mobile": ["DM Sans"],
+            "label-sm": ["DM Sans"],
+            "headline-sm": ["DM Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #FAF7F2;
+      color: #1F2A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #FAF7F2;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #c0c8c4;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex antialiased bg-[#FAF7F2] text-[#1F2A24]">
+<!-- 1. LEFT SIDEBAR (Panel Gospodarza) -->
+<aside class="w-72 bg-surface-container-lowest border-r border-[rgba(31,42,36,0.08)] flex flex-col justify-between shrink-0 fixed top-0 bottom-0 left-0 z-30 select-none">
+<div class="flex flex-col h-full">
+<!-- Brand & Property Header -->
+<div class="p-6 border-b border-[rgba(31,42,36,0.06)]">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[24px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">key</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-primary tracking-tight font-bold">Klucznik</span>
+</div>
+<span class="inline-block px-2 py-0.5 mt-0.5 rounded-full bg-surface-container-low text-primary text-[11px] font-semibold tracking-wide">
+              Panel Gospodarza
+            </span>
+</div>
+</div>
+<!-- Property Switcher -->
+<div class="mt-6">
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-1.5 block">Aktywny obiekt</label>
+<button class="w-full bg-[#FAF7F2] hover:bg-surface-container-low transition-colors duration-150 p-2.5 rounded-xl border border-[rgba(31,42,36,0.12)] flex items-center justify-between text-left group">
+<div class="flex items-center gap-2.5 overflow-hidden">
+<span class="material-symbols-outlined text-primary text-[20px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">cottage</span>
+<div class="truncate">
+<p class="font-label-lg text-label-lg font-bold text-on-surface leading-snug truncate">Domki Leśna Polana</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Mazury • 4 jednostki</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-[20px]">unfold_more</span>
+</button>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav class="flex-1 px-4 py-5 space-y-1.5 overflow-y-auto custom-scroll">
+<!-- Active Nav: Pulpit -->
+<a class="flex items-center justify-between px-3.5 py-3 rounded-xl bg-surface-container-low text-primary font-bold border-l-4 border-primary transition-all" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-body-lg text-body-lg font-semibold">Pulpit</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</a>
+<!-- Kalendarz -->
+<a class="flex items-center justify-between px-3.5 py-3 rounded-xl text-on-surface-variant hover:text-primary hover:bg-[#FAF7F2] transition-colors duration-150" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">calendar_month</span>
+<span class="font-body-lg text-body-lg font-medium">Kalendarz</span>
+</div>
+</a>
+<!-- Rezerwacje (with Pill) -->
+<a class="flex items-center justify-between px-3.5 py-3 rounded-xl text-on-surface-variant hover:text-primary hover:bg-[#FAF7F2] transition-colors duration-150" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">book_online</span>
+<span class="font-body-lg text-body-lg font-medium">Rezerwacje</span>
+</div>
+<span class="bg-[#C8754A] text-white font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold shadow-xs">3</span>
+</a>
+<!-- Pokoje -->
+<a class="flex items-center justify-between px-3.5 py-3 rounded-xl text-on-surface-variant hover:text-primary hover:bg-[#FAF7F2] transition-colors duration-150" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">cabin</span>
+<span class="font-body-lg text-body-lg font-medium">Pokoje i domki</span>
+</div>
+</a>
+<!-- Goście -->
+<a class="flex items-center justify-between px-3.5 py-3 rounded-xl text-on-surface-variant hover:text-primary hover:bg-[#FAF7F2] transition-colors duration-150" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="font-body-lg text-body-lg font-medium">Goście</span>
+</div>
+</a>
+<!-- Ustawienia obiektu -->
+<a class="flex items-center justify-between px-3.5 py-3 rounded-xl text-on-surface-variant hover:text-primary hover:bg-[#FAF7F2] transition-colors duration-150" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">tune</span>
+<span class="font-body-lg text-body-lg font-medium">Ustawienia obiektu</span>
+</div>
+</a>
+</nav>
+<!-- Sidebar Footer -->
+<div class="p-4 border-t border-[rgba(31,42,36,0.06)] space-y-3">
+<!-- Quick Support Box -->
+<div class="bg-[#FAF7F2] p-3.5 rounded-xl border border-[rgba(31,42,36,0.08)]">
+<div class="flex items-center gap-2 text-primary font-semibold text-xs tracking-wide">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+<span class="">Pomoc techniczna Klucznik</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Dedykowany opiekun obiektu:</p>
+<a class="font-label-md text-label-md font-bold text-primary block mt-1 hover:underline" href="tel:+48800123456">
+            +48 800 123 456
+          </a>
+</div>
+<!-- Log out button -->
+<button class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:text-error hover:bg-error-container/20 transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="">Wyloguj się</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- MAIN WRAPPER (Offset for Sidebar) -->
+<div class="flex-1 flex flex-col ml-72 min-w-0">
+<!-- 2. TOP BAR -->
+<header class="sticky top-0 z-20 bg-surface-container-lowest/90 backdrop-blur-md border-b border-[rgba(31,42,36,0.08)] h-20 px-8 flex items-center justify-between">
+<!-- Left: Title / Breadcrumb -->
+<div class="flex items-center gap-4">
+<div>
+
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Pulpit gospodarza</h1>
+</div>
+</div>
+<!-- Center: Search Input -->
+<div class="w-96 relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full pl-11 pr-4 py-2.5 bg-[#FAF7F2] border border-[rgba(31,42,36,0.15)] rounded-xl font-body-md text-body-md text-[#1F2A24] placeholder-outline focus:outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all" placeholder="Szukaj rezerwacji, gościa lub pokoju..." type="text">
+</div>
+<!-- Right Actions: Quick Action + Notifications + User Pill -->
+<div class="flex items-center gap-4">
+<!-- "+ Nowa rezerwacja" Primary Action -->
+<button class="flex items-center gap-2 bg-[#C8754A] hover:bg-[#b5643a] text-white px-4 py-2.5 rounded-xl font-label-lg text-label-lg font-bold shadow-sm active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span class="">Nowa rezerwacja</span>
+</button>
+<div class="h-7 w-[1px] bg-[rgba(31,42,36,0.12)]"></div>
+<!-- Notification Bell -->
+<button class="relative p-2.5 rounded-xl hover:bg-surface-container-low text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 w-2.5 h-2.5 bg-[#C8754A] border-2 border-surface-container-lowest rounded-full"></span>
+</button>
+<!-- User Profile Pill -->
+<div class="flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-xl border border-[rgba(31,42,36,0.08)] bg-surface-container-lowest hover:bg-[#FAF7F2] transition-colors cursor-pointer">
+<div class="w-9 h-9 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-sm">
+            JN
+          </div>
+<div class="text-left hidden lg:block leading-tight">
+<p class="font-label-md text-label-md font-bold text-[#1F2A24]">Jan Nowak</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Właściciel obiektu</p>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">expand_more</span>
+</div>
+</div>
+</header>
+<!-- 3. CONTENT AREA -->
+<main class="p-8 space-y-8 flex-1 max-w-[1440px] w-full">
+<!-- Greeting & Date Context -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-[#1F2A24] tracking-tight">Dzień dobry, Jan!</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1 flex items-center gap-2">
+<span class="">Oto podsumowanie Twojego obiektu na dziś</span>
+<span class="">•</span>
+<span class="font-semibold text-primary">Poniedziałek, 16 czerwca 2025</span>
+</p>
+</div>
+<!-- Live status chip -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E6F3EE] border border-[#2F5D50]/20 text-[#215844] font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full bg-[#2F5D50] animate-pulse"></span>
+<span class="">System Klucznik działa poprawnie</span>
+</div>
+</div>
+<!-- 4 KPI Stat Cards Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- 1) Przyjazdy dziś -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-[rgba(31,42,36,0.08)] shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-medium text-on-surface-variant">Przyjazdy dziś</span>
+<div class="w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">login</span>
+</div>
+</div>
+<div class="mt-3 flex items-baseline gap-3">
+<span class="text-4xl font-extrabold text-[#1F2A24]">2</span>
+<span class="text-xs font-semibold text-on-surface-variant">gości oczekiwanych</span>
+</div>
+<div class="mt-4 pt-3 border-t border-[rgba(31,42,36,0.06)] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">meeting_room</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium truncate">Domek Sosna, Pokój Jeziorny</span>
+</div>
+</div>
+<!-- 2) Wyjazdy dziś -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-[rgba(31,42,36,0.08)] shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-medium text-on-surface-variant">Wyjazdy dziś</span>
+<div class="w-10 h-10 rounded-xl bg-[#FAF7F2] text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">logout</span>
+</div>
+</div>
+<div class="mt-3 flex items-baseline gap-3">
+<span class="text-4xl font-extrabold text-[#1F2A24]">1</span>
+<span class="text-xs font-semibold text-on-surface-variant">wymeldowanie</span>
+</div>
+<div class="mt-4 pt-3 border-t border-[rgba(31,42,36,0.06)] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">cleaning_services</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Domek Brzoza (do sprzątania)</span>
+</div>
+</div>
+<!-- 3) Oczekujące rezerwacje (PROMINENTLY HIGHLIGHTED) -->
+<div class="bg-[#FFF8F4] rounded-2xl p-5 border-2 border-[#C8754A] shadow-md relative overflow-hidden">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-[#ffa273]/20 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center justify-between relative">
+<span class="font-label-lg text-label-lg font-bold text-[#924b23]">Oczekujące rezerwacje</span>
+<div class="w-10 h-10 rounded-xl bg-[#C8754A] text-white flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-[22px]">notification_important</span>
+</div>
+</div>
+<div class="mt-3 flex items-baseline gap-3 relative">
+<span class="text-4xl font-black text-[#924b23]">3</span>
+<span class="px-2.5 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] font-label-sm text-label-sm font-bold uppercase tracking-wide">
+              Wymaga akcji
+            </span>
+</div>
+<div class="mt-4 pt-3 border-t border-[#C8754A]/20 flex items-center justify-between text-xs font-semibold text-[#924b23] relative">
+<span class="">Rezerwacje bezpośrednie</span>
+<span class="underline underline-offset-2">Rozpatrz poniżej ↓</span>
+</div>
+</div>
+<!-- 4) Obłożenie w tym miesiącu -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-[rgba(31,42,36,0.08)] shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-medium text-on-surface-variant">Obłożenie czerwiec</span>
+<div class="w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">trending_up</span>
+</div>
+</div>
+<div class="mt-3 flex items-baseline gap-3">
+<span class="text-4xl font-extrabold text-[#1F2A24]">72%</span>
+<span class="text-xs font-semibold text-[#215844] bg-[#E6F3EE] px-2 py-0.5 rounded-full">+8% vs maj</span>
+</div>
+<div class="mt-4 pt-3 border-t border-[rgba(31,42,36,0.06)]">
+<div class="w-full bg-[#FAF7F2] rounded-full h-2 overflow-hidden border border-[rgba(31,42,36,0.06)]">
+<div class="bg-primary-container h-2 rounded-full" style="width: 72%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. MAIN 2-COLUMN STRUCTURED GRID -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- ================= LEFT / PRIMARY COLUMN (7 cols) ================= -->
+<div class="lg:col-span-7 space-y-8">
+<!-- Card: Wymagają Twojej decyzji -->
+<section class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.1)] p-6 shadow-sm">
+<div class="flex items-center justify-between pb-5 border-b border-[rgba(31,42,36,0.08)]">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-[#FEF3C7] text-[#92400E] flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">pending_actions</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md font-bold text-[#1F2A24]">Wymagają Twojej decyzji</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Nowe zapytania z rezerwacji bezpośredniej Klucznik</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-[#FEF3C7] text-[#92400E] text-xs font-bold rounded-full">3 oczekujące</span>
+</div>
+<!-- List of Pending Reservations -->
+<div class="divide-y divide-[rgba(31,42,36,0.06)]">
+<!-- Rezerwacja 1: Anna Kowalska -->
+<div class="py-5 space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-title-md text-title-md font-bold text-[#1F2A24]">Anna Kowalska</h4>
+<span class="bg-[#FEF3C7] text-[#92400E] font-label-md text-label-md px-2.5 py-0.5 rounded-full font-bold">Oczekuje</span>
+</div>
+<div class="flex items-center gap-4 mt-1 text-sm text-on-surface-variant">
+<span class="flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[16px] text-outline">call</span>
+                        +48 601 234 567
+                      </span>
+<span class="">•</span>
+<span class="text-xs font-semibold text-[#924b23] bg-[#ffa273]/20 px-2 py-0.5 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">hourglass_top</span>
+                        Wygasa za 21 h
+                      </span>
+</div>
+</div>
+<div class="text-left sm:text-right">
+<span class="font-headline-sm text-headline-sm font-extrabold text-[#1F2A24]">1 900 zł</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">płatność online gotowa</p>
+</div>
+</div>
+<div class="p-3 bg-[#FAF7F2] rounded-xl border border-[rgba(31,42,36,0.06)] grid grid-cols-2 gap-3 text-sm">
+<div>
+<span class="text-xs text-on-surface-variant block">Pokój / Obiekt</span>
+<span class="font-semibold text-primary flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">cottage</span>
+                      Domek Sosna (4 os.)
+                    </span>
+</div>
+<div>
+<span class="text-xs text-on-surface-variant block">Termin pobytu</span>
+<span class="font-semibold text-[#1F2A24] flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[18px] text-outline">calendar_today</span>
+                      20.06 – 25.06.2025 (5 nocy)
+                    </span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-3 pt-1">
+<button class="flex-1 bg-[#2F5D50] hover:bg-[#254B40] text-white py-3 px-4 rounded-xl font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99]">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span class="">Potwierdź rezerwację</span>
+</button>
+<button class="px-5 py-3 border border-[rgba(47,93,80,0.25)] hover:bg-[#FAF7F2] text-primary rounded-xl font-label-lg text-label-lg font-bold transition-all">
+                    Odrzuć
+                  </button>
+</div>
+</div>
+<!-- Rezerwacja 2: Piotr Wiśniewski -->
+<div class="py-5 space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-title-md text-title-md font-bold text-[#1F2A24]">Piotr Wiśniewski</h4>
+<span class="bg-[#FEF3C7] text-[#92400E] font-label-md text-label-md px-2.5 py-0.5 rounded-full font-bold">Oczekuje</span>
+</div>
+<div class="flex items-center gap-4 mt-1 text-sm text-on-surface-variant">
+<span class="flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[16px] text-outline">call</span>
+                        +48 502 987 654
+                      </span>
+<span class="">•</span>
+<span class="text-xs font-semibold text-[#924b23] bg-[#ffa273]/20 px-2 py-0.5 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">hourglass_top</span>
+                        Wygasa za 14 h
+                      </span>
+</div>
+</div>
+<div class="text-left sm:text-right">
+<span class="font-headline-sm text-headline-sm font-extrabold text-[#1F2A24]">900 zł</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">zadatek 30%</p>
+</div>
+</div>
+<div class="p-3 bg-[#FAF7F2] rounded-xl border border-[rgba(31,42,36,0.06)] grid grid-cols-2 gap-3 text-sm">
+<div>
+<span class="text-xs text-on-surface-variant block">Pokój / Obiekt</span>
+<span class="font-semibold text-primary flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">apartment</span>
+                      Apartament Pod Dębem (4 os.)
+                    </span>
+</div>
+<div>
+<span class="text-xs text-on-surface-variant block">Termin pobytu</span>
+<span class="font-semibold text-[#1F2A24] flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[18px] text-outline">calendar_today</span>
+                      22.06 – 24.06.2025 (2 noce)
+                    </span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-3 pt-1">
+<button class="flex-1 bg-[#2F5D50] hover:bg-[#254B40] text-white py-2.5 px-4 rounded-xl font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99]">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span class="">Potwierdź</span>
+</button>
+<button class="px-5 py-2.5 border border-[rgba(47,93,80,0.25)] hover:bg-[#FAF7F2] text-primary rounded-xl font-label-lg text-label-lg font-bold transition-all">
+                    Odrzuć
+                  </button>
+</div>
+</div>
+<!-- Rezerwacja 3: Michał Zieliński -->
+<div class="py-5 space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-title-md text-title-md font-bold text-[#1F2A24]">Michał Zieliński</h4>
+<span class="bg-[#FEF3C7] text-[#92400E] font-label-md text-label-md px-2.5 py-0.5 rounded-full font-bold">Oczekuje</span>
+</div>
+<div class="flex items-center gap-4 mt-1 text-sm text-on-surface-variant">
+<span class="font-medium text-on-surface-variant">2 osoby dorosłe</span>
+<span class="">•</span>
+<span class="text-xs font-semibold text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+                        Wygasa za 36 h
+                      </span>
+</div>
+</div>
+<div class="text-left sm:text-right">
+<span class="font-headline-sm text-headline-sm font-extrabold text-[#1F2A24]">480 zł</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">płatność na miejscu</p>
+</div>
+</div>
+<div class="p-3 bg-[#FAF7F2] rounded-xl border border-[rgba(31,42,36,0.06)] grid grid-cols-2 gap-3 text-sm">
+<div>
+<span class="text-xs text-on-surface-variant block">Pokój / Obiekt</span>
+<span class="font-semibold text-primary flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">bed</span>
+                      Pokój Jeziorny (2 os.)
+                    </span>
+</div>
+<div>
+<span class="text-xs text-on-surface-variant block">Termin pobytu</span>
+<span class="font-semibold text-[#1F2A24] flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[18px] text-outline">calendar_today</span>
+                      27.06 – 29.06.2025 (2 noce)
+                    </span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-3 pt-1">
+<button class="flex-1 bg-[#2F5D50] hover:bg-[#254B40] text-white py-2.5 px-4 rounded-xl font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99]">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span class="">Potwierdź</span>
+</button>
+<button class="px-5 py-2.5 border border-[rgba(47,93,80,0.25)] hover:bg-[#FAF7F2] text-primary rounded-xl font-label-lg text-label-lg font-bold transition-all">
+                    Odrzuć
+                  </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Card: Obłożenie w najbliższych 30 dniach (Occupancy Visual Bar Chart) -->
+<section class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.1)] p-6 shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-5 border-b border-[rgba(31,42,36,0.08)]">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-[#1F2A24]">Obłożenie w najbliższych 30 dniach</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Przewidywana zajętość domków dzień po dniu</p>
+</div>
+<!-- Legend -->
+<div class="flex items-center gap-4 text-xs font-semibold">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-[#2F5D50]"></span>
+<span class="text-on-surface-variant">Zarezerwowane</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-[#ffa273]"></span>
+<span class="text-on-surface-variant">Oczekujące</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-[#e4f1e7]"></span>
+<span class="text-on-surface-variant">Wolne</span>
+</div>
+</div>
+</div>
+<!-- Chart Bars Representation (30 Days) -->
+<div class="pt-6">
+<div class="h-44 flex items-end justify-between gap-1 sm:gap-1.5 px-1">
+<!-- Day 1 (Mon 16) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">16</span>
+</div>
+<!-- Day 2 (Tue 17) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">17</span>
+</div>
+<!-- Day 3 (Wed 18) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">18</span>
+</div>
+<!-- Day 4 (Thu 19) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">19</span>
+</div>
+<!-- Day 5 (Fri 20) Weekend Spike + Pending -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#ffa273] w-full" style="height: 25%"></div>
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">20</span>
+</div>
+<!-- Day 6 (Sat 21) Full weekend -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#ffa273] w-full" style="height: 25%"></div>
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">21</span>
+</div>
+<!-- Day 7 (Sun 22) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#ffa273] w-full" style="height: 50%"></div>
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">22</span>
+</div>
+<!-- Day 8 (Mon 23) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">23</span>
+</div>
+<!-- Day 9 (Tue 24) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">24</span>
+</div>
+<!-- Day 10 (Wed 25) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 25%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">25</span>
+</div>
+<!-- Day 11 (Thu 26) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 25%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">26</span>
+</div>
+<!-- Day 12 (Fri 27) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#ffa273] w-full" style="height: 25%"></div>
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">27</span>
+</div>
+<!-- Day 13 (Sat 28) Full weekend -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 100%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">28</span>
+</div>
+<!-- Day 14 (Sun 29) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 100%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">29</span>
+</div>
+<!-- Day 15 (Mon 30) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">30</span>
+</div>
+<!-- Day 16 (Tue 01) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">01</span>
+</div>
+<!-- Day 17 (Wed 02) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">02</span>
+</div>
+<!-- Day 18 (Thu 03) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">03</span>
+</div>
+<!-- Day 19 (Fri 04) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 100%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">04</span>
+</div>
+<!-- Day 20 (Sat 05) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 100%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">05</span>
+</div>
+<!-- Day 21 (Sun 06) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">06</span>
+</div>
+<!-- Day 22 (Mon 07) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">07</span>
+</div>
+<!-- Day 23 (Tue 08) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">08</span>
+</div>
+<!-- Day 24 (Wed 09) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">09</span>
+</div>
+<!-- Day 25 (Thu 10) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">10</span>
+</div>
+<!-- Day 26 (Fri 11) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 100%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">11</span>
+</div>
+<!-- Day 27 (Sat 12) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 100%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">12</span>
+</div>
+<!-- Day 28 (Sun 13) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 75%"></div>
+</div>
+<span class="text-[10px] font-bold text-[#924b23]">13</span>
+</div>
+<!-- Day 29 (Mon 14) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">14</span>
+</div>
+<!-- Day 30 (Tue 15) -->
+<div class="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+<div class="w-full bg-[#FAF7F2] rounded-t-md h-36 flex flex-col justify-end overflow-hidden">
+<div class="bg-[#2F5D50] w-full" style="height: 50%"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">15</span>
+</div>
+</div>
+<!-- Contextual note -->
+<div class="mt-4 p-3 rounded-xl bg-surface-container-low flex items-center justify-between text-xs text-on-surface-variant">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+<span class="">Wszystkie weekendy w lipcu mają ponad 90% rezerwacji. Sugerowane podniesienie stawki weekendowej.</span>
+</span>
+<a class="font-bold text-primary hover:underline" href="#">Przejdź do cennika →</a>
+</div>
+</div>
+</section>
+</div>
+<!-- ================= RIGHT / SECONDARY COLUMN (5 cols) ================= -->
+<div class="lg:col-span-5 space-y-8">
+<!-- Card: Najbliższe przyjazdy (kolejne 7 dni) -->
+<section class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.1)] p-6 shadow-sm">
+<div class="flex items-center justify-between pb-4 border-b border-[rgba(31,42,36,0.08)]">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-[#1F2A24]">Najbliższe przyjazdy</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Harmonogram na kolejne 7 dni</p>
+</div>
+<span class="material-symbols-outlined text-primary">event_available</span>
+</div>
+<!-- Compact Timeline List -->
+<div class="mt-5 space-y-4">
+<!-- Dziś 1: Marek Lewicki -->
+<div class="relative pl-6 pb-2 border-l-2 border-[#2F5D50] group">
+<div class="absolute -left-[7px] top-0 w-3 h-3 rounded-full bg-[#2F5D50] ring-4 ring-white"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="inline-block px-2 py-0.5 rounded-full bg-[#E6F3EE] text-[#215844] font-label-sm text-label-sm font-bold">
+                      Dziś (16.06)
+                    </span>
+<h5 class="font-title-md text-title-md font-bold text-[#1F2A24] mt-1">Marek Lewicki</h5>
+<p class="text-sm font-medium text-primary">Domek Sosna</p>
+</div>
+<span class="text-xs font-semibold text-on-surface-variant">od 15:00</span>
+</div>
+<div class="mt-2 text-xs flex items-center gap-1.5 text-[#215844] bg-[#E6F3EE] p-2 rounded-lg">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span class="font-semibold">Kod PIN do klamki aktywny (SMS wysłany)</span>
+</div>
+</div>
+<!-- Dziś 2: Katarzyna Wójcik -->
+<div class="relative pl-6 pb-2 border-l-2 border-[#2F5D50] group">
+<div class="absolute -left-[7px] top-0 w-3 h-3 rounded-full bg-[#2F5D50] ring-4 ring-white"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="inline-block px-2 py-0.5 rounded-full bg-[#E6F3EE] text-[#215844] font-label-sm text-label-sm font-bold">
+                      Dziś (16.06)
+                    </span>
+<h5 class="font-title-md text-title-md font-bold text-[#1F2A24] mt-1">Katarzyna Wójcik</h5>
+<p class="text-sm font-medium text-primary">Pokój Jeziorny</p>
+</div>
+<span class="text-xs font-semibold text-on-surface-variant">od 16:30</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Płatność uregulowana • Samodzielny meldunek</p>
+</div>
+<!-- Środa (18.06): Tomasz Kamiński -->
+<div class="relative pl-6 pb-2 border-l-2 border-outline-variant/60 group">
+<div class="absolute -left-[7px] top-0 w-3 h-3 rounded-full bg-outline-variant ring-4 ring-white"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-xs font-bold text-on-surface-variant block">Środa, 18.06.2025</span>
+<h5 class="font-title-md text-title-md font-bold text-[#1F2A24] mt-0.5">Tomasz Kamiński</h5>
+<p class="text-sm font-medium text-on-surface-variant">Domek Brzoza (6 os.)</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-[#E6F3EE] text-[#215844] font-label-sm text-label-sm font-semibold">Zadatek opłacony</span>
+</div>
+</div>
+<!-- Piątek (20.06): Anna Kowalska -->
+<div class="relative pl-6 pb-2 border-l-2 border-[#ffa273] group">
+<div class="absolute -left-[7px] top-0 w-3 h-3 rounded-full bg-[#C8754A] ring-4 ring-white"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-xs font-bold text-[#924b23] block">Piątek, 20.06.2025</span>
+<h5 class="font-title-md text-title-md font-bold text-[#1F2A24] mt-0.5">Anna Kowalska</h5>
+<p class="text-sm font-medium text-on-surface-variant">Domek Sosna</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] font-label-sm text-label-sm font-bold">Czeka na akceptację</span>
+</div>
+</div>
+<!-- Sobota (21.06): Magdalena Dąbrowska -->
+<div class="relative pl-6 group">
+<div class="absolute -left-[7px] top-0 w-3 h-3 rounded-full bg-outline-variant ring-4 ring-white"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-xs font-bold text-on-surface-variant block">Sobota, 21.06.2025</span>
+<h5 class="font-title-md text-title-md font-bold text-[#1F2A24] mt-0.5">Magdalena Dąbrowska</h5>
+<p class="text-sm font-medium text-on-surface-variant">Apartament Pod Dębem</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-[#E6F3EE] text-[#215844] font-label-sm text-label-sm font-semibold">Potwierdzona</span>
+</div>
+</div>
+</div>
+<!-- Full Calendar CTA -->
+<div class="mt-6 pt-4 border-t border-[rgba(31,42,36,0.06)]">
+<a class="w-full py-2.5 px-4 rounded-xl border border-[rgba(47,93,80,0.2)] text-primary hover:bg-surface-container-low font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span class="">Zobacz pełny kalendarz rezerwacji</span>
+</a>
+</div>
+</section>
+<!-- Card: Inteligentne klamki (Klucznik PIN Status) -->
+<section class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.1)] p-6 shadow-sm">
+<div class="flex items-center justify-between pb-4 border-b border-[rgba(31,42,36,0.08)]">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-surface-container-low text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">password</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md font-bold text-[#1F2A24]">Inteligentne klamki</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Moduł Klucznik PIN bezobsługowy</p>
+</div>
+</div>
+<span class="flex items-center gap-1.5 text-xs font-bold text-[#215844] bg-[#E6F3EE] px-2.5 py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-[#2F5D50]"></span>
+                4/4 online
+              </span>
+</div>
+<!-- Locks List -->
+<div class="mt-4 space-y-2.5">
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF7F2] border border-[rgba(31,42,36,0.05)] text-sm">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">lock</span>
+<span class="font-medium text-[#1F2A24]">Domek Sosna</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-on-surface-variant">Bateria 94%</span>
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF7F2] border border-[rgba(31,42,36,0.05)] text-sm">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">lock</span>
+<span class="font-medium text-[#1F2A24]">Domek Brzoza</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-on-surface-variant">Bateria 88%</span>
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF7F2] border border-[rgba(31,42,36,0.05)] text-sm">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">lock</span>
+<span class="font-medium text-[#1F2A24]">Apartament Pod Dębem</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-on-surface-variant">Bateria 91%</span>
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF7F2] border border-[rgba(31,42,36,0.05)] text-sm">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">lock</span>
+<span class="font-medium text-[#1F2A24]">Pokój Jeziorny</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-on-surface-variant">Bateria 79%</span>
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+</div>
+</div>
+</div>
+<!-- Automation Banner -->
+<div class="mt-4 p-3 rounded-xl bg-[#FAF7F2] border border-[rgba(31,42,36,0.08)] flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">sms</span>
+<span class="text-on-surface-variant">Automatyczna wysyłka PIN przez SMS: <strong class="text-[#1F2A24]">Aktywna</strong></span>
+</div>
+<span class="text-primary font-bold">2 h przed</span>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- FOOTER (Panel Gospodarza System Info) -->
+<footer class="w-full bg-surface-container-low border-t border-outline-variant/40 mt-auto">
+<div class="max-w-7xl mx-auto px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-on-surface-variant">
+<p class="font-body-md text-body-md">
+          © 2025 Domki Leśna Polana • System rezerwacji dostarcza Klucznik – Twój e-recepcjonista
+        </p>
+<div class="flex items-center gap-6 font-label-sm text-label-sm">
+<a class="hover:text-primary transition-colors" href="#">Regulamin obiektu</a>
+<a class="hover:text-primary transition-colors" href="#">Polityka prywatności</a>
+<a class="hover:text-primary transition-colors" href="#">Zameldowanie i wymeldowanie</a>
+<a class="hover:text-primary transition-colors" href="#">Kontakt</a>
+</div>
+</div>
+</footer>
+</div>
+
+
+</body></html>

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Panel Gospodarza – Edycja jednostki: Domek Sosna (Cennik &amp; Zdjęcia) | Klucznik</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-primary": "#a0d1c0",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#f0e0d0",
+            "primary-fixed-dim": "#a0d1c0",
+            "primary-container": "#2f5d50",
+            "on-primary-container": "#a3d4c3",
+            "on-primary-fixed": "#002019",
+            "inverse-on-surface": "#e7f4ea",
+            "on-primary-fixed-variant": "#204f42",
+            "on-tertiary-fixed": "#221a10",
+            "surface-container-low": "#eaf7ed",
+            "on-secondary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "error": "#ba1a1a",
+            "surface-bright": "#f0fdf3",
+            "outline-variant": "#c0c8c4",
+            "tertiary-fixed-dim": "#d3c4b4",
+            "background": "#f0fdf3",
+            "tertiary-container": "#5e5347",
+            "surface-container-highest": "#d9e6dc",
+            "on-primary": "#ffffff",
+            "inverse-surface": "#28332d",
+            "on-surface": "#131e18",
+            "on-background": "#131e18",
+            "secondary-container": "#ffa273",
+            "on-error": "#ffffff",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed": "#341100",
+            "surface-dim": "#d0ddd4",
+            "secondary-fixed-dim": "#ffb692",
+            "secondary": "#924b23",
+            "secondary-fixed": "#ffdbcb",
+            "surface-tint": "#396759",
+            "outline": "#717975",
+            "on-secondary-fixed-variant": "#75340e",
+            "on-tertiary": "#ffffff",
+            "primary": "#154539",
+            "surface-container": "#e4f1e7",
+            "on-surface-variant": "#404945",
+            "on-secondary-container": "#783610",
+            "tertiary": "#463c31",
+            "on-tertiary-container": "#d7c7b8",
+            "surface-variant": "#d9e6dc",
+            "surface-container-high": "#dfebe2",
+            "primary-fixed": "#bceddc",
+            "on-tertiary-fixed-variant": "#4f4539",
+            "surface": "#f0fdf3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "margin-mobile": "1.25rem",
+            "space-xs": "0.25rem",
+            "margin": "2.5rem",
+            "gutter-mobile": "1rem"
+          },
+          "fontFamily": {
+            "display-lg": ["DM Sans"],
+            "headline-lg": ["DM Sans"],
+            "title-md": ["DM Sans"],
+            "label-sm": ["DM Sans"],
+            "headline-lg-mobile": ["DM Sans"],
+            "label-md": ["DM Sans"],
+            "body-lg": ["DM Sans"],
+            "display-lg-mobile": ["DM Sans"],
+            "label-lg": ["DM Sans"],
+            "headline-md": ["DM Sans"],
+            "headline-sm": ["DM Sans"],
+            "body-md": ["DM Sans"]
+          },
+          "fontSize": {
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f0fdf3;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c0c8c4;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased min-h-screen flex selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ========================================================================= -->
+<!-- LEFT SIDEBAR: "KLUCZNIK" HOST APP SHELL                                   -->
+<!-- ========================================================================= -->
+<aside class="w-72 bg-surface-container-lowest border-r border-outline-variant/30 flex flex-col justify-between shrink-0 fixed inset-y-0 left-0 z-40">
+<div class="flex flex-col">
+<!-- App Brand & Role Badge -->
+<div class="px-6 py-5 border-b border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-[24px]">key</span>
+</div>
+<div>
+<span class="font-title-md text-title-md font-bold tracking-tight text-primary flex items-center gap-1.5">
+              Klucznik
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block -mt-0.5">Twój e-recepcjonista</span>
+</div>
+</div>
+<span class="bg-surface-container text-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full border border-outline-variant/30 font-semibold">
+          Gospodarz
+        </span>
+</div>
+<!-- Property Selector Context -->
+<div class="p-4 border-b border-outline-variant/20">
+<div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant/30 flex items-center justify-between hover:border-primary/40 cursor-pointer transition-all">
+<div class="flex items-center gap-2.5 overflow-hidden">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0">cabin</span>
+<div class="truncate">
+<p class="font-label-lg text-label-lg font-bold text-on-surface truncate">Domki Leśna Polana</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span>Mazury</span> • <span>4 jednostki</span>
+</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">unfold_more</span>
+</div>
+</div>
+<!-- Main Navigation Links -->
+<nav class="px-3 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/60 hover:text-primary transition-colors font-label-lg text-label-lg" href="#pulpit">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span>Pulpit</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/60 hover:text-primary transition-colors font-label-lg text-label-lg" href="#kalendarz">
+<span class="material-symbols-outlined text-[22px]">calendar_month</span>
+<span>Kalendarz</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/60 hover:text-primary transition-colors font-label-lg text-label-lg" href="#rezerwacje">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">book_online</span>
+<span>Rezerwacje</span>
+</div>
+<span class="bg-secondary text-on-secondary px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold">3</span>
+</a>
+<!-- ACTIVE ITEM: Pokoje i domki -->
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-sm" href="#pokoje">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">holiday_village</span>
+<span>Pokoje i domki</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/60 hover:text-primary transition-colors font-label-lg text-label-lg" href="#goscie">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span>Goście</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high/60 hover:text-primary transition-colors font-label-lg text-label-lg" href="#ustawienia">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span>Ustawienia obiektu</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Bottom / Support & Logout -->
+<div class="p-4 border-t border-outline-variant/20 bg-surface-container-low/40 space-y-3">
+<div class="flex items-center gap-2.5 p-2 rounded-lg bg-surface-container-lowest border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-[20px]">support_agent</span>
+<div class="truncate">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Pomoc techniczna:</span>
+<span class="font-label-md text-label-md font-bold text-primary">+48 800 123 456</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-2 text-on-surface-variant hover:text-error transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+<span>Wyloguj się</span>
+</button>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE                                                            -->
+<!-- ========================================================================= -->
+<div class="ml-72 flex-1 flex flex-col min-w-0">
+<!-- Top App Bar -->
+<header class="h-20 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 sticky top-0 z-30 px-8 flex items-center justify-between">
+<!-- Search Input -->
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant/40 rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Szukaj w panelu (rezerwacje, goście, cenniki)..." type="text"/>
+</div>
+<!-- Top Trailing Group -->
+<div class="flex items-center gap-4">
+<!-- Live Preview Secondary Action -->
+<a class="inline-flex items-center gap-1.5 px-3.5 py-2 text-primary bg-surface-container-high/50 hover:bg-surface-container-high rounded-xl font-label-md text-label-md transition-all active:scale-[0.98]" href="#podglad-live">
+<span>Podgląd oferty na żywo</span>
+<span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</a>
+<div class="h-6 w-px bg-outline-variant/40"></div>
+<!-- Notification Bell -->
+<button class="relative p-2 text-on-surface-variant hover:text-primary rounded-xl hover:bg-surface-container-high/50 transition-colors">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-secondary"></span>
+</button>
+<!-- User Profile Pill -->
+<div class="flex items-center gap-3 pl-2">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-label-md">
+            JN
+          </div>
+<div class="text-left hidden sm:block">
+<span class="font-label-lg text-label-lg font-bold text-on-surface block leading-tight">Jan Nowak</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Właściciel obiektu</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Canvas Container with Padding for sticky bottom footer -->
+<main class="flex-1 px-8 py-8 pb-32 max-w-7xl w-full mx-auto space-y-6">
+<!-- Breadcrumbs & Page Header -->
+<div class="flex flex-col gap-2">
+<nav class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<a class="hover:text-primary transition-colors" href="#pokoje">Pokoje i domki</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface">Domek Sosna</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-bold">Edycja</span>
+</nav>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-1">
+<div>
+<div class="flex flex-wrap items-center gap-3">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight">
+                Edycja: Domek Sosna
+              </h1>
+<span class="bg-[#E6F3EE] text-[#215844] font-label-md text-label-md px-3 py-1 rounded-full font-semibold border border-[#215844]/20 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#215844]"></span>
+                Aktywny • Widoczny na stronie
+              </span>
+<span class="bg-surface-container-high text-on-surface-variant font-label-md text-label-md px-2.5 py-1 rounded-lg border border-outline-variant/30 font-medium">
+                Jednostka #01
+              </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+              Zarządzaj informacjami, galerią zdjęć, stawkami sezonowymi i dostępnością domku.
+            </p>
+</div>
+<!-- Secondary Actions -->
+<div class="flex items-center gap-3">
+<button class="px-4 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 font-label-lg text-label-lg transition-colors">
+              Anuluj
+            </button>
+<a class="px-4 py-2.5 rounded-xl bg-surface-container-high/80 text-primary hover:bg-surface-container-highest font-label-lg text-label-lg font-semibold flex items-center gap-1.5 transition-all" href="#podglad">
+<span>Podgląd oferty na żywo</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</a>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- TAB NAVIGATION ROW                                                        -->
+<!-- ========================================================================= -->
+<div class="border-b border-outline-variant/40 flex items-center justify-between">
+<div class="flex items-center gap-8 -mb-px">
+<!-- Tab 1 -->
+<button class="py-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-label-lg text-label-lg flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[20px]">info</span>
+<span>Informacje</span>
+</button>
+<!-- Tab 2 -->
+<button class="py-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-label-lg text-label-lg flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[20px]">photo_library</span>
+<span>Zdjęcia</span>
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-full font-label-sm text-label-sm font-semibold">6 zdjęć</span>
+</button>
+<!-- Tab 3: ACTIVE TAB -->
+<button class="py-3 px-1 border-b-2 border-primary text-primary font-label-lg text-label-lg font-bold flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span>Cennik</span>
+</button>
+<!-- Tab 4 -->
+<button class="py-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-label-lg text-label-lg flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[20px]">event_busy</span>
+<span>Blokady terminów</span>
+</button>
+</div>
+<!-- Quick Switch Indicator -->
+<span class="text-on-surface-variant font-label-sm text-label-sm hidden md:flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          Konfiguracja aktywna dla: <strong>Sezon 2026/2027</strong>
+</span>
+</div>
+<!-- ========================================================================= -->
+<!-- VALIDATION ERROR ALERT BANNER                                             -->
+<!-- ========================================================================= -->
+<div class="bg-error-container/40 border border-error/30 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-xl bg-error/10 text-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">warning</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-error-container">
+              Błąd konfiguracji stawek: Kolizja terminów
+            </h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+              Ta stawka nakłada się na stawkę „Wysoki sezon” (termin: <strong>15.07.2026 – 22.07.2026</strong>). Zmień zakres dat nowej stawki lub dostosuj stawkę nadrzędną.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 self-end md:self-center">
+<button class="px-3 py-1.5 bg-surface-container-lowest border border-error/30 text-on-surface-variant hover:text-error rounded-xl font-label-md text-label-md transition-colors">
+            Więcej szczegółów kolizji
+          </button>
+<button class="px-3.5 py-1.5 bg-error text-on-error rounded-xl font-label-md text-label-md font-semibold hover:bg-error/90 transition-all shadow-sm">
+            Popraw daty
+          </button>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- CARD 1: CENA PODSTAWOWA I REGUŁY POBYTU                                    -->
+<!-- ========================================================================= -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6 shadow-sm">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/20 mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high/60 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">tune</span>
+</div>
+<div>
+<h2 class="font-title-md text-title-md font-bold text-on-surface">Cena podstawowa i reguły pobytu</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Domyślne parametry rozliczeniowe obowiązujące przez cały rok poza sezonami specjalnymi.</p>
+</div>
+</div>
+<span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-3 py-1 rounded-full">
+            Domyślny cennik
+          </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Input: Cena bazowa za noc -->
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg font-semibold text-on-surface flex items-center justify-between">
+<span>Cena bazowa za noc</span>
+<span class="text-primary font-bold">PLN</span>
+</label>
+<div class="relative rounded-xl border border-outline-variant/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all bg-surface-container-lowest">
+<input class="w-full h-12 pl-4 pr-20 font-headline-sm text-headline-sm font-bold text-on-surface rounded-xl focus:outline-none bg-transparent" type="text" value="380"/>
+<span class="absolute right-3.5 top-1/2 -translate-y-1/2 font-label-md text-label-md text-on-surface-variant font-medium pointer-events-none">
+                zł / noc
+              </span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+              Obowiązuje poza zdefiniowanymi sezonami specjalnymi.
+            </p>
+</div>
+<!-- Input: Minimalna liczba nocy -->
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg font-semibold text-on-surface">
+              Minimalna liczba nocy
+            </label>
+<div class="h-12 border border-outline-variant/50 rounded-xl flex items-center justify-between px-3 bg-surface-container-lowest focus-within:border-primary">
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<div class="font-title-md text-title-md font-bold text-on-surface">
+                2 noce
+              </div>
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+              Standardowe minimum pobytu w tygodniu.
+            </p>
+</div>
+<!-- Input: Zaliczka online -->
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg font-semibold text-on-surface flex items-center justify-between">
+<span>Wymagana zaliczka</span>
+<span class="text-secondary font-semibold font-label-sm text-label-sm">Błyskawiczna rezerwacja</span>
+</label>
+<div class="h-12 border border-outline-variant/50 rounded-xl flex items-center justify-between px-4 bg-surface-container-lowest">
+<span class="font-title-md text-title-md font-bold text-primary">30%</span>
+<span class="font-label-md text-label-md text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-md font-medium">
+                z Klucznikiem
+              </span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+              Automatyczne rozliczenie przez Przelewy24 / BLIK.
+            </p>
+</div>
+<!-- Toggle: Dostosowanie gości -->
+<div class="space-y-2 flex flex-col justify-between">
+<label class="font-label-lg text-label-lg font-semibold text-on-surface">
+              Dopłata za dodatkowych gości
+            </label>
+<div class="h-12 border border-outline-variant/50 rounded-xl flex items-center justify-between px-3.5 bg-surface-container-low/40">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate mr-2">
+                +50 zł za każdą osobę powyżej 4
+              </span>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant/60 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+              Maksymalna pojemność domku: 6 osób.
+            </p>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- CARD 2: STAWKI SEZONOWE I SPECJALNE                                       -->
+<!-- ========================================================================= -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6 shadow-sm space-y-6">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h2 class="font-title-md text-title-md font-bold text-on-surface flex items-center gap-2">
+<span>Stawki sezonowe i specjalne</span>
+<span class="bg-surface-container text-primary text-label-sm font-label-sm px-2.5 py-0.5 rounded-full font-bold">4 aktywne reguły</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+              Stawki sezonowe nadpisują cenę bazową w wybranych przedziałach dat i mają pierwszeństwo podczas kalkulacji rezerwacji.
+            </p>
+</div>
+<button class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-on-primary hover:bg-[#254B40] rounded-xl font-label-lg text-label-lg font-bold shadow-sm transition-all active:scale-[0.98] shrink-0">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>+ Dodaj stawkę sezonową</span>
+</button>
+</div>
+<!-- VISUAL YEAR STRIP / MINI CALENDAR TIMELINE -->
+<div class="bg-surface-container-low/60 rounded-xl p-4 border border-outline-variant/30 space-y-2">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm font-semibold uppercase tracking-wider">
+<span>Oś czasu stawek na rok 2026/2027</span>
+<span class="flex items-center gap-3">
+<span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-600"></span> Majówka</span>
+<span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500"></span> Wysoki sezon</span>
+<span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-teal-600"></span> Długi weekend</span>
+<span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-indigo-700"></span> Sylwester</span>
+</span>
+</div>
+<!-- Timeline Strip Container -->
+<div class="relative w-full h-11 bg-surface-container-highest/40 rounded-lg overflow-hidden border border-outline-variant/40 flex items-center">
+<!-- Month tick lines -->
+<div class="absolute inset-0 grid grid-cols-12 divide-x divide-outline-variant/20 text-center pointer-events-none">
+<span class="text-[10px] text-outline font-medium pt-0.5">Sty</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Lut</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Mar</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Kwi</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Maj</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Cze</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Lip</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Sie</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Wrz</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Paź</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Lis</span>
+<span class="text-[10px] text-outline font-medium pt-0.5">Gru</span>
+</div>
+<!-- Overlaid Season Bands -->
+<!-- Majówka (Koniec Kwi - Maj) -->
+<div class="absolute left-[33%] w-[3.5%] h-6 bg-emerald-600/90 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-xs cursor-pointer hover:h-7 transition-all" title="Majówka Mazurska">
+              🌸
+            </div>
+<!-- Długi weekend czerwcowy -->
+<div class="absolute left-[42.5%] w-[3%] h-6 bg-teal-600/90 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-xs cursor-pointer hover:h-7 transition-all" title="Długi weekend czerwcowy">
+              ☀️
+            </div>
+<!-- Wysoki sezon Lato (20 Czerwca - Koniec Sierpnia) -->
+<div class="absolute left-[47%] w-[20%] h-6 bg-amber-500/90 rounded text-white text-[10px] font-bold flex items-center justify-center px-1 shadow-xs cursor-pointer hover:h-7 transition-all" title="Wysoki sezon (Lato)">
+<span class="truncate">Wysoki sezon (520 zł)</span>
+</div>
+<!-- Conflict overlap indicator zone -->
+<div class="absolute left-[54%] w-[6%] h-7 border-2 border-dashed border-error bg-error/20 rounded z-10 flex items-center justify-center text-error font-bold text-[10px]" title="Konflikt nakładania się dat!">
+              ⚠️ Kolizja
+            </div>
+<!-- Sylwester i Nowy Rok -->
+<div class="absolute left-[97.5%] w-[4%] h-6 bg-indigo-700/90 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-xs cursor-pointer hover:h-7 transition-all" title="Sylwester i Nowy Rok">
+              ✨
+            </div>
+</div>
+<p class="font-label-sm text-label-sm text-outline">
+            Kliknij na pasmo na osi czasu, aby przeskoczyć do edycji reguły lub dostosować priorytet stawek.
+          </p>
+</div>
+<!-- SEASONAL RATES TABLE -->
+<div class="overflow-x-auto rounded-xl border border-outline-variant/30 custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md border-b border-outline-variant/30">
+<th class="py-3 px-4 font-semibold">Nazwa sezonu</th>
+<th class="py-3 px-4 font-semibold">Od</th>
+<th class="py-3 px-4 font-semibold">Do</th>
+<th class="py-3 px-4 font-semibold">Cena za noc</th>
+<th class="py-3 px-4 font-semibold">Min. nocy</th>
+<th class="py-3 px-4 font-semibold">Status / Uwagi</th>
+<th class="py-3 px-4 font-semibold text-right">Akcje</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-md text-body-md text-on-surface">
+<!-- ROW 1 -->
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="py-3.5 px-4 font-semibold text-on-surface flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+<span>Wysoki sezon (Lato)</span>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">20.06.2026</td>
+<td class="py-3.5 px-4 text-on-surface-variant">31.08.2026</td>
+<td class="py-3.5 px-4 font-bold text-primary">520 zł <span class="font-normal text-on-surface-variant text-label-sm">/ noc</span></td>
+<td class="py-3.5 px-4 font-medium">4 noce</td>
+<td class="py-3.5 px-4">
+<span class="bg-[#E6F3EE] text-[#215844] font-label-md text-label-md px-2.5 py-1 rounded-full font-semibold">
+                    Aktywny
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container-high transition-colors" title="Edytuj stawkę">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-error rounded-lg hover:bg-error-container/40 transition-colors" title="Usuń stawkę">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 2 -->
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="py-3.5 px-4 font-semibold text-on-surface flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span>
+<span>Długi weekend czerwcowy</span>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">04.06.2026</td>
+<td class="py-3.5 px-4 text-on-surface-variant">07.06.2026</td>
+<td class="py-3.5 px-4 font-bold text-primary">450 zł <span class="font-normal text-on-surface-variant text-label-sm">/ noc</span></td>
+<td class="py-3.5 px-4 font-medium">3 noce</td>
+<td class="py-3.5 px-4">
+<span class="bg-[#E6F3EE] text-[#215844] font-label-md text-label-md px-2.5 py-1 rounded-full font-semibold">
+                    Aktywny
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container-high transition-colors" title="Edytuj stawkę">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-error rounded-lg hover:bg-error-container/40 transition-colors" title="Usuń stawkę">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 3 -->
+<tr class="hover:bg-surface-container-high/30 transition-colors bg-surface-container-low/20">
+<td class="py-3.5 px-4 font-semibold text-on-surface flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span>
+<span class="text-on-surface-variant">Majówka Mazurska</span>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">30.04.2026</td>
+<td class="py-3.5 px-4 text-on-surface-variant">03.05.2026</td>
+<td class="py-3.5 px-4 font-bold text-on-surface">480 zł <span class="font-normal text-on-surface-variant text-label-sm">/ noc</span></td>
+<td class="py-3.5 px-4 font-medium">3 noce</td>
+<td class="py-3.5 px-4">
+<span class="bg-[#E2E8F0] text-[#475569] font-label-md text-label-md px-2.5 py-1 rounded-full font-semibold">
+                    Zakończony
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container-high transition-colors" title="Edytuj stawkę">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-error rounded-lg hover:bg-error-container/40 transition-colors" title="Usuń stawkę">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 4 -->
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="py-3.5 px-4 font-semibold text-on-surface flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-indigo-700"></span>
+<span>Sylwester i Nowy Rok</span>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">29.12.2026</td>
+<td class="py-3.5 px-4 text-on-surface-variant">02.01.2027</td>
+<td class="py-3.5 px-4 font-bold text-secondary">750 zł <span class="font-normal text-on-surface-variant text-label-sm">/ noc</span></td>
+<td class="py-3.5 px-4 font-medium">3 noce</td>
+<td class="py-3.5 px-4">
+<span class="bg-[#FEF3C7] text-[#92400E] font-label-md text-label-md px-2.5 py-1 rounded-full font-semibold">
+                    Zaplanowany
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container-high transition-colors" title="Edytuj stawkę">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-error rounded-lg hover:bg-error-container/40 transition-colors" title="Usuń stawkę">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- DEDICATED VISUAL SHOWCASE: ZDJĘCIA & GALERIA DOMKU                         -->
+<!-- ========================================================================= -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6 shadow-sm space-y-6">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-outline-variant/20 gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high/60 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">collections</span>
+</div>
+<div>
+<h2 class="font-title-md text-title-md font-bold text-on-surface">Galeria i zdjęcia domku (Zakładka: Zdjęcia)</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Zarządzaj kolejnością fotografii wyświetlanych w wizytówce online domku.</p>
+</div>
+</div>
+<span class="text-on-surface-variant font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+<span>Chwyć i przeciągnij, aby zmienić kolejność</span>
+</span>
+</div>
+<!-- Modern Drag and Drop Upload Zone -->
+<div class="border-2 border-dashed border-outline-variant rounded-2xl p-8 bg-surface-container-low/30 hover:bg-surface-container-low/60 hover:border-primary/50 transition-all flex flex-col items-center justify-center text-center cursor-pointer group">
+<div class="w-14 h-14 rounded-full bg-surface-container-highest/60 text-primary flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[32px]">cloud_upload</span>
+</div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">
+            Przeciągnij zdjęcia lub kliknij, aby wybrać (JPG, PNG, do 10 MB)
+          </h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl mt-1">
+            Zalecana rozdzielczość min. 1920x1080 px. Pierwsze zdjęcie będzie wyświetlane jako miniatura w wynikach wyszukiwania.
+          </p>
+<button class="mt-4 px-5 py-2.5 bg-surface-container-lowest border border-outline-variant/60 hover:border-primary text-primary font-label-lg text-label-lg font-bold rounded-xl shadow-xs transition-all">
+            Wybierz pliki z dysku
+          </button>
+</div>
+<!-- 6 Photos Bento Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<!-- Photo 1: Główna miniatura -->
+<div class="relative group rounded-xl overflow-hidden border-2 border-primary bg-surface-container-low shadow-sm">
+<img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A modern Scandinavian-style wooden A-frame cabin surrounded by tall pine trees in a tranquil Masurian forest. The warm morning sunlight filters through the mist, illuminating the natural timber facade and glass front. Captured in soft earthy tones of forest green, warm wood, and cream reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKmjW1PXvaO-Nwf2s8PL2o-9ttx7hsJvO4lhVbVx0pjny_VST5V3oP8Tv5R2MF7awyGqED3fIAjczpnQkC0PcLsjz8-2nhIlKj7CUkSSL2EerHsgrCN_Q2twMe8KKRqzZxIRQlmOWJGCwVFVTJlVX57ruytOXInSuKESk8AYBbui1TXuzqS3wOB3_QZT0w8u__uLdRP6cUVMSXrHMHAUFZhd9MtfiuK2XSZ8g6T5weq9OixHW636evXw"/>
+<!-- Badges & Controls -->
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+<span class="bg-primary text-on-primary text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                Zdjęcie główne
+              </span>
+<span class="bg-black/60 text-white text-[11px] px-2 py-0.5 rounded backdrop-blur-xs font-medium">
+                2400 × 1600 px
+              </span>
+</div>
+<div class="absolute top-2.5 right-2.5 flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 bg-black/60 hover:bg-black/80 text-white rounded-lg backdrop-blur-xs transition-colors" title="Zmień kolejność">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+</button>
+<button class="p-1.5 bg-black/60 hover:bg-error text-white rounded-lg backdrop-blur-xs transition-colors" title="Usuń zdjęcie">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<div class="p-3 bg-surface-container-lowest flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Domek Sosna z zewnątrz w lesie</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">#1</span>
+</div>
+</div>
+<!-- Photo 2: Salon -->
+<div class="relative group rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-low hover:shadow-md transition-shadow">
+<img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A cozy living room interior of a lakeside wooden retreat in Poland featuring a minimalist cast-iron wood-burning fireplace, plush neutral armchairs, and floor-to-ceiling panoramic windows framing lush green spruce trees. Natural light pours onto warm oak parquet floor, designed with organic minimalist styling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC4G45YgMXqTaQ2eA1N5oIjVRvNUFugRfpRTSkD7LlgCJh8Dpdtya4O_k6EzZ5iKO1qt20BUqbyyg3lmxdNW5LVNm3Wd_-E2pOe7Ijf9gKB3rn2e-RItZ3dK90gYbtx_BPnV3Y_gWtl9tGwpkoIILV3hS6W9czHcMu5GA3pTu19k5kPWsjkyGwlFy1BlWnt9WDTm_4q9JtxVGhq9EmMb5AIufqg5e1GK4LlYvTGJ_0lRAkHkd2iyeYhA"/>
+<div class="absolute top-2.5 right-2.5 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 bg-black/60 hover:bg-black/80 text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+</button>
+<button class="p-1.5 bg-black/60 hover:bg-error text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<div class="p-3 bg-surface-container-lowest flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Przytulny salon z kominkiem</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">#2</span>
+</div>
+</div>
+<!-- Photo 3: Antresola -->
+<div class="relative group rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-low hover:shadow-md transition-shadow">
+<img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" data-alt="An inviting mezzanine bedroom nestled beneath sloped pine wood rafters. A plush king-size bed dressed in crisp linen and sage green textiles sits beside a skylight offering peaceful views of the treetops. Warm ambient bedside reading lamps cast a soft golden glow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGUqoFYD-Spjs8wuqcS_Tfsks8jB-BMk6a2W7kDeQTjyFFTy60mmfFv_wImtSpdrIc163qgaTS2McUsBbs0Ng1C54SfTqwEHbrjheI7Vd61ATQkUUXUdvJJKjW5He-B2tPDxKB3vDnGnXdKgUQd2rPiS0eYcUMLx_LRUANCvL5ugPTj5I_-X2cPAXp6IuoYVk6hJ__rRaMsx6XfA9RPzHzc2rRYxwjFi5psNQk5xxcxDJxGaRdB6hCnA"/>
+<div class="absolute top-2.5 right-2.5 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 bg-black/60 hover:bg-black/80 text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+</button>
+<button class="p-1.5 bg-black/60 hover:bg-error text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<div class="p-3 bg-surface-container-lowest flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Antresola z łóżkiem małżeńskim</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">#3</span>
+</div>
+</div>
+<!-- Photo 4: Łazienka -->
+<div class="relative group rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-low hover:shadow-md transition-shadow">
+<img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A modern boutique bathroom inside a forest chalet featuring a walk-in rain shower with slate stone tiles and raw wooden vanity counter. Brushed brass fixtures and warm LED backlighting create an intimate spa-like sanctuary reflecting Finnish sauna influences." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6dBt-0_DAt68QYLTb8qs_GKVN6PGSopHIDg0BHBPsFe96NkUtnroNJ54IAKM0FaZNpFwY4ljYFg7H4bCn5AsMXDud4Z3RJRwUXxc9zFqDAQrr0-jx2sxgmx0RfZAKqSKBgR47nO5M5e0lHBblHxLK2DxudqMvaavjBzrtwpazvi4jSRNVIReVEehmvSrf0i27VyKX3C4XCHBdK5dgl47BtmmLEwxYli3VZy9OMe5AzgKoEbhIBwFY0w"/>
+<div class="absolute top-2.5 right-2.5 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 bg-black/60 hover:bg-black/80 text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+</button>
+<button class="p-1.5 bg-black/60 hover:bg-error text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<div class="p-3 bg-surface-container-lowest flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Łazienka z prysznicem walk-in</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">#4</span>
+</div>
+</div>
+<!-- Photo 5: Taras -->
+<div class="relative group rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-low hover:shadow-md transition-shadow">
+<img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A spacious wooden terrace extending from a pine cabin over a gentle slope overlooking a Masurian lake at golden hour sunset. Cozy outdoor armchairs, blankets, and a low coffee table evoke peaceful evening serenity in warm terracotta, amber, and deep green hues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwr-wUgQcPQH1Mro20GFymO_gTG1FOk-MoSbr5kXazPZ7tgcsEKmndpJRDGKyujeeLEX5tIllyrDgnvtCmO_1u1nfds4Q1tDqP2WmVR6qOPwgt94eCrzGkmVcB2GCmTEwcp1wlXSA3GTDzNagSJBAHBw_b7LEEB7G_BSHyi0cLaZKWls2YhK8E_SzsBUmrppuDw4YIWIE-tE2C1uam729ZpcpXDkZRp8wXnMIaGObII1SqiTxYpwY-tQ"/>
+<div class="absolute top-2.5 right-2.5 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 bg-black/60 hover:bg-black/80 text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+</button>
+<button class="p-1.5 bg-black/60 hover:bg-error text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<div class="p-3 bg-surface-container-lowest flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Drewniany taras o zachodzie słońca</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">#5</span>
+</div>
+</div>
+<!-- Photo 6: Aneks kuchenny -->
+<div class="relative group rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-low hover:shadow-md transition-shadow">
+<img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A compact contemporary kitchenette inside a boutique vacation lodge. Dark forest green cabinets are paired with a warm butcher block countertop, a sleek induction stovetop, ceramic mugs, and a premium espresso coffee machine with fresh coffee beans." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0lMscU8Bf9UGk8JtkqY8jDAgSL60x7a-0L_et5PpOI3X86H8142XiRV8pJDVwiqPI4aBfldPmhUXMOFLNePzAsdrzKr061-U04vdfEIb0MKQuGLQP9UcR4GbIIGlQAk9CbsfPnpxvngsZ7FlGtm1mYWf59LQAwH0gXfS-QQIAWR8pU6szxBcXohS7y0-T1j2EYQ3QVsAtBFz9B61-cwwHDonYRhfH_0fKVNmmHIlNzny2KH7X2cqY2g"/>
+<div class="absolute top-2.5 right-2.5 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 bg-black/60 hover:bg-black/80 text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+</button>
+<button class="p-1.5 bg-black/60 hover:bg-error text-white rounded-lg backdrop-blur-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<div class="p-3 bg-surface-container-lowest flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Aneks kuchenny z ekspresem</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">#6</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- ========================================================================= -->
+<!-- STICKY BOTTOM ACTION BAR                                                  -->
+<!-- ========================================================================= -->
+<div class="fixed bottom-0 right-0 left-72 bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30 py-4 px-8 z-30 shadow-lg flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-secondary"></span>
+</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">
+          Wprowadzono niezapisane zmiany w cenniku <span class="text-on-surface-variant font-normal">(1 reguła w edycji)</span>
+</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-5 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 font-label-lg text-label-lg transition-colors">
+          Odrzuć zmiany
+        </button>
+<button class="px-6 py-2.5 rounded-xl bg-primary text-on-primary hover:bg-[#254B40] font-label-lg text-label-lg font-bold flex items-center gap-2 shadow-sm transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]">check</span>
+<span>Zapisz zmiany</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

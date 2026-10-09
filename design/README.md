@@ -53,4 +53,4 @@ design/stitch/
 1. Wygeneruj ekran w Stitch (styl zgodny z wybranym wariantem).
 2. Zapisz pliki zgodnie z konwencją.
 3. Zaktualizuj kolumny „Plik Stitch” i „Status” w [screens.md](../apps/web/docs/screens.md) (`brak projektu` → `projekt`).
-4. Commit: `docs(design): dodaj ekran <ID> <nazwa>`.
+4. Commit: `docs(design): dodano ekran <ID> <nazwa>`.

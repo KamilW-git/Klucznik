@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Podgląd wiadomości e-mail - Potwierdzenie Rezerwacji</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#e7f4ea",
+            "on-background": "#131e18",
+            "on-secondary-container": "#783610",
+            "secondary-container": "#ffa273",
+            "tertiary-fixed-dim": "#d3c4b4",
+            "on-primary-fixed-variant": "#204f42",
+            "surface-bright": "#f0fdf3",
+            "primary-fixed": "#bceddc",
+            "on-surface": "#131e18",
+            "on-secondary-fixed-variant": "#75340e",
+            "surface-container-low": "#eaf7ed",
+            "primary-container": "#2f5d50",
+            "on-error-container": "#93000a",
+            "on-tertiary": "#ffffff",
+            "surface-variant": "#d9e6dc",
+            "on-tertiary-container": "#d7c7b8",
+            "secondary-fixed": "#ffdbcb",
+            "secondary-fixed-dim": "#ffb692",
+            "on-tertiary-fixed-variant": "#4f4539",
+            "surface-container-high": "#dfebe2",
+            "on-primary-fixed": "#002019",
+            "tertiary-container": "#5e5347",
+            "on-secondary": "#ffffff",
+            "primary-fixed-dim": "#a0d1c0",
+            "on-primary-container": "#a3d4c3",
+            "on-secondary-fixed": "#341100",
+            "outline-variant": "#c0c8c4",
+            "secondary": "#924b23",
+            "surface-container": "#e4f1e7",
+            "surface": "#f0fdf3",
+            "on-primary": "#ffffff",
+            "on-surface-variant": "#404945",
+            "surface-dim": "#d0ddd4",
+            "inverse-primary": "#a0d1c0",
+            "surface-tint": "#396759",
+            "outline": "#717975",
+            "error": "#ba1a1a",
+            "tertiary": "#463c31",
+            "tertiary-fixed": "#f0e0d0",
+            "surface-container-highest": "#d9e6dc",
+            "on-tertiary-fixed": "#221a10",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "background": "#f0fdf3",
+            "inverse-surface": "#28332d",
+            "error-container": "#ffdad6",
+            "primary": "#154539"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "margin-mobile": "1.25rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin": "2.5rem",
+            "gutter-mobile": "1rem"
+          },
+          "fontFamily": {
+            "body-md": ["DM Sans"],
+            "headline-lg": ["DM Sans"],
+            "label-sm": ["DM Sans"],
+            "headline-sm": ["DM Sans"],
+            "headline-lg-mobile": ["DM Sans"],
+            "display-lg": ["DM Sans"],
+            "headline-md": ["DM Sans"],
+            "label-lg": ["DM Sans"],
+            "display-lg-mobile": ["DM Sans"],
+            "title-md": ["DM Sans"],
+            "body-lg": ["DM Sans"],
+            "label-md": ["DM Sans"]
+          },
+          "fontSize": {
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface-container-high/60 min-h-screen text-on-surface flex flex-col items-center justify-start py-8 px-4 font-body-md text-body-md antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Desktop Mail Client Wrapper Canvas -->
+<main class="w-full max-w-4xl mx-auto flex flex-col items-center">
+<!-- Top Mail App Navigation & Context Bar -->
+<header class="w-full max-w-[660px] bg-surface-container-lowest rounded-t-xl border border-outline-variant/40 shadow-sm px-5 py-3.5 mb-0">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 mr-2">
+<span class="w-3 h-3 rounded-full bg-error/70 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-secondary-container inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-primary-container/60 inline-block"></span>
+</div>
+<span class="text-on-surface-variant font-label-md text-label-md">Skrzynka odbiorcza</span>
+<span class="text-outline-variant text-body-md font-body-md">/</span>
+<span class="text-primary font-label-md text-label-md font-semibold">Wiadomość transakcyjna</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<button aria-label="Drukuj wiadomość" class="hover:text-primary transition-colors duration-150 flex items-center" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="print">print</span>
+</button>
+<button aria-label="Więcej opcji" class="hover:text-primary transition-colors duration-150 flex items-center" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Subject & Sender preview bar -->
+<div class="pt-3 flex flex-col gap-1.5">
+<div class="flex items-start justify-between gap-4">
+<h1 class="font-headline-sm text-headline-sm text-on-surface leading-tight">
+            Temat: Twoja rezerwacja została potwierdzona – Domki Leśna Polana (KL-2026-0042)
+          </h1>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed-variant shrink-0 font-medium">
+            Potwierdzona
+          </span>
+</div>
+<div class="flex flex-wrap items-center justify-between text-on-surface-variant text-label-md font-label-md gap-2 pt-1">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-md">K</span>
+<div>
+<span class="font-semibold text-on-surface">Klucznik</span>
+<span class="text-outline text-label-sm font-label-sm">&lt;rezerwacje@domkilesnapolana.pl&gt;</span>
+</div>
+</div>
+<span class="text-outline text-label-sm font-label-sm">Dziś, 14:32</span>
+</div>
+</div>
+</header>
+<!-- REALISTIC 600px EMAIL CONTAINER (Designed for standard HTML Email Clients) -->
+<div class="w-full max-w-[600px] bg-surface-container-lowest border-x border-b border-outline-variant/30 shadow-md rounded-b-xl overflow-hidden">
+<!-- 1. Email Header: Mazury Forest Sanctuary Aesthetics -->
+<div class="bg-primary px-8 pt-8 pb-7 text-center relative overflow-hidden">
+<div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-primary-container/50 pointer-events-none"></div>
+<div class="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-primary-container/30 pointer-events-none"></div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest/15 backdrop-blur-sm flex items-center justify-center mb-3 border border-surface-container-lowest/20">
+<span class="material-symbols-outlined text-surface-bright text-[28px]" data-icon="forest" data-weight="fill" style="font-variation-settings: 'FILL' 1;">forest</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-surface-bright tracking-tight font-bold">Domki Leśna Polana</h2>
+<p class="font-label-md text-label-md text-primary-fixed tracking-wider uppercase mt-1">Mazury • Puszcza Piska</p>
+<div class="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/20 text-surface-bright text-label-sm font-label-sm tracking-wide">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+<span>Potwierdzenie rezerwacji</span>
+</div>
+</div>
+</div>
+<!-- Atmospheric Cabin Visual Banner -->
+<div class="w-full h-44 relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A tranquil, high-end wooden boutique cabin nestled among dense pine trees in the Masurian forest near a serene misty lake. Warm morning sunlight filters through the pine needles, casting gentle shadows across a natural wood deck. The design embodies organic minimalism and warmth with deep earthy greens, warm wood tones, and crisp natural air. Professional hospitality photograph." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAewB-G6BEpMHlAOrhgGEm4Oj8Pc3wZhnzDDbtlXqMYsnPwPRFjIRfWUXqqwTe8V-c1t5QvRQjW9FgX-hhg113iyIiNOxcPHTDiIwOtM8iEylIsj1b-BglQQDLsPav5bZfYOd2_oLv0DD7dPQNJ3Df21mm7bcZNutfdQrR1G901fy_Gz4GTVgFiVOg8QEiAfGWbLM6dZpLbyI3wMRQ1ctIPEvjH0cbWoiuTgstEJ6Pb1t7yIBdxtupCZA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+</div>
+<!-- 2. Greeting & Intro Section -->
+<div class="px-8 pt-4 pb-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[24px]" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary font-bold">
+            Twoja rezerwacja została potwierdzona
+          </h3>
+</div>
+<p class="font-title-md text-title-md text-on-surface font-semibold mb-2">
+          Dzień dobry, Anno!
+        </p>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+          Mamy przyjemność potwierdzić Twoją rezerwację w Domkach Leśna Polana. Wszystko jest już gotowe na Twój przyjazd i wypoczynek wśród mazurskiej przyrody.
+        </p>
+</div>
+<!-- 3. Reservation Summary Table Card -->
+<div class="px-8 pb-6">
+<div class="bg-surface-container-low/70 rounded-xl border border-outline-variant/30 overflow-hidden">
+<div class="bg-surface-container px-6 py-3 border-b border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="calendar_month">calendar_month</span>
+<span class="font-label-lg text-label-lg text-primary font-bold">Szczegóły pobytu</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-lowest px-2.5 py-0.5 rounded-full border border-outline-variant/30">
+              Numer: KL-2026-0042
+            </span>
+</div>
+<!-- Structured HTML Table for client compatibility -->
+<table cellpadding="0" cellspacing="0" class="w-full border-collapse" role="presentation">
+<tbody>
+<tr class="border-b border-outline-variant/20">
+<td class="py-3 px-6 text-on-surface-variant font-label-md text-label-md align-top w-2/5">Domek / Obiekt</td>
+<td class="py-3 px-6 text-on-surface font-label-md text-label-md font-semibold align-top w-3/5">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="cabin">cabin</span>
+<span>Domek Sosna (z kominkiem i antresolą)</span>
+</div>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/20">
+<td class="py-3 px-6 text-on-surface-variant font-label-md text-label-md align-top">Termin pobytu</td>
+<td class="py-3 px-6 text-on-surface font-label-md text-label-md font-semibold align-top">
+                  14.08.2026 – 18.08.2026 <span class="text-on-surface-variant font-normal">(4 noce)</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/20">
+<td class="py-3 px-6 text-on-surface-variant font-label-md text-label-md align-top">Liczba gości</td>
+<td class="py-3 px-6 text-on-surface font-label-md text-label-md font-semibold align-top">
+                  3 osoby dorosłe
+                </td>
+</tr>
+<tr class="border-b border-outline-variant/20">
+<td class="py-3 px-6 text-on-surface-variant font-label-md text-label-md align-top">Łączna kwota</td>
+<td class="py-3 px-6 text-primary font-title-md text-title-md font-bold align-top">
+                  1 520 zł
+                </td>
+</tr>
+<tr class="bg-surface-container-lowest/60">
+<td class="py-3 px-6 text-on-surface-variant font-label-md text-label-md align-top">Status płatności</td>
+<td class="py-3 px-6 align-top">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#E6F3EE] text-[#215844] font-label-sm text-label-sm font-semibold mb-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+<span>Opłacono zaliczkę 456 zł</span>
+</div>
+<div class="text-outline text-label-sm font-label-sm mt-0.5">
+                    Pozostało 1 064 zł płatne na miejscu lub online
+                  </div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- 4. Check-in & Arrival Information Box -->
+<div class="px-8 pb-6">
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-primary-container/20 shadow-sm relative">
+<div class="flex items-center gap-2 mb-3 text-primary">
+<span class="material-symbols-outlined text-[22px]" data-icon="key">key</span>
+<h4 class="font-title-md text-title-md font-bold">Ważne informacje o przyjeździe</h4>
+</div>
+<div class="space-y-3.5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-0.5 text-[20px]" data-icon="schedule">schedule</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold">Godziny zameldowania</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Przyjazd od godz. 15:00 • Wymeldowanie do godz. 11:00</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-0.5 text-[20px]" data-icon="pin">pin</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold">Dostęp bezkluczykowy (Smart Lock)</p>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                  Kod PIN do zamka cyfrowego zostanie wysłany SMS-em na podany numer telefonu w dniu przyjazdu o godz. 14:30.
+                </p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-0.5 text-[20px]" data-icon="location_on">location_on</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold">Adres obiektu</p>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                  Leśna 14A, 12-220 Ruciane-Nida
+                </p>
+<a class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary font-semibold hover:underline mt-1" href="#mapa">
+<span>Pokaż na mapie Google</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="north_east">north_east</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 5. Primary Call to Action Button -->
+<div class="px-8 py-4 text-center">
+<a class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 bg-primary-container hover:bg-primary text-on-primary rounded-xl font-label-lg text-label-lg font-semibold shadow-sm transition-all duration-150 active:scale-[0.98]" href="#zarzadzaj">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+<span>Zarządzaj rezerwacją</span>
+</a>
+<p class="font-label-sm text-label-sm text-outline mt-2.5">
+          Bez logowania – zmień szczegóły, pobierz fakturę lub opłać pozostałą kwotę
+        </p>
+</div>
+<!-- 6. Contact & Assistance Card -->
+<div class="px-8 py-6">
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex items-center gap-3.5">
+<div class="w-11 h-11 rounded-full bg-surface-container-highest flex items-center justify-center text-primary font-bold text-title-md border border-outline-variant/30">
+              JN
+            </div>
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">Masz pytania do gospodarza?</p>
+<p class="font-title-md text-title-md text-on-surface font-bold">Jan Nowak <span class="font-body-md text-body-md font-normal text-on-surface-variant">– Gospodarz obiektu</span></p>
+</div>
+</div>
+<div class="flex flex-col sm:items-end gap-1 text-label-md font-label-md w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-outline-variant/20">
+<a class="flex items-center gap-1.5 text-primary hover:underline font-semibold" href="tel:+48601234567">
+<span class="material-symbols-outlined text-[16px]" data-icon="call">call</span>
+<span>+48 601 234 567</span>
+</a>
+<a class="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors" href="mailto:kontakt@domkilesnapolana.pl">
+<span class="material-symbols-outlined text-[16px]" data-icon="mail">mail</span>
+<span>kontakt@domkilesnapolana.pl</span>
+</a>
+</div>
+</div>
+</div>
+<!-- 7. Email Footer -->
+<footer class="bg-surface-container-low px-8 py-7 border-t border-outline-variant/30 text-center">
+<div class="flex items-center justify-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="vpn_key">vpn_key</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">
+            Rezerwacje obsługuje Klucznik – Twój e-recepcjonista
+          </span>
+</div>
+<div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 font-label-sm text-label-sm text-on-surface-variant mb-4">
+<a class="hover:text-primary transition-colors" href="#regulamin">Regulamin obiektu</a>
+<span class="text-outline-variant">•</span>
+<a class="hover:text-primary transition-colors" href="#prywatnosc">Polityka prywatności</a>
+<span class="text-outline-variant">•</span>
+<a class="hover:text-primary transition-colors" href="#kontakt">Kontakt z nami</a>
+</div>
+<p class="font-label-sm text-label-sm text-outline max-w-md mx-auto leading-normal">
+          Ta wiadomość została wygenerowana automatycznie w odpowiedzi na potwierdzenie rezerwacji w systemie Klucznik.
+        </p>
+<p class="font-label-sm text-label-sm text-outline/80 mt-2">
+          © 2025 Domki Leśna Polana • System rezerwacji dostarcza Klucznik – Twój e-recepcjonista
+        </p>
+</footer>
+</div>
+<!-- Client Preview Controls Footer -->
+<div class="w-full max-w-[660px] flex items-center justify-between text-outline text-label-sm font-label-sm px-4 py-4 mt-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span>HTML Email Rendering: Table + Responsive 600px Max-Width Standard</span>
+</div>
+<div class="flex items-center gap-4">
+<span>Kodowanie: UTF-8</span>
+<span>Wersja e-maila: v2.4</span>
+</div>
+</div>
+</main>
+</body></html>

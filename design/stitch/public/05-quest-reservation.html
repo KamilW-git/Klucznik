@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zarządzanie rezerwacją • Domki Leśna Polana</title>
+<!-- Google Fonts: DM Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined (Exact Link required) -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error": "#ba1a1a",
+            "on-surface": "#131e18",
+            "on-surface-variant": "#404945",
+            "surface-dim": "#d0ddd4",
+            "outline-variant": "#c0c8c4",
+            "tertiary-container": "#5e5347",
+            "primary": "#154539",
+            "surface-tint": "#396759",
+            "secondary-fixed-dim": "#ffb692",
+            "surface-container-lowest": "#ffffff",
+            "surface-bright": "#f0fdf3",
+            "on-secondary-container": "#783610",
+            "primary-fixed-dim": "#a0d1c0",
+            "on-primary-container": "#a3d4c3",
+            "on-primary-fixed": "#002019",
+            "on-secondary-fixed": "#341100",
+            "surface": "#f0fdf3",
+            "on-tertiary-fixed-variant": "#4f4539",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#bceddc",
+            "outline": "#717975",
+            "surface-container-low": "#eaf7ed",
+            "background": "#f0fdf3",
+            "inverse-surface": "#28332d",
+            "secondary-container": "#ffa273",
+            "secondary": "#924b23",
+            "on-tertiary-container": "#d7c7b8",
+            "on-error-container": "#93000a",
+            "surface-container-highest": "#d9e6dc",
+            "tertiary": "#463c31",
+            "surface-container-high": "#dfebe2",
+            "inverse-primary": "#a0d1c0",
+            "on-primary": "#ffffff",
+            "tertiary-fixed-dim": "#d3c4b4",
+            "secondary-fixed": "#ffdbcb",
+            "on-background": "#131e18",
+            "primary-container": "#2f5d50",
+            "error-container": "#ffdad6",
+            "inverse-on-surface": "#e7f4ea",
+            "on-tertiary-fixed": "#221a10",
+            "on-error": "#ffffff",
+            "surface-variant": "#d9e6dc",
+            "tertiary-fixed": "#f0e0d0",
+            "on-primary-fixed-variant": "#204f42",
+            "on-tertiary": "#ffffff",
+            "surface-container": "#e4f1e7",
+            "on-secondary-fixed-variant": "#75340e"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "margin": "2.5rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "1rem",
+            "margin-mobile": "1.25rem",
+            "gutter": "1.5rem"
+          },
+          "fontFamily": {
+            "body-lg": ["DM Sans"],
+            "headline-sm": ["DM Sans"],
+            "label-lg": ["DM Sans"],
+            "body-md": ["DM Sans"],
+            "label-md": ["DM Sans"],
+            "headline-lg": ["DM Sans"],
+            "headline-md": ["DM Sans"],
+            "headline-lg-mobile": ["DM Sans"],
+            "title-md": ["DM Sans"],
+            "label-sm": ["DM Sans"],
+            "display-lg-mobile": ["DM Sans"],
+            "display-lg": ["DM Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    body {
+      background-color: #FAF7F2;
+      color: #131E18;
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen bg-[#FAF7F2] text-on-surface flex justify-center selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Viewport Frame (390px - 412px target container) -->
+<div class="w-full max-w-[420px] bg-[#FAF7F2] min-h-screen flex flex-col relative shadow-xl overflow-x-hidden pb-12">
+<!-- 1. Header with Brand & Security Badge -->
+<header class="sticky top-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md px-4 py-3 border-b border-outline-variant/30 flex flex-col gap-1.5 shadow-sm">
+<div class="flex items-center justify-between">
+<a class="flex items-center gap-2 text-primary font-bold tracking-tight" href="#">
+<span class="w-8 h-8 rounded-xl bg-primary-container text-surface-bright flex items-center justify-center font-bold text-sm shadow-sm">LP</span>
+<div>
+<h1 class="font-title-md text-title-md text-primary leading-tight">Domki Leśna Polana</h1>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Mazury • Jezioro Narie</span>
+</div>
+</a>
+<a class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-high text-primary transition-colors" href="tel:+48601234567">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+</a>
+</div>
+<!-- Security Notice Pill -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant w-fit self-start border border-outline-variant/30">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="lock">lock</span>
+<span class="font-label-sm text-label-sm">Zarządzanie rezerwacją • Dostęp z linku e-mail</span>
+</div>
+</header>
+<!-- Content Body -->
+<main class="flex-1 px-4 pt-4 space-y-4">
+<!-- 2. Hero & Status Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/20 shadow-sm relative overflow-hidden">
+<div class="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-primary-fixed/20 pointer-events-none blur-xl"></div>
+<div class="flex items-center justify-between gap-2 mb-3">
+<!-- Reservation ID -->
+<div class="inline-flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-lg border border-outline-variant/40">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface-variant tracking-wider">KL-2026-000123</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors" id="copyBtn" onclick="copyReservationId()" title="Skopiuj numer rezerwacji">
+<span class="material-symbols-outlined text-[16px]" data-icon="content_copy">content_copy</span>
+</button>
+</div>
+<!-- Status Badge -->
+<div class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#E6F3EE] text-[#215844] font-label-md text-label-md font-semibold border border-[#215844]/20 shadow-xs">
+<span class="material-symbols-outlined text-[15px]" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Potwierdzona</span>
+</div>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary leading-snug mb-1">
+          Twoja rezerwacja jest potwierdzona!
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Czekamy na Ciebie, Anna. Wszystko przygotowujemy na Twój relaks w sercu mazurskich lasów.
+        </p>
+<!-- Toast notification on copy (hidden by default) -->
+<div class="hidden mt-2 text-center py-1 px-2 rounded-lg bg-primary text-surface-bright font-label-sm text-label-sm transition-opacity" id="copyToast">
+          Skopiowano numer rezerwacji do schowka!
+        </div>
+</div>
+<!-- 3. Reservation Details Card -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/20 shadow-sm overflow-hidden">
+<!-- Room Media Banner -->
+<div class="relative h-44 w-full bg-surface-container">
+<img alt="Domek Sosna" class="w-full h-full object-cover" data-alt="A warm, atmospheric exterior of a modern wooden Nordic-style forest cabin named Domek Sosna nestled between tall green pine trees in the Masuria region of Poland. The cabin features large picture windows reflecting golden sunlight, a natural larch wood patio, and cozy outdoor string lighting. The scene conveys peaceful silence, pristine nature, and cozy hospitality under soft morning light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxDAqCA7hdlYHeAUpZhGEkQCvtnlUAVAHSYVYaW_hjsyOL-u_kzWorJEzmUl-z73z25lI0Hf1nEfzdqT6p_avpzDBhKA0uGm3vjSTDZQBwGPiQLg3CNEZ7X2L8GmcMdLdfJEE9nWUiD9QqJ8DH9nY1RvBOn-5KE7LoFgSk9qHtkSTc7BKTMB4c_SbpMMVBsmrhlzLZOx-xhevqcH6a-oaxPiV6savOCIj1Sy97FB4efjd9IFxzuYuY7g"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-wider block">Boutique Lodge</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-white leading-tight">Domek Sosna</h3>
+</div>
+<span class="font-label-sm text-label-sm bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white">
+                Jezioro Narie
+              </span>
+</div>
+</div>
+</div>
+<div class="p-4 space-y-4">
+<!-- Dates & Stay duration -->
+<div class="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest text-primary flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<div class="flex-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Termin pobytu (4 noce)</span>
+<p class="font-title-md text-title-md text-on-surface font-semibold">
+                14.08.2026 (pt) – 18.08.2026 (wt)
+              </p>
+</div>
+</div>
+<!-- Guests Breakdown -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest text-primary flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Goście</span>
+<p class="font-body-md text-body-md text-on-surface font-medium">
+                3 osoby <span class="text-on-surface-variant text-sm font-normal">(2 dorosłych, 1 dziecko)</span>
+</p>
+</div>
+</div>
+<!-- Financial Summary -->
+<div class="p-3.5 rounded-xl bg-surface-bright border border-outline-variant/30 space-y-2">
+<div class="flex justify-between items-baseline">
+<span class="font-label-lg text-label-lg text-on-surface-variant">Całkowity koszt pobytu:</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">1 640 zł</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 space-y-1.5">
+<div class="flex items-center justify-between text-xs">
+<span class="flex items-center gap-1 text-[#215844] font-medium">
+<span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+                  Zaliczka 30% opłacona online
+                </span>
+<span class="font-semibold text-[#215844]">492 zł</span>
+</div>
+<div class="flex items-center justify-between text-xs bg-surface-container/60 p-2 rounded-lg">
+<span class="text-on-surface font-medium">Do zapłaty na miejscu (gotówka / BLIK / karta):</span>
+<span class="font-bold text-on-surface">1 148 zł</span>
+</div>
+</div>
+</div>
+<!-- Check-in & Check-out -->
+<div class="grid grid-cols-2 gap-2.5 pt-1">
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<div class="flex items-center gap-1.5 text-primary mb-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="login">login</span>
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider">Zameldowanie</span>
+</div>
+<p class="font-title-md text-title-md font-bold text-on-surface">od 15:00</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1 leading-snug">
+                PIN do smartlocka aktywowany w dniu przyjazdu.
+              </p>
+</div>
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<div class="flex items-center gap-1.5 text-primary mb-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider">Wymeldowanie</span>
+</div>
+<p class="font-title-md text-title-md font-bold text-on-surface">do 11:00</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1 leading-snug">
+                Bezdotykowy check-out przez zamknięcie drzwi.
+              </p>
+</div>
+</div>
+<!-- Address & Map Link -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-2">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary mt-0.5" data-icon="pin_drop">pin_drop</span>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Adres obiektu</span>
+<p class="font-body-md text-body-md font-medium text-on-surface">
+                  ul. Leśna Cisza 12, 14-100 Łukta
+                </p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">woj. warmińsko-mazurskie</p>
+</div>
+</div>
+<a class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-surface-container-lowest border border-primary/20 text-primary font-label-lg text-label-lg hover:bg-surface-container transition-colors shadow-xs" href="https://maps.google.com" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]" data-icon="map">map</span>
+<span>Pokaż na mapie</span>
+</a>
+</div>
+<!-- Host Contact Card -->
+<div class="p-3.5 rounded-xl bg-surface-container border border-outline-variant/20 space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-full bg-primary-container text-surface-bright font-bold flex items-center justify-center text-sm shadow-xs">
+                  JN
+                </div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Gospodarz obiektu</span>
+<p class="font-title-md text-title-md text-on-surface font-semibold leading-tight">Jan Nowak</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-highest px-2 py-0.5 rounded text-on-surface-variant">
+                Na miejscu
+              </span>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<a class="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-xs" href="tel:+48601234567">
+<span class="material-symbols-outlined text-[16px]" data-icon="call">call</span>
+<span>Zadzwoń</span>
+</a>
+<a class="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/40 text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" href="mailto:kontakt@lesnapolana.pl">
+<span class="material-symbols-outlined text-[16px]" data-icon="mail">mail</span>
+<span>Napisz</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Helpful Actions -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/20 shadow-sm space-y-2">
+<h4 class="font-title-md text-title-md text-on-surface mb-2">Przydatne opcje</h4>
+<button class="w-full flex items-center justify-between p-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors text-left border border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">Pobierz potwierdzenie PDF</span>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors text-left border border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="event">event</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">Dodaj do kalendarza (Google / Apple)</span>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors text-left border border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="directions_car">directions_car</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">Wskazówki dojazdu i bezpłatny parking</span>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<!-- 6. Interactive Mode Switcher for Demo / Contextual View -->
+<div class="p-3 bg-surface-container-high/60 rounded-xl border border-outline-variant/40 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="schedule">schedule</span>
+<div>
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider block text-primary">Symulacja terminu</span>
+<span class="text-xs text-on-surface-variant" id="variantIndicator">Przed 07.08 (bezpłatne anulowanie)</span>
+</div>
+</div>
+<button class="text-xs font-label-md bg-surface-container-lowest border border-outline-variant/50 text-primary px-3 py-1.5 rounded-lg font-medium shadow-xs hover:bg-surface-container transition-colors" id="toggleVariantBtn" onclick="toggleTimelineVariant()">
+          Zmień wariant
+        </button>
+</div>
+<!-- 4. Cancellation Section - BEFORE DEADLINE (Default active state) -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/20 shadow-sm space-y-3 transition-all duration-300" id="cancellationPreDeadline">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-primary" data-icon="policy">policy</span>
+<h3 class="font-title-md text-title-md text-primary font-bold">Zasady i odwołanie rezerwacji</h3>
+</div>
+<div class="p-3 rounded-xl bg-[#E6F3EE] border border-[#215844]/20 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[#215844] mt-0.5 text-[20px]" data-icon="check_circle">check_circle</span>
+<div>
+<p class="font-body-md text-body-md font-semibold text-[#215844] leading-snug">
+              Możesz bezpłatnie anulować rezerwację do 07.08.2026 (godz. 23:59).
+            </p>
+<p class="font-label-sm text-label-sm text-[#215844]/80 mt-1">
+              Zwrot zaliczki 492 zł nastąpi automatycznie na konto w ciągu 2-3 dni.
+            </p>
+</div>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant leading-relaxed">
+          Po tym terminie wpłacona zaliczka nie podlega zwrotowi zgodnie z regulaminem obiektu Domki Leśna Polana.
+        </p>
+<!-- Destructive outlined button to trigger cancellation modal -->
+<button class="w-full mt-2 py-3 px-4 rounded-xl border border-error/50 text-error font-label-lg text-label-lg hover:bg-error-container/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2 font-medium" onclick="openCancelModal()">
+<span class="material-symbols-outlined text-[18px]" data-icon="event_busy">event_busy</span>
+<span>Anuluj rezerwację</span>
+</button>
+</section>
+<!-- 6. Cancellation Section - AFTER DEADLINE VARIANT (Hidden by default, toggled via switcher) -->
+<section class="hidden bg-surface-container-lowest rounded-2xl p-4 border border-secondary-container/40 shadow-sm space-y-3 transition-all duration-300" id="cancellationPostDeadline">
+<div class="flex items-center gap-2 text-secondary">
+<span class="material-symbols-outlined text-secondary" data-icon="lock_clock">lock_clock</span>
+<h3 class="font-title-md text-title-md text-secondary font-bold">Zasady i odwołanie rezerwacji</h3>
+</div>
+<div class="p-3.5 rounded-xl bg-secondary-fixed/20 border border-secondary-container/50 space-y-1.5">
+<div class="flex items-center gap-2 text-on-secondary-container">
+<span class="material-symbols-outlined text-[20px] text-secondary" data-icon="info">info</span>
+<p class="font-label-lg text-label-lg font-bold text-secondary">
+              Termin bezpłatnego anulowania minął
+            </p>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Data bezpłatnego anulowania upłynęła 07.08.2026. Zgodnie z polityką obiektu zaliczka 492 zł jest bezzwrotna. W przypadku nagłych sytuacji losowych prosimy o kontakt bezpośredni.
+          </p>
+</div>
+<div class="pt-2">
+<a class="w-full py-3 px-4 rounded-xl bg-secondary text-white font-label-lg text-label-lg hover:bg-secondary/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2 font-semibold shadow-sm" href="tel:+48601234567">
+<span class="material-symbols-outlined text-[18px]" data-icon="phone_forwarded">phone_forwarded</span>
+<span>Zadzwoń do gospodarza w sprawie odwołania</span>
+</a>
+</div>
+</section>
+</main>
+<!-- 7. Footer: Klucznik Receptionist Trust Branding -->
+<footer class="mt-8 px-4 pt-6 pb-4 border-t border-outline-variant/30 text-center space-y-2 bg-surface-container-low/50">
+<div class="flex items-center justify-center gap-1.5 text-primary font-semibold text-xs tracking-tight">
+<span class="material-symbols-outlined text-[16px]" data-icon="vpn_key">vpn_key</span>
+<span>Klucznik – Twój e-recepcjonista</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant leading-normal">
+        Bezpieczny system obsługi rezerwacji bez konieczności logowania.<br/>
+        Wszystkie zmiany są natychmiast synchronizowane z bazą obiektu.
+      </p>
+<div class="flex items-center justify-center gap-3 pt-2 text-[12px] text-on-surface-variant">
+<a class="hover:text-primary transition-colors underline underline-offset-2" href="#">Regulamin obiektu</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors underline underline-offset-2" href="#">Polityka prywatności</a>
+</div>
+</footer>
+</div>
+<!-- 5. Interactive Modal / Bottom Sheet: Cancellation Confirmation -->
+<div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200" id="cancelModal">
+<!-- Modal Card (Mobile Bottom Sheet ergonomics) -->
+<div class="w-full max-w-[420px] bg-surface-container-lowest rounded-t-3xl sm:rounded-2xl p-5 border border-outline-variant/30 shadow-2xl transform translate-y-8 transition-transform duration-200" id="modalCard">
+<!-- Drag handle for mobile feel -->
+<div class="w-12 h-1.5 bg-outline-variant/60 rounded-full mx-auto mb-4 sm:hidden"></div>
+<!-- Warning Icon & Title -->
+<div class="flex items-start gap-3 mb-3">
+<div class="w-10 h-10 rounded-full bg-error-container text-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]" data-icon="warning">warning</span>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-snug">
+            Czy na pewno chcesz anulować rezerwację?
+          </h3>
+</div>
+</div>
+<!-- Warning message and refund terms -->
+<div class="p-3.5 rounded-xl bg-error-container/30 border border-error/20 mb-4 text-left">
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+          Rezerwacja domku <strong class="text-error">Domek Sosna</strong> w terminie <strong>14–18.08.2026</strong> zostanie trwale anulowana.
+        </p>
+<p class="font-label-md text-label-md text-on-surface-variant mt-2 font-medium">
+          Zwrot zaliczki w wysokości <strong class="text-primary">492 zł</strong> nastąpi automatycznie na konto w ciągu 2-3 dni roboczych.
+        </p>
+</div>
+<!-- Optional feedback textarea -->
+<div class="mb-4 text-left">
+<label class="block font-label-md text-label-md text-on-surface-variant font-medium mb-1.5" for="cancelReason">
+          Powód anulowania <span class="font-normal text-outline">(opcjonalnie)</span>
+</label>
+<textarea class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-low text-on-surface placeholder:text-outline text-sm p-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none" id="cancelReason" placeholder="Napisz krótko, dlaczego rezygnujesz... pomoże to gospodarzowi ulepszyć ofertę" rows="3"></textarea>
+</div>
+<!-- Action buttons -->
+<div class="space-y-2.5">
+<button class="w-full py-3.5 px-4 rounded-xl bg-error text-on-error font-label-lg text-label-lg font-bold shadow-md hover:bg-error/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2" onclick="confirmCancellation()">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete_forever">delete_forever</span>
+<span>Tak, anuluj rezerwację</span>
+</button>
+<button class="w-full py-3 px-4 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-lg text-label-lg font-medium transition-colors" onclick="closeCancelModal()">
+          Nie, wróć do rezerwacji
+        </button>
+</div>
+</div>
+</div>
+<!-- Interactive JavaScript logic -->
+<script>
+    // Copy reservation ID to clipboard
+    function copyReservationId() {
+      const reservationId = "KL-2026-000123";
+      navigator.clipboard.writeText(reservationId).then(() => {
+        const toast = document.getElementById('copyToast');
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 2500);
+      }).catch(err => {
+        console.error('Błąd kopiowania:', err);
+      });
+    }
+
+    // Modal controls
+    function openCancelModal() {
+      const modal = document.getElementById('cancelModal');
+      const card = document.getElementById('modalCard');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+      card.classList.remove('translate-y-8');
+      card.classList.add('translate-y-0');
+    }
+
+    function closeCancelModal() {
+      const modal = document.getElementById('cancelModal');
+      const card = document.getElementById('modalCard');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      card.classList.add('translate-y-8');
+      card.classList.remove('translate-y-0');
+    }
+
+    function confirmCancellation() {
+      alert('Rezerwacja KL-2026-000123 została anulowana. Potwierdzenie oraz informacja o zwrocie 492 zł zostały wysłane na Twój adres e-mail.');
+      closeCancelModal();
+      location.reload();
+    }
+
+    // Variant Timeline Switcher (Pre vs Post Deadline Preview)
+    let isPostDeadline = false;
+    function toggleTimelineVariant() {
+      isPostDeadline = !isPostDeadline;
+      const preEl = document.getElementById('cancellationPreDeadline');
+      const postEl = document.getElementById('cancellationPostDeadline');
+      const indicator = document.getElementById('variantIndicator');
+
+      if (isPostDeadline) {
+        preEl.classList.add('hidden');
+        postEl.classList.remove('hidden');
+        indicator.textContent = "Po 07.08 (po upływie terminu)";
+      } else {
+        preEl.classList.remove('hidden');
+        postEl.classList.add('hidden');
+        indicator.textContent = "Przed 07.08 (bezpłatne anulowanie)";
+      }
+    }
+
+    // Close modal on click outside card
+    document.getElementById('cancelModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeCancelModal();
+      }
+    });
+  </script>
+</body></html>

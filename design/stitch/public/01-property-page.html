@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Domki Leśna Polana • Mazury • Rezerwacja Online</title>
+<!-- Google Fonts: DM Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-lowest": "#ffffff",
+            "on-primary": "#ffffff",
+            "secondary-fixed": "#ffdbcb",
+            "surface-container-highest": "#d9e6dc",
+            "on-primary-container": "#a3d4c3",
+            "surface-variant": "#d9e6dc",
+            "secondary-fixed-dim": "#ffb692",
+            "inverse-primary": "#a0d1c0",
+            "on-primary-fixed-variant": "#204f42",
+            "primary-fixed": "#bceddc",
+            "error": "#ba1a1a",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-container": "#d7c7b8",
+            "surface-bright": "#f0fdf3",
+            "tertiary": "#463c31",
+            "surface": "#FAF7F2",
+            "tertiary-fixed": "#f0e0d0",
+            "primary-container": "#2f5d50",
+            "primary-fixed-dim": "#a0d1c0",
+            "on-error": "#ffffff",
+            "surface-container-high": "#dfebe2",
+            "inverse-on-surface": "#e7f4ea",
+            "on-secondary-fixed-variant": "#75340e",
+            "outline": "#717975",
+            "on-tertiary-fixed": "#221a10",
+            "on-tertiary-fixed-variant": "#4f4539",
+            "outline-variant": "#c0c8c4",
+            "error-container": "#ffdad6",
+            "on-secondary-container": "#783610",
+            "tertiary-fixed-dim": "#d3c4b4",
+            "on-surface": "#1F2A24",
+            "on-error-container": "#93000a",
+            "surface-container": "#e4f1e7",
+            "secondary-container": "#ffa273",
+            "secondary": "#C8754A",
+            "surface-tint": "#396759",
+            "on-secondary-fixed": "#341100",
+            "primary": "#2F5D50",
+            "surface-container-low": "#FAF7F2",
+            "surface-dim": "#d0ddd4",
+            "inverse-surface": "#28332d",
+            "on-background": "#1F2A24",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#002019",
+            "tertiary-container": "#5e5347",
+            "on-surface-variant": "#404945",
+            "background": "#FAF7F2"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "label-sm": ["DM Sans"],
+            "headline-lg-mobile": ["DM Sans"],
+            "headline-md": ["DM Sans"],
+            "headline-lg": ["DM Sans"],
+            "display-lg": ["DM Sans"],
+            "display-lg-mobile": ["DM Sans"],
+            "headline-sm": ["DM Sans"],
+            "title-md": ["DM Sans"],
+            "label-lg": ["DM Sans"],
+            "label-md": ["DM Sans"],
+            "body-lg": ["DM Sans"],
+            "body-md": ["DM Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1;
+    }
+    html {
+      scroll-behavior: smooth;
+      background-color: #FAF7F2;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased font-body-lg text-body-lg selection:bg-primary selection:text-white">
+<!-- SHARED COMPONENT: TopNavBar -->
+<header class="sticky top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+<!-- Brand Logo -->
+<a class="flex items-center gap-2.5 group" href="#">
+<span class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-all duration-200">
+<span class="material-symbols-outlined text-[24px]" data-icon="forest">forest</span>
+</span>
+<span class="font-title-md text-title-md font-bold text-primary tracking-tight">Domki Leśna Polana</span>
+</a>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center space-x-8">
+<a class="font-label-lg text-label-lg text-primary font-bold border-b-2 border-primary pb-1" href="#pokoje">Pokoje</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors duration-150" href="#o-nas">O nas</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors duration-150" href="#lokalizacja">Lokalizacja</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors duration-150" href="#kontakt">Kontakt</a>
+</nav>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center gap-4 sm:gap-6">
+<a class="hidden sm:flex items-center gap-2 font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors duration-150" href="tel:+48601234567">
+<span class="material-symbols-outlined text-[20px]" data-icon="call">call</span>
+<span>+48 601 234 567</span>
+</a>
+<div class="hidden lg:flex items-center gap-1 font-label-sm text-label-sm px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant">
+<span>pl / PLN</span>
+</div>
+<a class="inline-flex items-center justify-center h-12 px-6 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-semibold hover:bg-[#254B40] active:scale-[0.98] transition-all duration-150 shadow-sm" href="#rezerwuj">
+<span class="material-symbols-outlined mr-2 text-[18px]" data-icon="calendar_month">calendar_month</span>
+          Zarezerwuj
+        </a>
+</div>
+</div>
+</header>
+<main>
+<!-- HERO SECTION -->
+<section class="relative min-h-[620px] lg:min-h-[700px] flex items-center justify-center pt-8 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+<!-- Background Image with Soft Organic Overlay -->
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Photorealistic wide angle vista of peaceful wooden lakefront cabins nestled within a dense pine forest in the Polish Masurian lake district at gentle morning sunrise. The calm misty lake reflects tall emerald trees and a private wooden dock with tethered rowboats. Warm earthy tones, lush natural greens, soft tactile morning mist, atmospheric tranquility, high resolution travel hospitality photography." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4cg2R5tZHL3K8UZhCqRCV_8z84MVL5cJbo4OlkRlOgBBEsduIQ6y5vVKOCiqLrDK7PST0U-aCnhpPpgFgpkpBNSpbtdLmljrobZO_RAvLwXe1OBGVK6_2zzcIVR7RRWR5WauHRBk2KXFPcD9u5KPtrAW19_0FZxpBykUTzF2jK4EVKJckAi_idV3ZOIhpCPo9liu42h0Jhnel64LCmpJXqdkADM8kSAemc9SZNz2j')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-b from-[#131E18]/65 via-[#131E18]/50 to-[#FAF7F2]"></div>
+<div class="relative z-10 max-w-5xl mx-auto text-center w-full flex flex-col items-center">
+<!-- Badge -->
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md text-primary font-label-md text-label-md border border-white/40 shadow-sm mb-6">
+<span class="material-symbols-outlined text-[16px] text-secondary fill-icon" data-icon="eco">eco</span>
+<span>Spokojny wypoczynek wśród natury • Jezioro Czos, Mazury</span>
+</div>
+<!-- Headline -->
+<h1 class="font-display-lg text-display-lg font-bold text-white tracking-tight drop-shadow-sm max-w-3xl mb-4">
+          Cisza, las i jezioro na wyciągnięcie ręki
+        </h1>
+<p class="font-headline-sm text-headline-sm text-white/90 max-w-2xl font-normal drop-shadow mb-12">
+          Kameralny wypoczynek w sercu Mazur. Domki z prywatnym pomostem i widokiem na wodę.
+        </p>
+<!-- FLOATING BOOKING SEARCH BAR -->
+<div class="w-full max-w-4xl bg-surface-container-lowest rounded-2xl shadow-xl border border-[rgba(31,42,36,0.08)] p-3 sm:p-4 text-left grid grid-cols-1 md:grid-cols-12 gap-3 items-center backdrop-blur-md" id="rezerwuj">
+<!-- Date Range Selector -->
+<div class="md:col-span-5 p-3 rounded-xl hover:bg-surface-container-low transition-colors duration-150 cursor-pointer flex items-center gap-3 border border-outline-variant/30 md:border-transparent">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant font-medium">Przyjazd – Wyjazd</span>
+<span class="font-title-md text-title-md font-semibold text-on-surface">14.07.2025 – 21.07.2025</span>
+</div>
+</div>
+<div class="hidden md:block w-px h-10 bg-outline-variant/40"></div>
+<!-- Guest Count Selector -->
+<div class="md:col-span-4 p-3 rounded-xl hover:bg-surface-container-low transition-colors duration-150 cursor-pointer flex items-center gap-3 border border-outline-variant/30 md:border-transparent">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-icon="group">group</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant font-medium">Goście</span>
+<span class="font-title-md text-title-md font-semibold text-on-surface">2 dorosłych, 2 dzieci</span>
+</div>
+</div>
+<!-- CTA Button -->
+<div class="md:col-span-3">
+<button class="w-full h-14 rounded-xl bg-secondary hover:bg-[#B3643B] text-white font-label-lg text-label-lg font-semibold flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98] transition-all duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="search">search</span>
+<span>Sprawdź dostępność</span>
+</button>
+</div>
+</div>
+<!-- Micro Features Pill Bar -->
+<div class="mt-6 flex flex-wrap justify-center items-center gap-4 text-white/80 font-label-md text-label-md">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-[#A0D1C0]" data-icon="check_circle">check_circle</span> Bezpłatne odwołanie do 14 dni</span>
+<span class="hidden sm:inline">•</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-[#A0D1C0]" data-icon="check_circle">check_circle</span> Gwarancja bezpośredniej ceny</span>
+<span class="hidden sm:inline">•</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-[#A0D1C0]" data-icon="check_circle">check_circle</span> Zameldowanie bezkluczykowe</span>
+</div>
+</div>
+</section>
+<!-- O NAS (ABOUT US) & CORE ADVANTAGES -->
+<section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" id="o-nas">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="font-label-md text-label-md tracking-widest text-secondary font-bold">O NASZYM ZAKĄTKU</span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-2 mb-4">
+          Miejsce stworzone z miłości do lasu i jezior
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Leśna Polana to kameralna oaza położona w starym sosnowym borze bezpośrednio nad brzegiem jeziora. Zbudowaliśmy nasze domki z naturalnego drewna, łącząc rzemieślnicze ciepło tradycji z komfortem nowoczesnego wypoczynku.
+        </p>
+</div>
+<!-- Bento Grid of 3 Prominent Feature Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="bg-surface-container-lowest rounded-2xl p-8 border border-[rgba(31,42,36,0.08)] shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+<div>
+<div class="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-[30px]" data-icon="kayaking">kayaking</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-3">Prywatny pomost</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Bezpośredni dostęp do jeziora z łagodnym zejściem do wody. Łódka wiosłowa, dwa stabilne kajaki turystyczne oraz kamizelki asekuracyjne są wliczone w cenę każdego pobytu.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/30 flex items-center gap-2 font-label-md text-label-md text-primary font-semibold">
+<span class="material-symbols-outlined text-[18px]" data-icon="waves">waves</span>
+<span>Sprzęt wodny w cenie pobytu</span>
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="bg-surface-container-lowest rounded-2xl p-8 border border-[rgba(31,42,36,0.08)] shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+<div>
+<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-[30px]" data-icon="hot_tub">hot_tub</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-3">Sauna i balia</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Wieczorny relaks z widokiem na las i gwiaździste niebo. Ogrzewana drewnem fińska sauna panoramiczna oraz balia z hydromasażem zapewniają błogi odpoczynek po całym dniu.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/30 flex items-center gap-2 font-label-md text-label-md text-primary font-semibold">
+<span class="material-symbols-outlined text-[18px]" data-icon="local_fire_department">local_fire_department</span>
+<span>Drewno kominkowe bez limitu</span>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="bg-surface-container-lowest rounded-2xl p-8 border border-[rgba(31,42,36,0.08)] shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+<div>
+<div class="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-[30px]" data-icon="pets">pets</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-3">Zwierzęta mile widziane</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Zabierz swojego czworonoga bez jakichkolwiek dodatkowych opłat. Posiadamy ogrodzoną bezpieczną polanę, miski w domkach i nieograniczone leśne ścieżki do długich spacerów.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/30 flex items-center gap-2 font-label-md text-label-md text-primary font-semibold">
+<span class="material-symbols-outlined text-[18px]" data-icon="favorite">favorite</span>
+<span>Pieski odpoczywają za darmo</span>
+</div>
+</div>
+</div>
+</section>
+<!-- NASZE DOMKI I POKOJE (ACCOMMODATIONS) -->
+<section class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" id="pokoje">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+<div>
+<span class="font-label-md text-label-md tracking-widest text-secondary font-bold">WYBIERZ SWÓJ DOMEK</span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-2">
+            Nasze domki i pokoje
+          </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-xl">
+            Każdy obiekt wykończony jest pachnącym świerkiem i litym dębem, w pełni wyposażony z gwarancją prywatności.
+          </p>
+</div>
+<div class="mt-4 md:mt-0 flex items-center gap-2">
+<span class="px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-[#E6F3EE] text-[#215844] font-medium flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-[#215844]"></span>
+            Dostępne terminy na lato 2025
+          </span>
+</div>
+</div>
+<!-- Accommodation Grid (2x2) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Cottage 1: Domek Sosna -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.08)] overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 flex flex-col">
+<div class="relative h-64 sm:h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Cozy wooden cabin named Domek Sosna with large front windows and spacious covered porch surrounded by tall Masurian pine trees. Warm natural wood exterior, outdoor lounge chairs, warm morning sunlight through needles, rustic Scandinavian lodge aesthetic in rich forest green and natural timber hues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq_Buy_MBXJdYJyytkfdDUncZjEenQoLCGxHALIj4A9m9_Svj3UYXJZGFECDbbAR73cZVVkhTMGXDa_jJpo1Peeu6GAowgtM-tYMAFHoNGHEIBp6TLrPW4h9K27rzZb8RrvyesgRscXM3kKWmmFvzmxFzqbOlW1kxrcdVi91mSNXzG4TIWh2I_ZpySQdOaXPxHSuTf3G1V04ABTSA9o5qvC1EU--yaWi4xfnJQZ258"/>
+<div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded-full text-primary font-label-md text-label-md font-semibold border border-white/60">
+              Częściowo wolne terminy
+            </div>
+<div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="photo_camera">photo_camera</span>
+<span>8 zdjęć</span>
+</div>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Domek Sosna</h3>
+<span class="font-label-md text-label-md px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant font-medium">
+                  do 4 osób
+                </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                Komfortowy, całoroczny dom z przestronnym tarasem i widokiem na sosnowy młodnik.
+              </p>
+<!-- Amenities list -->
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="bed">bed</span> 2 sypialnie
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-secondary" data-icon="fireplace">fireplace</span> Kominek
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="deck">deck</span> Taras
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="countertops">countertops</span> Aneks kuchenny
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="forest">forest</span> Widok na las
+                </span>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Cena za dobę</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">od 380 zł <span class="font-body-md text-body-md font-normal text-on-surface-variant">/ noc</span></span>
+</div>
+<button class="px-6 py-3 rounded-xl bg-primary hover:bg-[#254B40] text-on-primary font-label-lg text-label-lg font-semibold active:scale-[0.98] transition-all duration-150">
+                Zobacz terminy
+              </button>
+</div>
+</div>
+</div>
+<!-- Cottage 2: Domek Brzoza -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.08)] overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 flex flex-col">
+<div class="relative h-64 sm:h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Modern spacious timber cottage called Domek Brzoza with private wooden hot tub on a large cedar deck nestled beside white birch trees and emerald moss. Ambient soft evening lighting, steaming hot water under clear open skies, high end architectural retreat photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAo1-Ciw_o4rjdZUCbWOESRxNUO10KQxhsHu7gem8VspC1qDWO5sf0oK5jylU93EeAkUN5uhgSVnA7aSXvqhjVd9QPrpN4Hyp4UhjALe6geO_4ONPlm6k4AZYAiY9wKXloNVICXgWhf6kdk6kFFNMACQ2gRddrxOhi7CFPdsrQ_Zm6woN1_rPrk85nhU4s9VtDlsCqVxCqV48u8IPgllgAgNtf8TQKRu56c8y_vgIp"/>
+<div class="absolute top-4 left-4 bg-secondary text-white px-3 py-1 rounded-full font-label-md text-label-md font-semibold shadow-sm">
+              Najchętniej wybierany
+            </div>
+<div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="photo_camera">photo_camera</span>
+<span>12 zdjęć</span>
+</div>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Domek Brzoza</h3>
+<span class="font-label-md text-label-md px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant font-medium">
+                  do 6 osób
+                </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                Przestronny dwupoziomowy domek rodzinny z prywatną balią ogrodową na wyłączność.
+              </p>
+<!-- Amenities list -->
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="bed">bed</span> 3 sypialnie
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-secondary" data-icon="hot_tub">hot_tub</span> Balia ogrodowa
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="ac_unit">ac_unit</span> Klimatyzacja
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="outdoor_grill">outdoor_grill</span> Grill
+                </span>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Cena za dobę</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">od 520 zł <span class="font-body-md text-body-md font-normal text-on-surface-variant">/ noc</span></span>
+</div>
+<button class="px-6 py-3 rounded-xl bg-primary hover:bg-[#254B40] text-on-primary font-label-lg text-label-lg font-semibold active:scale-[0.98] transition-all duration-150">
+                Zobacz terminy
+              </button>
+</div>
+</div>
+</div>
+<!-- Room 3: Pokój Jeziorny -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.08)] overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 flex flex-col">
+<div class="relative h-64 sm:h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Intimate boutique hotel room named Pokój Jeziorny with large balcony doors overlooking the glistening surface of a Masurian lake. Crisp white linen on an oak king-size bed, warm morning sunlight, ceramic coffee cups on a wooden table, serene minimalist tactile atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSmD67_0wemlYNgEUXjMZQBlf-pyofsdqcLCZt97atO1BfEJPnkDi2yAVEN4P0y_808JAA9nwVJkagauXjvwIPnNHASeG1E5pFGn5WJH1QNH99nM30y4eCU51gnX5rHifCjgq4PgR-SJz7xA_sOycHUgIU_mDPMX1kvU0jAYEFGOKrym_vcei5gI8XfbFEzlYlZB5yIMbI6h1n1y3qPdRSZ_RD4W3XjhFfadoRaT8o"/>
+<div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded-full text-primary font-label-md text-label-md font-semibold border border-white/60">
+              Dla par
+            </div>
+<div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="photo_camera">photo_camera</span>
+<span>6 zdjęć</span>
+</div>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Pokój Jeziorny</h3>
+<span class="font-label-md text-label-md px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant font-medium">
+                  do 2 osób
+                </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                Kameralny pokój z panoramicznym oknem i bezpośrednim widokiem na lśniącą taflę jeziora.
+              </p>
+<!-- Amenities list -->
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="balcony">balcony</span> Balkon z widokiem
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="hotel">hotel</span> Łóżko king-size
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-secondary" data-icon="coffee_maker">coffee_maker</span> Ekspres do kawy
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="wifi">wifi</span> Szybkie Wi-Fi
+                </span>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Cena za dobę</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">od 240 zł <span class="font-body-md text-body-md font-normal text-on-surface-variant">/ noc</span></span>
+</div>
+<button class="px-6 py-3 rounded-xl bg-primary hover:bg-[#254B40] text-on-primary font-label-lg text-label-lg font-semibold active:scale-[0.98] transition-all duration-150">
+                Zobacz terminy
+              </button>
+</div>
+</div>
+</div>
+<!-- Cottage 4: Apartament Pod Dębem -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[rgba(31,42,36,0.08)] overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 flex flex-col">
+<div class="relative h-64 sm:h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Luxury rustic cabin interior of Apartament Pod Dębem with free-standing white bathtub next to floor-to-ceiling glass wall looking out into lush forest. Crackling fireplace in stone mantle, warm wooden beams, elegant earthy fabrics and cozy natural textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0giEYidpkdpu84kFtRtTkjIB5j9RWpHqvDEyjQJpCME8jhynryPU7uk0YGDHJtDkJlQbcvg9ncI-RbreGOZTlUU9A2x5b3Lp3BVye58p_INoLZsf27A4NvNT7jA1XBQtLrMDBOGRgIprUDogowtuQgxAqBzpRJ0Ifq_l7WTDRMW_MsJdu0filbmT8xQd8e5rLvR8OQepdApXj2Jrj4prVPOX3zpr2nRhfAfy9RlTz"/>
+<div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded-full text-primary font-label-md text-label-md font-semibold border border-white/60">
+              Wysoki standard
+            </div>
+<div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="photo_camera">photo_camera</span>
+<span>10 zdjęć</span>
+</div>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Apartament Pod Dębem</h3>
+<span class="font-label-md text-label-md px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant font-medium">
+                  do 4 osób
+                </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                Luksusowy apartament z wolnostojącą wanną z widokiem na korony drzew i kominkiem.
+              </p>
+<!-- Amenities list -->
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-secondary" data-icon="fireplace">fireplace</span> Salon z kominkiem
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="bathtub">bathtub</span> Wanna wolnostojąca
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="dishwasher_gen">dishwasher_gen</span> Zmywarka
+                </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="wine_bar">wine_bar</span> Chłodziarka do wina
+                </span>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Cena za dobę</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">od 450 zł <span class="font-body-md text-body-md font-normal text-on-surface-variant">/ noc</span></span>
+</div>
+<button class="px-6 py-3 rounded-xl bg-primary hover:bg-[#254B40] text-on-primary font-label-lg text-label-lg font-semibold active:scale-[0.98] transition-all duration-150">
+                Zobacz terminy
+              </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- PHOTO GALLERY STRIP -->
+<section class="py-16 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
+<div>
+<span class="font-label-md text-label-md tracking-widest text-secondary font-bold">GALERIA KLIMATU</span>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface mt-1">
+              Chwile, które zostaną z Tobą na długo
+            </h2>
+</div>
+<div class="mt-2 sm:mt-0">
+<span class="text-on-surface-variant font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="camera">camera</span>
+              Prawdziwe ujęcia z naszej polany
+            </span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Gallery Item 1 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Warm atmospheric interior of a rustic wooden cottage living room with a crackling glass front fireplace, thick wool blanket over an armchair, steaming mug on cedar coffee table, warm evening ambience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW9BlVNwInIo-YehZfw5IG9vspVbL4DbCXs8JqujSCb2VWrcl1vs26iNaXAbN9TQNuYDFYXW5NgEMf9ta2cXIDxxF4fh8ZTI2mfdzOX3D7X28IOMFwzLaQ9h7GZWC5KFWLQXDDIof_QGdKE1C4DU5B6wM7MHr4w7_KO8jHIzokUXdAcvWENPhu_DgXAc-8-pYQRNMkmT4KZEjcTAXWoKEsYQ-t1TJNibsEwKY6I00e"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-secondary-fixed">Wnętrza</span>
+<p class="font-title-md text-title-md font-semibold">Ciepło kominka i książka</p>
+</div>
+</div>
+<!-- Gallery Item 2 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Idyllic wooden lake pier jutting into tranquil Masurian waters during a glorious orange and violet sunset. Reflections on smooth water, pine forest shoreline in background, peace and serene nature." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqMluJcXSDG3CDbjQVLwJ1F1W5lmybB1zQqF25WZVBeAZ5PSUuJrqhPAOYrbGJmIqERGX2UKKEYt6zWLmN3zfStjm_xTLir61lNOIeoHM9ahWkj5UmxzjrZ_Q0-ASThonXDUUxBSzxSfVutlyXMytj9s5uDTbDUxAxs6SguFffAVGvgVxg3PlovsCI0xwotacVOK-SE0MebtxAuYyMbXfjfETA8lDqogi3eNj9Z2n2"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-secondary-fixed">Jezioro</span>
+<p class="font-title-md text-title-md font-semibold">Zachód słońca na pomoście</p>
+</div>
+</div>
+<!-- Gallery Item 3 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Outdoor wood-fired hot tub surrounded by pine needles and ferns in evening light, steam gently rising in cool forest air, string lights softly illuminating the cedar wooden tub." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHw9G4ijQk0tszii9Gvh6VB5p6HP4eFedFbxXbAt1Uu0zgNJIDrKBXVWktZBnB9tASlZa5kno3xj8sb9-czlJZbUccjAX54xXtJsD6fN3xRCYFMGLxGx8M4bewL3tJ_77V8i7JqB-fdS0HZjjB7U5WAsjlX8qOvkI_AdNr1uChhQ6wuFAxEkly9ucigzuVu52-4HQu6X_-aFNwM8BmhEi_830ZDISuCQZiy4MxrKsg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-secondary-fixed">Relaks</span>
+<p class="font-title-md text-title-md font-semibold">Gorąca balia pod gwiazdami</p>
+</div>
+</div>
+<!-- Gallery Item 4 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Artisanal breakfast spread set on a sunny wooden deck table with fresh farmhouse bread, regional honey, berries, ceramic coffee pot, overlooking misty forest clearing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9oPNBxixQAq-79v94_FhfeRORYQBvve-WDjOGHxR-vFUFCkltr3eZiXG9NYEtJ8e-JspMyy29UlBH1SYwdJL4yOcZONgwlQUONS0B3m9e_nUNePoTpbtRhcEOy4jC6dh3QonmoMFe-iGImyQtnJYCB0tYh8qelJBAi7tz0uGJwcxw-I06En5hllgna7b3OrieMQ81HTHMygF__BRR2KUMn8YMMtvwbu6Gua14ND1Z"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-secondary-fixed">Poranki</span>
+<p class="font-title-md text-title-md font-semibold">Śniadanie na leśnym tarasie</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- LOCATION & CHECK-IN SECTION -->
+<section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" id="lokalizacja">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<!-- Left: Address & Logistics Info -->
+<div class="lg:col-span-6 space-y-8">
+<div>
+<span class="font-label-md text-label-md tracking-widest text-secondary font-bold">LOKALIZACJA I ZASADY</span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-2 mb-4">
+              Z dala od zgiełku, blisko natury
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+              Domki położone są na skraju Puszczy Piskiej w cichej zatoce jeziora Czos. Dojazd drogą asfaltową, a ostatnie 400 metrów utwardzoną leśną aleją.
+            </p>
+</div>
+<!-- Address Card -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-[rgba(31,42,36,0.08)] shadow-sm flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary flex-shrink-0 mt-1">
+<span class="material-symbols-outlined text-[24px]" data-icon="pin_drop">pin_drop</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Dokładny adres</span>
+<h4 class="font-title-md text-title-md font-bold text-on-surface">ul. Leśna Polana 14, 11-700 Mrągowo (Mazury)</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+                3 min spacerem do prywatnego pomostu • 15 min autem do centrum Mrągowa
+              </p>
+</div>
+</div>
+<!-- Check-in / Check-out Badges & Keyless Entry -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Check In -->
+<div class="p-5 rounded-xl bg-[#E6F3EE] border border-[#215844]/20 flex items-center gap-3">
+<span class="material-symbols-outlined text-[28px] text-[#215844]" data-icon="login">login</span>
+<div>
+<span class="font-label-sm text-label-sm text-[#215844] uppercase tracking-wider block font-semibold">Zameldowanie</span>
+<span class="font-headline-sm text-headline-sm font-bold text-[#215844]">od 15:00</span>
+</div>
+</div>
+<!-- Check Out -->
+<div class="p-5 rounded-xl bg-surface-container-lowest border border-outline-variant/50 flex items-center gap-3">
+<span class="material-symbols-outlined text-[28px] text-on-surface-variant" data-icon="logout">logout</span>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block font-semibold">Wymeldowanie</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">do 11:00</span>
+</div>
+</div>
+</div>
+<!-- Keyless Entry Callout -->
+<div class="p-5 rounded-xl bg-surface-container-high/60 border border-[rgba(31,42,36,0.08)] flex items-start gap-4">
+<span class="material-symbols-outlined text-[24px] text-primary mt-0.5" data-icon="key">key</span>
+<div>
+<h5 class="font-title-md text-title-md font-semibold text-on-surface">Bezkluczykowy dostęp (kod do drzwi)</h5>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+                Kod do inteligentnego zamka otrzymasz SMS-em i e-mailem na 2 godziny przed przyjazdem. Możesz przyjechać nawet późno w nocy bez umawiania się na odbiór kluczy.
+              </p>
+</div>
+</div>
+</div>
+<!-- Right: Stylized Map Placeholder with Pine Tree Marker -->
+<div class="lg:col-span-6">
+<div class="relative bg-surface-container-lowest rounded-3xl border border-[rgba(31,42,36,0.12)] overflow-hidden shadow-md h-[460px]">
+<img class="w-full h-full object-cover" data-alt="Clean top-down aerial map view of serene lake Czos and lush green pine forests near Mrągowo Poland with subtle geographic contours and natural earth tones." data-location="Mrągowo, Poland" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD72mnGBAfD7S_ovZIA42OyFOk0KC49VcI6AFDhKvW01pFOhynhoJdDxJWA9MHWXgtmywGh52E5ocL3rXhXGe37YSWxj4V65q9DMpAOHnY4JVGM_M0bNtJDd7d0b2PS4RJ34VRqZlGO9qfE_8t9aY8pgbfeRYv_TrN-YBvbf-dlG7FRqLn7rQjb8pPaziSXhtZHO_mLyBkhBloLwUVKe6OzCV8Nr__0ViaNcVe4IcH2"/>
+<!-- Pine Marker Overlay -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative flex flex-col items-center">
+<div class="px-4 py-2 bg-primary text-white rounded-xl shadow-xl font-label-md text-label-md font-bold flex items-center gap-2 mb-2 animate-bounce">
+<span class="material-symbols-outlined text-[18px] text-[#A0D1C0]" data-icon="forest">forest</span>
+<span>Domki Leśna Polana</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-lg border-2 border-white">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+</div>
+</div>
+</div>
+<!-- Stylized Zoom Controls -->
+<div class="absolute bottom-6 right-6 flex flex-col gap-2 bg-surface-container-lowest rounded-xl shadow-md border border-[rgba(31,42,36,0.1)] p-1.5">
+<button class="w-9 h-9 rounded-lg hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors" title="Przybliż">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+</button>
+<div class="h-px bg-outline-variant/40 mx-1"></div>
+<button class="w-9 h-9 rounded-lg hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors" title="Oddal">
+<span class="material-symbols-outlined text-[20px]" data-icon="remove">remove</span>
+</button>
+</div>
+<!-- Map navigation hint -->
+<div class="absolute top-6 left-6 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/50 text-on-surface font-label-sm text-label-sm shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="navigation">navigation</span>
+<span>53°51'42.8"N 21°18'19.4"E</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CONTACT & DIRECT BOOKING CARD -->
+<section class="py-16 bg-surface-container-low border-t border-outline-variant/30" id="kontakt">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-surface-container-lowest rounded-3xl p-8 sm:p-12 border border-[rgba(31,42,36,0.08)] shadow-md grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Host Profile Info -->
+<div class="lg:col-span-7 space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center text-primary text-2xl font-bold">
+                JN
+              </div>
+<div>
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Twój Gospodarz</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Jan Nowak</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Zawsze chętnie doradzę trasę kajakową lub pomogę z rezerwacją</p>
+</div>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+              Masz pytania dotyczące pobytu z psem, rezerwacji bali na wieczór lub elastycznych godzin przyjazdu? Zadzwoń lub napisz bezpośrednio:
+            </p>
+<div class="flex flex-wrap gap-4 pt-2">
+<a class="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl bg-surface-container border border-outline-variant/40 font-title-md text-title-md font-semibold text-primary hover:bg-primary hover:text-white transition-all duration-150" href="tel:+48601234567">
+<span class="material-symbols-outlined text-[20px]" data-icon="phone">phone</span>
+                +48 601 234 567
+              </a>
+<a class="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl bg-surface-container border border-outline-variant/40 font-title-md text-title-md font-semibold text-on-surface hover:border-primary transition-all duration-150" href="mailto:kontakt@domkilesnapolana.pl">
+<span class="material-symbols-outlined text-[20px] text-secondary" data-icon="mail">mail</span>
+                kontakt@domkilesnapolana.pl
+              </a>
+</div>
+</div>
+<!-- Quick FAQ Note in Card -->
+<div class="lg:col-span-5 bg-surface-container-low p-6 rounded-2xl border border-outline-variant/40 space-y-4">
+<h4 class="font-title-md text-title-md font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="help">help</span>
+              Częste pytania gości
+            </h4>
+<div class="space-y-3 text-body-md font-body-md">
+<div class="pb-3 border-b border-outline-variant/20">
+<strong class="text-on-surface block font-label-lg">Czy woda z kranu jest zdatna do picia?</strong>
+<span class="text-on-surface-variant text-body-sm">Tak, posiadamy własne ujęcie głębinowe ze stacją filtracji.</span>
+</div>
+<div class="pb-3 border-b border-outline-variant/20">
+<strong class="text-on-surface block font-label-lg">Czy na miejscu jest drewno do kominka?</strong>
+<span class="text-on-surface-variant text-body-sm">Tak, przy każdym domku przygotowany jest suchy zapas drewna brzozowego i sosnowego.</span>
+</div>
+<div>
+<strong class="text-on-surface block font-label-lg">Czy można otrzymać fakturę VAT?</strong>
+<span class="text-on-surface-variant text-body-sm">Oczywiście, wystawiamy faktury VAT na życzenie przy rezerwacji online.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- SHARED COMPONENT: Footer -->
+<footer class="w-full bg-surface-container-low border-t border-outline-variant/40">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
+<!-- Brand & Copyright -->
+<div class="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+<span class="font-title-md text-title-md font-semibold text-primary">Domki Leśna Polana</span>
+<span class="hidden sm:inline text-outline-variant">•</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">
+          © 2025 Domki Leśna Polana • System rezerwacji dostarcza Klucznik – Twój e-recepcjonista
+        </span>
+</div>
+<!-- Quick Nav Links -->
+<div class="flex flex-wrap justify-center items-center gap-6 font-body-md text-body-md">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-150" href="#">Regulamin obiektu</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-150" href="#">Polityka prywatności</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-150" href="#">Zameldowanie i wymeldowanie</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-150" href="#kontakt">Kontakt</a>
+</div>
+</div>
+</footer>
+</body></html>

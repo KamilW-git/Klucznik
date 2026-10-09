@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Klucznik – Biblioteka komponentów i stany systemowe</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-lowest": "#ffffff",
+            "outline-variant": "#c0c8c4",
+            "secondary-fixed": "#ffdbcb",
+            "secondary-container": "#ffa273",
+            "surface-container": "#e4f1e7",
+            "outline": "#717975",
+            "on-primary-fixed-variant": "#204f42",
+            "surface-bright": "#f0fdf3",
+            "surface-dim": "#d0ddd4",
+            "on-surface-variant": "#404945",
+            "surface": "#f0fdf3",
+            "on-error-container": "#93000a",
+            "tertiary-container": "#5e5347",
+            "surface-variant": "#d9e6dc",
+            "inverse-on-surface": "#e7f4ea",
+            "error-container": "#ffdad6",
+            "secondary": "#924b23",
+            "surface-container-high": "#dfebe2",
+            "tertiary": "#463c31",
+            "on-primary-container": "#a3d4c3",
+            "primary": "#154539",
+            "error": "#ba1a1a",
+            "primary-fixed": "#bceddc",
+            "on-background": "#131e18",
+            "inverse-surface": "#28332d",
+            "background": "#f0fdf3",
+            "surface-container-highest": "#d9e6dc",
+            "on-surface": "#131e18",
+            "on-primary": "#ffffff",
+            "surface-tint": "#396759",
+            "primary-fixed-dim": "#a0d1c0",
+            "surface-container-low": "#eaf7ed",
+            "inverse-primary": "#a0d1c0",
+            "primary-container": "#2f5d50"
+          },
+          fontFamily: {
+            sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .animate-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .animate-shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      transform: translateX(-100%);
+      background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.45) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      animation: shimmer 1.8s infinite;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-sans antialiased min-h-screen selection:bg-primary-fixed selection:text-primary">
+
+  <!-- TOP BAR / HEADER -->
+  <header class="sticky top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-primary-container text-white flex items-center justify-center font-bold text-lg shadow-inner">
+          <span class="material-symbols-outlined fill-icon text-white" data-icon="cabin">cabin</span>
+        </div>
+        <div>
+          <span class="font-bold text-lg text-primary tracking-tight block">Domki Leśna Polana</span>
+          <span class="text-xs text-on-surface-variant flex items-center gap-1.5 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-600 inline-block"></span> Klucznik PMS • Wzorce Interfejsu
+          </span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="#skeletons" class="text-on-surface-variant hover:text-primary transition-colors">Szkielety</a>
+        <a href="#empty-error" class="text-on-surface-variant hover:text-primary transition-colors">Stany Puste / Błędy</a>
+        <a href="#404" class="text-on-surface-variant hover:text-primary transition-colors">Strona 404</a>
+        <a href="#toasts" class="text-on-surface-variant hover:text-primary transition-colors">Powiadomienia</a>
+        <a href="#badges" class="text-on-surface-variant hover:text-primary transition-colors">Statusy</a>
+        <a href="#buttons" class="text-on-surface-variant hover:text-primary transition-colors">Przyciski</a>
+        <a href="#inputs" class="text-primary font-bold border-b-2 border-primary pb-0.5">Formularze</a>
+      </nav>
+
+      <!-- Trailing Action Cluster -->
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-outline-variant/50 text-xs font-semibold text-primary bg-surface-container-low">
+          <span class="w-2 h-2 rounded-full bg-primary"></span>
+          Warm Cabin Hospitality
+        </div>
+        <button class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container active:scale-[0.98] transition-all shadow-sm">
+          <span class="material-symbols-outlined text-[18px]" data-icon="bookmark">bookmark</span>
+          Arkusz Komponentów
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+
+    <!-- PAGE HERO & TOKEN INTRO -->
+    <div class="bg-surface-container-lowest rounded-2xl p-6 sm:p-8 border border-outline-variant/30 shadow-sm relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-primary-fixed/25 blur-3xl pointer-events-none"></div>
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+        <div class="space-y-2">
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary text-xs font-semibold border border-outline-variant/40">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Design System Sheet • v2.4
+            </span>
+            <span class="px-2.5 py-1 rounded-full bg-secondary-fixed text-secondary text-xs font-bold">
+              Klucznik PMS & Guest Experience
+            </span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-bold text-on-background tracking-tight">
+            Arkusz Komponentów i Stanów Systemowych
+          </h1>
+          <p class="text-sm sm:text-base text-on-surface-variant max-w-2xl">
+            Kompletny zestaw stanów interfejsu dla aplikacji Klucznik (Panel Gospodarza, Panel Administratora oraz Rezerwacja Gościa). Spójne wzorce szkieletów ładowania, pustych tabel, błędów API, powiadomień i formularzy.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          <button class="px-4 py-2.5 rounded-lg border border-primary/30 text-primary text-sm font-semibold hover:bg-surface-container-low transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]" data-icon="palette">palette</span>
+            <span>#2F5D50 Forest Green</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- TOKEN PALETTE STRIP -->
+      <div class="mt-8 pt-6 border-t border-outline-variant/20 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        <div class="p-3 rounded-lg bg-primary text-white text-xs font-medium flex flex-col justify-between h-16 shadow-xs">
+          <span>Primary Base</span>
+          <span class="opacity-80 font-mono text-[11px]">#154539</span>
+        </div>
+        <div class="p-3 rounded-lg bg-primary-container text-white text-xs font-medium flex flex-col justify-between h-16 shadow-xs">
+          <span>Forest Container</span>
+          <span class="opacity-80 font-mono text-[11px]">#2F5D50</span>
+        </div>
+        <div class="p-3 rounded-lg bg-surface-container text-primary text-xs font-semibold flex flex-col justify-between h-16 border border-outline-variant/30">
+          <span>Soft Surface</span>
+          <span class="text-on-surface-variant font-mono text-[11px]">#E4F1E7</span>
+        </div>
+        <div class="p-3 rounded-lg bg-secondary text-white text-xs font-medium flex flex-col justify-between h-16 shadow-xs">
+          <span>Terracotta Accent</span>
+          <span class="opacity-80 font-mono text-[11px]">#924B23</span>
+        </div>
+        <div class="p-3 rounded-lg bg-surface-container-low text-on-surface text-xs font-medium flex flex-col justify-between h-16 border border-outline-variant/30">
+          <span>App Canvas</span>
+          <span class="text-on-surface-variant font-mono text-[11px]">#EAF7ED</span>
+        </div>
+        <div class="p-3 rounded-lg bg-surface-container-lowest text-on-surface text-xs font-semibold flex flex-col justify-between h-16 border border-outline-variant/40 shadow-xs">
+          <span>Card Pure White</span>
+          <span class="text-on-surface-variant font-mono text-[11px]">#FFFFFF</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. STANY ŁADOWANIA (LOADING SKELETONS) -->
+    <section id="skeletons" class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold text-secondary uppercase tracking-wider">Sekcja 01</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-primary">Stany Ładowania (Loading Skeletons)</h2>
+          <p class="text-sm text-on-surface-variant">Szkielety tabeli rezerwacji oraz kart obiektów z animacją shimmer w leśnym tonie.</p>
+        </div>
+        <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary text-xs font-semibold">
+          <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          Aktywny Shimmer
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Table Skeleton -->
+        <div class="lg:col-span-8 bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-outline" data-icon="table_chart">table_chart</span>
+              <span class="font-bold text-base text-on-surface">Tabela Rezerwacji (Szkielet ładowania danych)</span>
+            </div>
+            <div class="w-28 h-7 rounded bg-surface-variant animate-shimmer"></div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead>
+                <tr class="text-xs font-semibold text-on-surface-variant border-b border-outline-variant/30 pb-2">
+                  <th class="py-2.5 px-3">Gość</th>
+                  <th class="py-2.5 px-3">Termin pobytu</th>
+                  <th class="py-2.5 px-3">Pokój / Domek</th>
+                  <th class="py-2.5 px-3">Wartość</th>
+                  <th class="py-2.5 px-3">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-outline-variant/20">
+                <!-- Row 1 -->
+                <tr>
+                  <td class="py-3.5 px-3">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-8 h-8 rounded-full bg-surface-variant animate-shimmer shrink-0"></div>
+                      <div class="space-y-1.5 w-28">
+                        <div class="h-3.5 bg-surface-variant rounded animate-shimmer w-full"></div>
+                        <div class="h-2.5 bg-surface-container-high rounded animate-shimmer w-2/3"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="space-y-1.5 w-24">
+                      <div class="h-3.5 bg-surface-variant rounded animate-shimmer"></div>
+                      <div class="h-2.5 bg-surface-container-high rounded animate-shimmer w-16"></div>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="h-4 bg-surface-variant rounded animate-shimmer w-32"></div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="h-4 bg-surface-variant rounded animate-shimmer w-20"></div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="h-6 bg-surface-container-high rounded-full animate-shimmer w-24"></div>
+                  </td>
+                </tr>
+                <!-- Row 2 -->
+                <tr>
+                  <td class="py-3.5 px-3">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-8 h-8 rounded-full bg-surface-variant animate-shimmer shrink-0"></div>
+                      <div class="space-y-1.5 w-32">
+                        <div class="h-3.5 bg-surface-variant rounded animate-shimmer w-full"></div>
+                        <div class="h-2.5 bg-surface-container-high rounded animate-shimmer w-3/4"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="space-y-1.5 w-24">
+                      <div class="h-3.5 bg-surface-variant rounded animate-shimmer"></div>
+                      <div class="h-2.5 bg-surface-container-high rounded animate-shimmer w-14"></div>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="h-4 bg-surface-variant rounded animate-shimmer w-28"></div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="h-4 bg-surface-variant rounded animate-shimmer w-16"></div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="h-6 bg-surface-container-high rounded-full animate-shimmer w-20"></div>
+                  </td>
+                </tr>
+                <!-- Row 3 -->
+                <tr>
+                  <td class="py-3.5 px-3">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-8 h-8 rounded-full bg-surface-variant animate-shimmer shrink-0"></div>
+                      <div class="space-y-1.5 w-24">
+                        <div class="h-3.5 bg-surface-variant rounded animate-shimmer w-full"></div>
+                        <div class="h-2.5 bg-surface-container-high rounded animate-shimmer w-1/2"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="space-y-1.5 w-24">
+                      <div class="h-3.5 bg-surface-variant rounded animate-shimmer"></div>
+                      <div class="h-2.5 bg-surface-container-high rounded animate-shimmer w-16"></div>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="h-4 bg-surface-variant rounded animate-shimmer w-36"></div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="h-4 bg-surface-variant rounded animate-shimmer w-24"></div>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <div class="h-6 bg-surface-container-high rounded-full animate-shimmer w-28"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Room / Card Skeleton -->
+        <div class="lg:col-span-4 bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+              <span class="text-sm font-bold text-primary">Karta Domku (Szkielet)</span>
+              <span class="w-2.5 h-2.5 rounded-full bg-primary animate-ping"></span>
+            </div>
+
+            <!-- Image placeholder -->
+            <div class="w-full h-40 rounded-lg bg-surface-variant animate-shimmer flex items-center justify-center">
+              <span class="material-symbols-outlined text-outline-variant text-4xl" data-icon="image">image</span>
+            </div>
+
+            <!-- Title & meta lines -->
+            <div class="space-y-2">
+              <div class="h-5 bg-surface-variant rounded animate-shimmer w-3/4"></div>
+              <div class="h-3.5 bg-surface-container-high rounded animate-shimmer w-1/2"></div>
+            </div>
+
+            <!-- Rating & Capacity skeleton -->
+            <div class="flex items-center gap-3 pt-1">
+              <div class="h-4 bg-surface-container-high rounded animate-shimmer w-20"></div>
+              <div class="h-4 bg-surface-container-high rounded animate-shimmer w-28"></div>
+            </div>
+
+            <!-- Price line skeleton -->
+            <div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between">
+              <div class="space-y-1">
+                <div class="h-5 bg-surface-variant rounded animate-shimmer w-24"></div>
+                <div class="h-3 bg-surface-container-high rounded animate-shimmer w-16"></div>
+              </div>
+              <div class="h-9 bg-primary-container/40 rounded-lg animate-shimmer w-28"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. STANY PUSTE I BŁĘDY SYSTEMOWE (EMPTY & ERROR STATES) -->
+    <section id="empty-error" class="space-y-4">
+      <div>
+        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Sekcja 02</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-primary">Stany Puste i Błędy Systemowe (Empty & Error States)</h2>
+        <p class="text-sm text-on-surface-variant">Przyjazne komunikaty informujące o braku rekordów lub problemie z synchronizacją z serwerem.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Empty State Card -->
+        <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/30 shadow-sm flex flex-col items-center text-center space-y-4">
+          <div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center text-primary border border-outline-variant/30 shadow-inner">
+            <svg class="w-10 h-10 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              <path d="M19 13v-2a2 2 0 0 0-2-2"></path>
+            </svg>
+          </div>
+          <div class="space-y-1.5 max-w-md">
+            <h3 class="text-lg font-bold text-on-surface">Brak rezerwacji w wybranym filtrze</h3>
+            <p class="text-sm text-on-surface-variant">
+              Nie znaleziono żadnych pozycji spełniających podane kryteria. Zmień daty lub dodaj nową rezerwację ręczną.
+            </p>
+          </div>
+          <div class="pt-2 flex items-center gap-3">
+            <button class="px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all flex items-center gap-2 active:scale-[0.98] shadow-sm">
+              <span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+              + Dodaj rezerwację
+            </button>
+            <button class="px-4 py-2.5 rounded-lg border border-outline-variant/60 text-on-surface text-sm font-medium hover:bg-surface-container transition-colors">
+              Wyczyść filtry
+            </button>
+          </div>
+        </div>
+
+        <!-- System Error State Card -->
+        <div class="bg-surface-container-lowest rounded-xl p-8 border border-red-200 shadow-sm flex flex-col items-center text-center space-y-4 relative overflow-hidden">
+          <div class="absolute inset-x-0 top-0 h-1.5 bg-error"></div>
+          <div class="w-20 h-20 rounded-full bg-error-container text-on-error-container flex items-center justify-center border border-red-200 shadow-inner">
+            <span class="material-symbols-outlined text-4xl text-error" data-icon="sync_problem">sync_problem</span>
+          </div>
+          <div class="space-y-1.5 max-w-md">
+            <div class="flex items-center justify-center gap-2">
+              <span class="px-2 py-0.5 rounded text-xs font-bold bg-red-100 text-error">KOD 503</span>
+              <h3 class="text-lg font-bold text-on-surface">Coś poszło nie tak. Spróbuj ponownie</h3>
+            </div>
+            <p class="text-sm text-on-surface-variant">
+              Nie udało się nawiązać połączenia z serwerem synchronizacji kalendarza (błąd 503). Twoje dotychczasowe dane są w pełni bezpieczne.
+            </p>
+          </div>
+          <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+            <button class="px-5 py-2.5 rounded-lg bg-primary-container text-white text-sm font-semibold hover:bg-primary transition-all flex items-center gap-2 active:scale-[0.98] shadow-sm">
+              <span class="material-symbols-outlined text-[18px]" data-icon="refresh">refresh</span>
+              Spróbuj ponownie
+            </button>
+            <a href="#pomoc" class="text-primary hover:underline text-sm font-semibold flex items-center gap-1">
+              Zgłoś problem do pomocy
+              <span class="material-symbols-outlined text-xs" data-icon="arrow_outward">arrow_outward</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. BŁĄD 404 – STRONA NIE ZNALEZIONA -->
+    <section id="404" class="space-y-4">
+      <div>
+        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Sekcja 03</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-primary">Błąd 404 – Strona nie znaleziona (404 Page)</h2>
+        <p class="text-sm text-on-surface-variant">Nawiązujący do leśnego motywu ekran zagubionej ścieżki na Mazurach.</p>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-8 sm:p-12 shadow-sm text-center relative overflow-hidden">
+        <!-- Forest outline decorative icons -->
+        <div class="absolute inset-0 pointer-events-none opacity-5 flex justify-between items-center px-12">
+          <span class="material-symbols-outlined text-9xl" data-icon="forest">forest</span>
+          <span class="material-symbols-outlined text-9xl" data-icon="explore">explore</span>
+          <span class="material-symbols-outlined text-9xl" data-icon="forest">forest</span>
+        </div>
+
+        <div class="max-w-xl mx-auto space-y-5 relative z-10">
+          <div class="inline-flex items-center justify-center">
+            <span class="text-7xl sm:text-8xl font-black text-primary tracking-tight font-display opacity-90">
+              4<span class="text-secondary">0</span>4
+            </span>
+          </div>
+
+          <div class="w-16 h-1 bg-primary/20 mx-auto rounded-full"></div>
+
+          <div class="space-y-2">
+            <h3 class="text-xl sm:text-2xl font-bold text-on-surface">Nie znaleziono strony</h3>
+            <p class="text-base text-on-surface-variant">
+              Wygląda na to, że ta ścieżka w lesie nie istnieje lub pokój został przeniesiony.
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-center justify-center gap-4 text-primary text-xs sm:text-sm font-semibold">
+            <span class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base" data-icon="explore">explore</span> Kompas: Szlak Leśny
+            </span>
+            <span class="text-outline-variant">•</span>
+            <span class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base" data-icon="alt_route">alt_route</span> Rozwidlenie dróg
+            </span>
+          </div>
+
+          <div class="pt-2 flex flex-wrap items-center justify-center gap-4">
+            <button class="px-6 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] flex items-center gap-2 shadow-sm">
+              <span class="material-symbols-outlined text-[18px]" data-icon="dashboard">dashboard</span>
+              Wróć do pulpitu
+            </button>
+            <button class="px-5 py-2.5 rounded-lg border border-primary/40 text-primary text-sm font-semibold hover:bg-surface-container transition-all flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px]" data-icon="calendar_month">calendar_month</span>
+              Przejdź do kalendarza
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. POWIADOMIENIA TOAST (TOAST NOTIFICATIONS) -->
+    <section id="toasts" class="space-y-4">
+      <div>
+        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Sekcja 04</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-primary">Powiadomienia Toast (Toasts: Sukces, Ostrzeżenie, Błąd)</h2>
+        <p class="text-sm text-on-surface-variant">Kompaktowe komunikaty zwrotne informujące o akcjach w tle i statusie zamków PIN.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Success Toast -->
+        <div class="bg-surface-container-lowest rounded-xl p-4 border-l-4 border-l-primary border border-outline-variant/30 shadow-md flex items-start gap-3.5 relative">
+          <div class="w-8 h-8 rounded-full bg-surface-container text-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]" data-icon="check_circle">check_circle</span>
+          </div>
+          <div class="space-y-1 flex-1 pr-4">
+            <span class="text-sm font-bold text-primary block">Sukces operacji</span>
+            <p class="text-xs sm:text-sm text-on-surface-variant">
+              Rezerwacja zapisana pomyślnie. Kod PIN do zamka został przesłany gościowi SMS-em.
+            </p>
+          </div>
+          <button class="text-outline hover:text-on-surface p-1 rounded hover:bg-surface-container-high transition-colors">
+            <span class="material-symbols-outlined text-[18px]" data-icon="close">close</span>
+          </button>
+        </div>
+
+        <!-- Warning Toast -->
+        <div class="bg-surface-container-lowest rounded-xl p-4 border-l-4 border-l-amber-500 border border-outline-variant/30 shadow-md flex items-start gap-3.5 relative">
+          <div class="w-8 h-8 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]" data-icon="warning">warning</span>
+          </div>
+          <div class="space-y-1 flex-1">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-bold text-amber-900 block">Uwaga na termin</span>
+              <span class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">2h</span>
+            </div>
+            <p class="text-xs sm:text-sm text-on-surface-variant">
+              Zbliża się termin wygaśnięcia rezerwacji KL-2026-004. Gość ma jeszcze 2 godziny na wpłatę zadatku.
+            </p>
+            <div class="pt-1">
+              <a href="#przedluz" class="text-xs font-bold text-amber-800 hover:text-amber-950 underline underline-offset-2">
+                Przedłuż czas
+              </a>
+            </div>
+          </div>
+          <button class="text-outline hover:text-on-surface p-1 rounded hover:bg-surface-container-high transition-colors">
+            <span class="material-symbols-outlined text-[18px]" data-icon="close">close</span>
+          </button>
+        </div>
+
+        <!-- Error Toast -->
+        <div class="bg-surface-container-lowest rounded-xl p-4 border-l-4 border-l-error border border-outline-variant/30 shadow-md flex items-start gap-3.5 relative">
+          <div class="w-8 h-8 rounded-full bg-red-50 text-error flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]" data-icon="error">error</span>
+          </div>
+          <div class="space-y-1 flex-1">
+            <span class="text-sm font-bold text-error block">Błąd płatności online</span>
+            <p class="text-xs sm:text-sm text-on-surface-variant">
+              Bramka Przelewy24 odrzuciła transakcję ze względu na limit karty gościa.
+            </p>
+            <div class="pt-1">
+              <a href="#szczegoly" class="text-xs font-bold text-error hover:text-red-900 underline underline-offset-2">
+                Szczegóły błędu
+              </a>
+            </div>
+          </div>
+          <button class="text-outline hover:text-on-surface p-1 rounded hover:bg-surface-container-high transition-colors">
+            <span class="material-symbols-outlined text-[18px]" data-icon="close">close</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ODZNAKI STATUSÓW REZERWACJI (RESERVATION STATUS BADGES) -->
+    <section id="badges" class="space-y-4">
+      <div>
+        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Sekcja 05</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-primary">Odznaki Statusów Rezerwacji (Status Badges)</h2>
+        <p class="text-sm text-on-surface-variant">Wszystkie warianty stanów rezerwacji stosowane w kalendarzu, tabelach i podsumowaniach.</p>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-sm space-y-6">
+        <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+          <!-- Potwierdzona -->
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#E6F3EE] text-[#215844] text-xs font-semibold border border-[#215844]/25 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-[#215844]"></span>
+            <span>Potwierdzona</span>
+          </div>
+
+          <!-- Oczekuje na wpłatę -->
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FEF3C7] text-[#92400E] text-xs font-semibold border border-[#92400E]/25 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-[#92400E]"></span>
+            <span>Oczekuje na wpłatę</span>
+          </div>
+
+          <!-- Zameldowany -->
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary-fixed text-primary text-xs font-bold border border-primary/25 shadow-xs">
+            <span class="material-symbols-outlined text-sm font-bold" data-icon="key">key</span>
+            <span>Zameldowany</span>
+          </div>
+
+          <!-- Wymeldowany -->
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#E2E8F0] text-[#475569] text-xs font-medium border border-[#475569]/25 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-[#475569]"></span>
+            <span>Wymeldowany</span>
+          </div>
+
+          <!-- Anulowana -->
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FEE2E2] text-[#991B1B] text-xs font-medium border border-[#991B1B]/25 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-[#991B1B]"></span>
+            <span>Anulowana</span>
+          </div>
+
+          <!-- Kolizja terminu -->
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-error text-white text-xs font-bold shadow-xs">
+            <span class="material-symbols-outlined text-sm" data-icon="report">report</span>
+            <span>Kolizja terminu</span>
+          </div>
+        </div>
+
+        <!-- Demonstration strip -->
+        <div class="pt-5 border-t border-outline-variant/20">
+          <span class="text-xs text-on-surface-variant font-medium block mb-3">Wizualizacja kontekstowa na miniaturowym pasku obłożenia:</span>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold text-on-surface">Domek Sosnowy A1</p>
+                <p class="text-[11px] text-on-surface-variant">14.06 – 21.06 • 4 gości</p>
+              </div>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#E6F3EE] text-[#215844] text-[11px] font-bold">
+                Potwierdzona
+              </span>
+            </div>
+            <div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold text-on-surface">Domek Brzozowy B2</p>
+                <p class="text-[11px] text-on-surface-variant">15.06 – 18.06 • 2 gości</p>
+              </div>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed text-primary text-[11px] font-bold">
+                Zameldowany
+              </span>
+            </div>
+            <div class="p-3 rounded-lg bg-surface-container-low border border-red-200 flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold text-on-surface">Apartament Nad Potokiem</p>
+                <p class="text-[11px] text-error font-medium">Rezerwacja zablokowana</p>
+              </div>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-error text-white text-[11px] font-bold">
+                Kolizja terminu
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PRZYCISKI I AKCJE (BUTTON SYSTEM) -->
+    <section id="buttons" class="space-y-4">
+      <div>
+        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Sekcja 06</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-primary">System Przycisków (Primary, Secondary, Destructive)</h2>
+        <p class="text-sm text-on-surface-variant">Prezentacja zachowań interaktywnych: Normal, Hover, Active, Disabled oraz stan ładowania.</p>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-sm space-y-6">
+        
+        <!-- Primary Buttons -->
+        <div class="space-y-2.5">
+          <span class="text-xs font-bold text-primary block uppercase tracking-wide">1. Główny przycisk (Primary Forest Green #2F5D50)</span>
+          <div class="flex flex-wrap items-center gap-3">
+            <button class="px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold shadow-xs">
+              Normal
+            </button>
+            <button class="px-5 py-2.5 rounded-lg bg-primary-container text-white text-sm font-semibold shadow-sm ring-2 ring-primary/20">
+              Hover
+            </button>
+            <button class="px-5 py-2.5 rounded-lg bg-[#204f42] text-white text-sm font-semibold scale-[0.98]">
+              Active (Wciśnięty)
+            </button>
+            <button disabled class="px-5 py-2.5 rounded-lg bg-surface-variant text-outline text-sm font-semibold cursor-not-allowed">
+              Zablokowany (Disabled)
+            </button>
+            <button class="px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold flex items-center gap-2 cursor-wait">
+              <svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Zapisywanie...</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Secondary / Outline Buttons -->
+        <div class="space-y-2.5 pt-4 border-t border-outline-variant/20">
+          <span class="text-xs font-bold text-primary block uppercase tracking-wide">2. Drugorzędny przycisk (Secondary / Outlined)</span>
+          <div class="flex flex-wrap items-center gap-3">
+            <button class="px-5 py-2.5 rounded-lg border border-outline-variant/60 text-on-surface text-sm font-medium hover:bg-surface-container transition-colors">
+              Normal
+            </button>
+            <button class="px-5 py-2.5 rounded-lg border border-primary text-primary text-sm font-semibold bg-surface-container-low">
+              Hover
+            </button>
+            <button class="px-5 py-2.5 rounded-lg border border-primary text-primary text-sm font-semibold bg-surface-container scale-[0.98]">
+              Active
+            </button>
+            <button disabled class="px-5 py-2.5 rounded-lg border border-outline-variant/30 text-outline-variant text-sm font-medium cursor-not-allowed">
+              Disabled
+            </button>
+          </div>
+        </div>
+
+        <!-- Destructive Buttons -->
+        <div class="space-y-2.5 pt-4 border-t border-outline-variant/20">
+          <span class="text-xs font-bold text-error block uppercase tracking-wide">3. Przycisk destrukcyjny (Destructive Red)</span>
+          <div class="flex flex-wrap items-center gap-3">
+            <button class="px-5 py-2.5 rounded-lg bg-red-50 text-error border border-red-200 text-sm font-semibold hover:bg-red-100 transition-colors flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+              Anuluj rezerwację
+            </button>
+            <button class="px-5 py-2.5 rounded-lg bg-error text-white text-sm font-semibold shadow-xs flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]" data-icon="warning">warning</span>
+              Usuń pokój z oferty
+            </button>
+            <button disabled class="px-5 py-2.5 rounded-lg bg-red-50/50 text-red-300 border border-red-100 text-sm font-medium cursor-not-allowed">
+              Zablokowane usuwanie
+            </button>
+          </div>
+        </div>
+
+        <!-- Icon Buttons -->
+        <div class="space-y-2.5 pt-4 border-t border-outline-variant/20">
+          <span class="text-xs font-bold text-on-surface-variant block uppercase tracking-wide">4. Przyciski ikonowe (Icon Actions)</span>
+          <div class="flex items-center gap-3">
+            <button class="w-10 h-10 rounded-lg border border-outline-variant/40 flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" title="Kebab menu">
+              <span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+            </button>
+            <button class="w-10 h-10 rounded-lg border border-outline-variant/40 flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" title="Kalendarz">
+              <span class="material-symbols-outlined text-[20px]" data-icon="calendar_month">calendar_month</span>
+            </button>
+            <button class="w-10 h-10 rounded-lg border border-outline-variant/40 flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" title="Filtry">
+              <span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+            </button>
+            <button class="w-10 h-10 rounded-lg bg-surface-container text-primary flex items-center justify-center hover:bg-surface-container-high transition-colors" title="Odśwież dane">
+              <span class="material-symbols-outlined text-[20px]" data-icon="refresh">refresh</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. POLA FORMULARZY I KONTROLKI (INPUT STATES) -->
+    <section id="inputs" class="space-y-4">
+      <div>
+        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Sekcja 07</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-primary">Pola Formularzy i Kontrolki (Form Inputs & Controls)</h2>
+        <p class="text-sm text-on-surface-variant">Stany wejściowe pól tekstowych: Normal, Focus, Błąd walidacji, Zablokowane oraz przełączniki i checkboxy.</p>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-sm space-y-6">
+        
+        <!-- Text Inputs Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- 1. Normal State -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-on-surface">
+              Adres e-mail <span class="text-secondary">*</span>
+            </label>
+            <div class="relative">
+              <input type="email" value="jan.nowak@example.com" class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant/60 bg-white text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="twoj@email.pl">
+            </div>
+            <p class="text-[11px] text-on-surface-variant">Stan: Domyślny (Normal)</p>
+          </div>
+
+          <!-- 2. Focus State -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-primary">
+              Numer telefonu <span class="text-secondary">*</span>
+            </label>
+            <div class="relative">
+              <input type="tel" value="+48 601 234 567" class="w-full px-3.5 py-2.5 rounded-lg border-2 border-primary bg-white text-sm text-on-surface ring-2 ring-primary/20 transition-all">
+              <span class="absolute right-3 top-2.5 material-symbols-outlined text-primary text-[18px]" data-icon="edit">edit</span>
+            </div>
+            <p class="text-[11px] text-primary font-semibold">Stan: Aktywny z fokusem (Focus)</p>
+          </div>
+
+          <!-- 3. Error State -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-error">
+              Kod pocztowy <span class="text-secondary">*</span>
+            </label>
+            <div class="relative">
+              <input type="text" value="12220" class="w-full px-3.5 py-2.5 rounded-lg border-2 border-error bg-red-50/20 text-sm text-on-surface focus:outline-none pr-9">
+              <span class="absolute right-3 top-2.5 material-symbols-outlined text-error text-[18px]" data-icon="error">error</span>
+            </div>
+            <p class="text-[11px] text-error font-medium flex items-center gap-1">
+              Nieprawidłowy format kodu (np. 12-220)
+            </p>
+          </div>
+
+          <!-- 4. Disabled State -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-outline">
+              Identyfikator obiektu (Stały)
+            </label>
+            <div class="relative">
+              <input disabled type="text" value="KL-POLANA-001" class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant/30 bg-surface-container-high/60 text-sm text-outline cursor-not-allowed">
+              <span class="absolute right-3 top-2.5 material-symbols-outlined text-outline text-[18px]" data-icon="lock">lock</span>
+            </div>
+            <p class="text-[11px] text-outline">Stan: Zablokowany (Disabled)</p>
+          </div>
+        </div>
+
+        <!-- Select & Controls row -->
+        <div class="pt-6 border-t border-outline-variant/20 grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Dropdown Select -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-on-surface">Wybór typu jednostki</label>
+            <select class="w-full px-3.5 py-2.5 rounded-lg border border-outline-variant/60 bg-white text-sm text-on-surface focus:ring-2 focus:ring-primary focus:border-primary">
+              <option>Domek całoroczny (z kominkiem)</option>
+              <option>Apartament studio z tarasem</option>
+              <option>Pokój z widokiem na jezioro</option>
+            </select>
+          </div>
+
+          <!-- Toggles (Switches) -->
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-on-surface">Przełączniki widoczności (Toggles)</label>
+            <div class="space-y-2">
+              <label class="flex items-center justify-between cursor-pointer p-2 rounded-lg bg-surface-container-low border border-outline-variant/30">
+                <span class="text-xs font-semibold text-on-surface">Widoczny na stronie rezerwacji</span>
+                <input type="checkbox" checked class="h-5 w-5 rounded text-primary focus:ring-primary">
+              </label>
+              <label class="flex items-center justify-between cursor-pointer p-2 rounded-lg bg-surface-container-low border border-outline-variant/30 opacity-70">
+                <span class="text-xs text-on-surface">Wstrzymaj kalendarz (Wyłączony)</span>
+                <input type="checkbox" class="h-5 w-5 rounded text-primary focus:ring-primary">
+              </label>
+            </div>
+          </div>
+
+          <!-- Checkboxes & Radios -->
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-on-surface">Opcje powiadomień</label>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer text-xs font-medium text-on-surface">
+                <input type="checkbox" checked class="rounded text-primary focus:ring-primary h-4 w-4">
+                <span>Wyślij SMS z kodem PIN do zamka cyfrowego</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-on-surface-variant">
+                <input type="checkbox" class="rounded text-primary focus:ring-primary h-4 w-4">
+                <span>Zezwalaj na rezerwacje bez wcześniejszej zaliczki</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full bg-surface-container-low border-t border-outline-variant/30 mt-16 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-on-surface-variant">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-base" data-icon="cabin">cabin</span>
+        <span>© 2025 Domki Leśna Polana • System rezerwacji dostarcza <strong>Klucznik – Twój e-recepcjonista</strong></span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="#skeletons" class="hover:text-primary transition-colors">Szkielety</a>
+        <a href="#empty-error" class="hover:text-primary transition-colors">Błędy i Stany Puste</a>
+        <a href="#toasts" class="hover:text-primary transition-colors">Powiadomienia</a>
+        <a href="#inputs" class="hover:text-primary transition-colors">Formularze</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
