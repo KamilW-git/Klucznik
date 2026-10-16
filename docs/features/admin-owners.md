@@ -58,12 +58,12 @@ Wszystkie endpointy: rola `ADMIN`, kontroler z `@Roles('ADMIN')`.
 
 Ekrany: A1 i pochodne: [screens.md](../../apps/web/docs/screens.md).
 
-- [ ] `AdminLayout` z sidebar: „Właściciele”, „Obiekty”, „Logi e-maili” i etykietą „Administrator”.
-- [ ] `/admin/wlasciciele`: tabela, wyszukiwarka (debounce), paginacja, status „Aktywny/Zablokowany”.
-- [ ] Dialog „Nowy właściciel”: pola, przycisk „Generuj” hasło, opcja „Utwórz od razu obiekt”. Obsługa `EMAIL_TAKEN` przy polu e-mail.
-- [ ] Akcje wiersza: edycja (dialog), blokada/odblokowanie z potwierdzeniem.
-- [ ] `/admin/obiekty`: tabela z filtrem właściciela, link do podglądu `/o/:slug`.
-- [ ] `/admin/logi-email`: tabela z filtrem statusu; `FAILED` wyróżnione, `lastError` w tooltipie.
+- [x] `AdminLayout` z sidebar: „Właściciele”, „Obiekty”, „Logi e-maili” i etykietą „Administrator”.
+- [x] `/admin/wlasciciele`: tabela (imię i nazwisko, e-mail, liczba obiektów z linkiem do przefiltrowanej listy obiektów, rezerwacje z 30 dni, status, data utworzenia), wyszukiwarka (debounce), filtr statusu, sortowanie (`createdAt`, `lastName`), paginacja, status „Aktywny/Zablokowany”. Filtry w URL.
+- [x] Dialog „Nowy właściciel”: pola, hasło tymczasowe wygenerowane od razu (`crypto.getRandomValues`, 16 znaków bez mylących znaków) z „Generuj”, „Pokaż” i „Kopiuj”, opcja „Utwórz od razu obiekt” (nazwa, opcjonalny adres strony). Obsługa `EMAIL_TAKEN` przy polu e-mail i `SLUG_TAKEN` przy adresie strony. Po utworzeniu jednorazowy ekran „Konto założone” z loginem, hasłem i adresem strony obiektu do przekazania; hasło nie jest nigdzie zapisywane.
+- [x] Akcje wiersza: edycja (dialog: dane, opcjonalne nowe hasło tymczasowe, obiekty właściciela; `PATCH` tylko ze zmienionymi polami), blokada/odblokowanie z potwierdzeniem przez `PATCH isActive` ([Q-10](../open-questions.md#q-10); dialog blokady mówi, że sesje zostaną zakończone, a obiekty nadal przyjmują rezerwacje).
+- [x] `/admin/obiekty`: tabela z filtrem właściciela (wyszukiwanie z podpowiedziami, `?ownerId=`), wyszukiwarką i statusem; link do podglądu `/o/:slug` dla obiektów aktywnych.
+- [x] `/admin/logi-email`: tabela z filtrem statusu, odbiorcy i dni utworzenia; polskie nazwy szablonów; `FAILED` wyróżnione, `lastError` w tooltipie (przycisk dostępny z klawiatury, treść także w etykiecie dla czytników).
 
 ## 8. Testy
 
@@ -78,15 +78,15 @@ Ekrany: A1 i pochodne: [screens.md](../../apps/web/docs/screens.md).
 
 ## 9. Kryteria akceptacji
 
-- [ ] Admin zakłada właściciela z obiektem, a właściciel loguje się i widzi ten obiekt w panelu.
-- [ ] Zablokowany właściciel nie może się zalogować ani odświeżyć sesji.
-- [ ] Lista właścicieli ma wyszukiwanie i paginację zgodną z [api-conventions.md](../architecture/api-conventions.md#paginacja).
+- [x] Admin zakłada właściciela z obiektem, a właściciel loguje się i widzi ten obiekt w panelu (M13: sprawdzone na żywo).
+- [x] Zablokowany właściciel nie może się zalogować ani odświeżyć sesji (logowanie: M13 na żywo; odświeżenie sesji: test integracyjny API z M4).
+- [x] Lista właścicieli ma wyszukiwanie i paginację zgodną z [api-conventions.md](../architecture/api-conventions.md#paginacja).
 
 ## 10. Status i otwarte kwestie
 
 | Warstwa | Status |
 |-|-|
 | API | Właściciele i obiekty gotowe (M4); logi e-maili w M9 |
-| UI | Nie rozpoczęto |
+| UI | Gotowe (M13) |
 
 Otwarte: [Q-07](../open-questions.md#q-07) (logi e-maili, obiekt przy zakładaniu), [Q-10](../open-questions.md#q-10) (semantyka `DELETE`).

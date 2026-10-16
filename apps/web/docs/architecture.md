@@ -55,7 +55,7 @@ Rezerwacja ręczna (O5) jest dialogiem otwieranym z kalendarza, listy rezerwacji
 
 Ochrona tras w UI służy wygodzie użytkownika. Faktyczną autoryzację wymusza API (403/404).
 
-Trasy z kolejnych etapów mają do czasu realizacji zaślepkę `ComingSoonPage` („Ten widok jest w przygotowaniu”). Nieobsłużony błąd renderowania albo nieudane pobranie kodu obszaru (np. po wdrożeniu nowej wersji) pokazuje `RouteErrorPage` z przeładowaniem strony, a w trakcie ładowania kodu obszaru widać `FullPageLoader`.
+Nieobsłużony błąd renderowania albo nieudane pobranie kodu obszaru (np. po wdrożeniu nowej wersji) pokazuje `RouteErrorPage` z przeładowaniem strony, a w trakcie ładowania kodu obszaru widać `FullPageLoader`.
 
 ## Kontekst obiektu w panelu
 
@@ -90,6 +90,15 @@ features/guest-booking/     BookingPage (P3), BookingSentPage (P4, dane ze state
 features/guest-reservation/ GuestReservationPage (P5), GuestCancelDialog
 ```
 
+Panel admina (M13):
+
+```
+features/admin/   OwnersPage (A1), PropertiesPage, EmailLogsPage; CreateOwnerDialog (z ekranem „Konto założone”),
+                  EditOwnerDialog, OwnerAccessDialog (blokada / odblokowanie), OwnerPicker (cmdk), PasswordField,
+                  SearchField, ActiveBadge, EmailStatusBadge; useListSearchParams (stan list w URL),
+                  password.ts (generator hasła tymczasowego), labels.ts (statusy i szablony e-maili), schemas.ts
+```
+
 - Feature importuje z innego feature'a tylko przez jego `index.ts`.
 - `shared/` nie importuje z `features/`.
 - Komponenty prezentacyjne bez wywołań API, a dane dostarczają hooki lub strony.
@@ -106,7 +115,8 @@ features/guest-reservation/ GuestReservationPage (P5), GuestCancelDialog
 | `ConfirmDialog`, `Dialog`, `Sheet` | potwierdzenia, formularze w dialogu, drawer szczegółów |
 | `SaveBar` | przyklejony pasek „Zapisz zmiany” przy niezapisanych zmianach |
 | `lib/money.ts`, `lib/dates.ts` | `formatMoney`, `toMinor`, `fromMinor`, `formatDate`, `nightsBetween` |
-| `lib/invalidate.ts` | unieważnianie zapytań po ścieżce API (`invalidateReservations`, `invalidateRooms`, `invalidateAvailability`, `invalidateRates`, `invalidateProperty`) |
+| `lib/invalidate.ts` | unieważnianie zapytań po ścieżce API (`invalidateReservations`, `invalidateRooms`, `invalidateAvailability`, `invalidateRates`, `invalidateProperty`, `invalidateAdmin`) |
+| `FilterChip` | chip filtra z `aria-pressed` (statusy rezerwacji, kont, obiektów i e-maili) |
 | `lib/date-matchers.ts` | zajęte noce pokoju (rezerwacje i blokady) jako predykat dla `DateRangePicker` |
 | `lib/file-url.ts` | adres zdjęcia z `PhotoDto.url` z uwzględnieniem `VITE_API_BASE_URL` |
 | `lib/public-query.ts` | ustawienia zapytań strony publicznej i `invalidatePublicAvailability` |

@@ -18,7 +18,7 @@
 | M10 | UI | Setup frontendu, design system, logowanie | gotowe |
 | M11 | UI | Panel Gospodarza | gotowe |
 | M12 | UI | Strona publiczna i proces rezerwacji | gotowe |
-| M13 | UI | Panel admina | – |
+| M13 | UI | Panel admina | gotowe |
 | M14 | DOCS/INFRA | Testy do progów, README, demo, `v1.0.0` | – |
 
 ## M0: Dokumentacja
@@ -131,7 +131,7 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M13: Panel admina [UI]
 
-- [ ] [UI] `AdminLayout`, A1 właściciele, obiekty, logi e-maili: [admin-owners.md](features/admin-owners.md)
+- [x] [UI] `AdminLayout`, A1 właściciele, obiekty, logi e-maili: [admin-owners.md](features/admin-owners.md)
 
 ## M14: Finalizacja [DOCS/INFRA]
 

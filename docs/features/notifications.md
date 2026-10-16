@@ -93,6 +93,6 @@ Brak ekranów w panelu właściciela. Logi e-maili są w panelu admina ([admin-o
 | Warstwa | Status |
 |-|-|
 | API | Gotowe (M9) |
-| UI | nie dotyczy (logi: M13) |
+| UI | nie dotyczy; logi e-maili w panelu admina gotowe (M13) |
 
 Zdecydowane: [Q-09](../open-questions.md#q-09), [Q-16](../open-questions.md#q-16).

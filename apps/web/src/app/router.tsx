@@ -2,7 +2,6 @@ import { createBrowserRouter, Navigate, type RouteObject } from 'react-router';
 
 import { RedirectIfAuthenticated, RequireAuth, RequireRole, RootRedirect } from './guards';
 import { RootShell } from './layouts/root-shell';
-import { ComingSoonPage } from './pages/coming-soon-page';
 import { FullPageLoader } from './pages/full-page-loader';
 import { NotFoundPage } from './pages/not-found-page';
 import { RoomIndexRedirect } from './pages/room-index-redirect';
@@ -106,15 +105,17 @@ const areaRoutes: RouteObject[] = [
               { index: true, element: <Navigate to={routes.admin.owners()} replace /> },
               {
                 path: paths.admin.owners,
-                element: <ComingSoonPage title="Właściciele" milestone="M13" />,
+                lazy: async () => ({ Component: (await import('@/features/admin')).OwnersPage }),
               },
               {
                 path: paths.admin.properties,
-                element: <ComingSoonPage title="Obiekty" milestone="M13" />,
+                lazy: async () => ({
+                  Component: (await import('@/features/admin')).PropertiesPage,
+                }),
               },
               {
                 path: paths.admin.emailLogs,
-                element: <ComingSoonPage title="Logi e-maili" milestone="M13" />,
+                lazy: async () => ({ Component: (await import('@/features/admin')).EmailLogsPage }),
               },
             ],
           },

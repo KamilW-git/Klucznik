@@ -11,7 +11,7 @@ import { AuthProvider } from '@/features/auth';
 import { Toaster } from '@/shared/ui/toaster';
 import { TooltipProvider } from '@/shared/ui/tooltip';
 
-import { api, authResponse, ownerUser } from './msw/handlers/auth';
+import { adminUser, api, authResponse, ownerUser } from './msw/handlers/auth';
 import { server } from './msw/server';
 
 function createTestQueryClient() {
@@ -48,6 +48,12 @@ export function renderApp(path: string, routes: RouteObject[] = appRoutes) {
 /** Aplikacja z sesją właściciela (bootstrap refresh → `OWNER`), start pod `path`. */
 export function renderAsOwner(path: string) {
   server.use(http.post(api('/auth/refresh'), () => HttpResponse.json(authResponse(ownerUser))));
+  return renderApp(path);
+}
+
+/** Aplikacja z sesją administratora (`ADMIN`), start pod `path`. */
+export function renderAsAdmin(path: string) {
+  server.use(http.post(api('/auth/refresh'), () => HttpResponse.json(authResponse(adminUser))));
   return renderApp(path);
 }
 

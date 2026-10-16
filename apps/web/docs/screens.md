@@ -33,9 +33,11 @@ Statusy: `brak projektu` (ekran ze Stitch nie dostarczony), `projekt` (jest plik
 
 | ID | Ekran | Route | Funkcjonalność | Plik Stitch | Etap | Status |
 |-|-|-|-|-|-|-|
-| A1 | Właściciele | `/admin/wlasciciele` | [admin-owners.md](../../../docs/features/admin-owners.md) | `admin/01-owners.png` | M13 | projekt |
-| – | Obiekty | `/admin/obiekty` | [admin-owners.md](../../../docs/features/admin-owners.md) | brak: wzorzec tabeli z A1 | M13 | brak projektu |
-| – | Logi e-maili | `/admin/logi-email` | [admin-owners.md](../../../docs/features/admin-owners.md), [notifications.md](../../../docs/features/notifications.md) | brak: wzorzec tabeli z A1 | M13 | brak projektu |
+| A1 | Właściciele | `/admin/wlasciciele` | [admin-owners.md](../../../docs/features/admin-owners.md) | `admin/01-owners.png` | M13 | gotowe |
+| – | Obiekty | `/admin/obiekty` | [admin-owners.md](../../../docs/features/admin-owners.md) | brak: wzorzec tabeli z A1 | M13 | gotowe (bez projektu) |
+| – | Logi e-maili | `/admin/logi-email` | [admin-owners.md](../../../docs/features/admin-owners.md), [notifications.md](../../../docs/features/notifications.md) | brak: wzorzec tabeli z A1 | M13 | gotowe (bez projektu) |
+
+A1 (M13): pominięte elementy spoza specyfikacji ([Q-28](../../../docs/open-questions.md#q-28)): karty KPI, zaznaczanie wierszy i akcje masowe, „Wyślij e-mail powitalny” (hasło nie idzie e-mailem), „Typ obiektu” i „Miejscowość” w dialogu (brak w `CreateOwnerDto`), wyszukiwanie po telefonie, dodatkowe pozycje menu (np. „Ustawienia platformy”, „Logi systemowe”).
 
 ## Wspólne i opcjonalne
 

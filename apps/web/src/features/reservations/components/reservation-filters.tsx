@@ -2,11 +2,11 @@ import { useRoomsList, type ReservationStatus } from '@klucznik/api-client';
 import { FilterX, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { cn } from '@/shared/lib/cn';
 import { RESERVATION_STATUS_LABELS } from '@/shared/lib/reservation-status';
 import { useDebouncedValue } from '@/shared/lib/use-debounced-value';
 import { Button } from '@/shared/ui/button';
 import { DateRangePicker } from '@/shared/ui/date-range-picker';
+import { FilterChip as Chip } from '@/shared/ui/filter-chip';
 import { Input, InputGroup } from '@/shared/ui/input';
 import { Select } from '@/shared/ui/select';
 
@@ -107,31 +107,5 @@ export function ReservationFilters({
         </Button>
       </div>
     </div>
-  );
-}
-
-function Chip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: string;
-}) {
-  return (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={onClick}
-      className={cn(
-        'min-h-11 rounded-full border px-4 text-sm font-medium transition-colors',
-        active
-          ? 'border-primary bg-primary text-primary-foreground'
-          : 'bg-card text-foreground hover:border-primary/40 hover:bg-accent',
-      )}
-    >
-      {children}
-    </button>
   );
 }

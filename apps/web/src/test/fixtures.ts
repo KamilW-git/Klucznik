@@ -1,4 +1,8 @@
 import type {
+  AdminPropertyListItemDto,
+  EmailLogDto,
+  OwnerDto,
+  OwnerListItemDto,
   AvailabilityResultDto,
   PublicPropertyDto,
   PublicReservationCreatedDto,
@@ -363,6 +367,85 @@ export const publicReservation: PublicReservationDto = {
   canCancel: true,
   cancellableUntil: '2027-08-07',
   cancelledAt: null,
+};
+
+/* Panel admina (M13) */
+
+export const OWNER_ID = '6f2f7c1e-6d3a-4f0e-9d7a-1b2c3d4e5f60';
+export const BLOCKED_OWNER_ID = '6f2f7c1e-6d3a-4f0e-9d7a-1b2c3d4e5f61';
+
+export const ownerListItem: OwnerListItemDto = {
+  id: OWNER_ID,
+  firstName: 'Jan',
+  lastName: 'Nowak',
+  email: 'jan.nowak@example.com',
+  isActive: true,
+  propertiesCount: 1,
+  reservationsLast30Days: 12,
+  createdAt: '2026-01-10T10:00:00.000Z',
+};
+
+export const blockedOwner: OwnerListItemDto = {
+  id: BLOCKED_OWNER_ID,
+  firstName: 'Ewa',
+  lastName: 'Zielińska',
+  email: 'ewa.zielinska@example.com',
+  isActive: false,
+  propertiesCount: 0,
+  reservationsLast30Days: 0,
+  createdAt: '2026-03-02T10:00:00.000Z',
+};
+
+export const ownerDetails: OwnerDto = {
+  ...ownerListItem,
+  properties: [
+    { id: PROPERTY_ID, name: 'Domki Leśna Polana', slug: 'lesna-polana', isActive: true },
+  ],
+};
+
+export const adminProperty: AdminPropertyListItemDto = {
+  id: PROPERTY_ID,
+  name: 'Domki Leśna Polana',
+  slug: 'lesna-polana',
+  city: 'Mrągowo',
+  isActive: true,
+  owner: { id: OWNER_ID, firstName: 'Jan', lastName: 'Nowak', email: 'jan.nowak@example.com' },
+  roomsCount: 4,
+  createdAt: '2026-01-10T10:00:00.000Z',
+};
+
+export const inactiveProperty: AdminPropertyListItemDto = {
+  ...adminProperty,
+  id: '11111111-1111-4111-8111-111111111113',
+  name: 'Pensjonat Pod Lipami',
+  slug: 'pod-lipami',
+  city: 'Sopot',
+  isActive: false,
+  roomsCount: 0,
+};
+
+export const sentEmail: EmailLogDto = {
+  id: '88888888-8888-4888-8888-888888888881',
+  recipient: 'anna.kowalska@example.com',
+  template: 'reservation-confirmed',
+  status: 'SENT',
+  attempts: 1,
+  lastError: null,
+  sentAt: '2026-10-08T12:30:05.000Z',
+  createdAt: '2026-10-08T12:30:00.000Z',
+  reservationNumber: 'KL-2026-000123',
+};
+
+export const failedEmail: EmailLogDto = {
+  id: '88888888-8888-4888-8888-888888888882',
+  recipient: 'marek@example.com',
+  template: 'owner-new-reservation',
+  status: 'FAILED',
+  attempts: 5,
+  lastError: 'SMTP 550: mailbox unavailable',
+  sentAt: null,
+  createdAt: '2026-10-08T11:00:00.000Z',
+  reservationNumber: 'KL-2026-000124',
 };
 
 export const rate: SeasonalRateDto = {

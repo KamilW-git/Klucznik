@@ -48,6 +48,11 @@ export function invalidateRates(queryClient: QueryClient) {
   return invalidatePaths(queryClient, [/^\/api\/v1\/rooms\/[^/]+\/(rates|quote)$/]);
 }
 
+/** Panel admina: właściciele i obiekty (konto z obiektem zmienia obie listy). */
+export function invalidateAdmin(queryClient: QueryClient) {
+  return invalidatePaths(queryClient, [/^\/api\/v1\/admin\/(owners|properties)/]);
+}
+
 /** Ustawienia i zdjęcia obiektu. */
 export function invalidateProperty(queryClient: QueryClient) {
   return invalidatePaths(queryClient, [/^\/api\/v1\/properties/]);

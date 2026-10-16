@@ -40,6 +40,8 @@ interface DataTableProps<T> {
   footer?: ReactNode;
   /** Odświeżanie w tle (np. nowa strona): przygaszenie zamiast szkieletu. */
   fetching?: boolean;
+  /** Wyróżnienie wiersza (np. log e-maila `FAILED`). */
+  rowClassName?: (row: T) => string | undefined;
 }
 
 /**
@@ -60,6 +62,7 @@ export function DataTable<T>({
   caption,
   footer,
   fetching,
+  rowClassName,
 }: DataTableProps<T>) {
   if (!loading && rows && rows.length === 0 && empty) return <>{empty}</>;
 
@@ -131,6 +134,7 @@ export function DataTable<T>({
                         clickable &&
                           'cursor-pointer hover:bg-accent/60 focus-visible:bg-accent/60 focus-visible:outline-2 focus-visible:-outline-offset-2',
                         activeRowId === id && 'bg-accent shadow-[inset_4px_0_0_var(--primary)]',
+                        rowClassName?.(row),
                       )}
                     >
                       {columns.map((column) => (

@@ -48,6 +48,14 @@ function stayQuery(search: StaySearchParams, extra: Record<string, string> = {})
   }).toString();
 }
 
+/** Ścieżka z parametrami listy (puste pomijane), np. `/admin/obiekty?ownerId=…`. */
+function withQuery(path: string, params: Record<string, string | undefined> = {}): string {
+  const query = new URLSearchParams(
+    Object.entries(params).filter((entry): entry is [string, string] => Boolean(entry[1])),
+  ).toString();
+  return query ? `${path}?${query}` : path;
+}
+
 /** Sekcje strony obiektu P1 (kotwice w nawigacji nagłówka). */
 export const PROPERTY_SECTIONS = {
   search: 'termin',
@@ -79,8 +87,8 @@ export const routes = {
     settings: () => paths.panel.settings,
   },
   admin: {
-    owners: () => paths.admin.owners,
-    properties: () => paths.admin.properties,
+    owners: (params?: { q?: string }) => withQuery(paths.admin.owners, params),
+    properties: (params?: { ownerId?: string }) => withQuery(paths.admin.properties, params),
     emailLogs: () => paths.admin.emailLogs,
   },
   public: {

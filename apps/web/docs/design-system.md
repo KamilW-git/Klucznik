@@ -10,7 +10,7 @@
 | Wariant stylu | ✔ wariant A „Leśna przystań” / „Warm Cabin Hospitality” dla całej aplikacji (strona publiczna, panel, admin), M10 |
 | Tokeny kolorów, statusów, promieni, cieni | ✔ M10 |
 | Typografia | ✔ M10 (DM Sans) |
-| Komponenty bazowe | ✔ M10–M12 (lista niżej); kolejne dochodzą z widokami M13 |
+| Komponenty bazowe | ✔ M10–M13 (lista niżej) |
 | Stany S1 | ✔ M10: skeleton, pusty, błąd, 404, toasty, przyciski, pola |
 
 ## Źródła i rozbieżności w Stitch
@@ -174,9 +174,16 @@ Komponenty domenowe strony publicznej (`features/public-property`, `guest-bookin
 
 Licznika dorośli / dzieci nie ma: specyfikacja przewiduje jedną liczbę gości ([Q-28](../../../docs/open-questions.md#q-28)). Udogodnienia pokoi pomijamy do decyzji [Q-20](../../../docs/open-questions.md#q-20).
 
-### Do zrealizowania z widokami (M13)
+### Zrealizowane (M13)
 
-Tabele panelu admina według wzorca `DataTable`. Każdy nowy komponent: tokeny z tej strony, Radix dla zachowań dostępności, cele dotykowe ≥ 44 px.
+| Komponent | Plik | Uwagi |
+|-|-|-|
+| `FilterChip` | `shared/ui/filter-chip.tsx` | pigułka 44 px z `aria-pressed`, wybrana w `primary` (wydzielona z filtrów O4) |
+| `DataTable` (`rowClassName`) | `shared/ui/data-table.tsx` | wyróżnienie wiersza: log `FAILED` na tle `destructive-soft` z paskiem `destructive` po lewej, zablokowany właściciel na tle `muted` |
+
+Komponenty domenowe panelu admina (`features/admin`): `ActiveBadge` („Aktywny” w kolorach `confirmed`, „Zablokowany” / „Nieaktywny” w kolorach `cancelled`), `EmailStatusBadge` (`QUEUED` jak `pending`, `SENT` jak `confirmed`, `FAILED` jak `cancelled`), `PasswordField` (hasło monospace, „Pokaż”, „Kopiuj”, „Generuj”), `OwnerPicker` (cmdk z listą podpowiedzi; wybrany właściciel jako pole z „Wyczyść”), akcje wiersza jako przyciski-ikony 44 px z etykietą zawierającą nazwę właściciela.
+
+Każdy nowy komponent: tokeny z tej strony, Radix dla zachowań dostępności, cele dotykowe ≥ 44 px.
 
 ### Przyciski
 
@@ -221,7 +228,6 @@ Arkusz `design/stitch/shared/components.png` (sekcje 01–07).
 | 404 | `NotFoundPage` (`app/pages`) | „404” (środkowe „0” w terakocie), „Nie znaleziono strony”, motyw drzew, przycisk do panelu lub logowania |
 | toasty | `Toaster` + `notifySuccess` / `notifyError` | biała karta z ramką w kolorze rodzaju, ikona, tytuł i opis; prawy dół (desktop), góra (telefon) |
 | kalendarz O3 | `OccupancyGrid` | `CONFIRMED` pełny `primary`, `PENDING` bursztynowe paski (`bg-pending-stripes`), `COMPLETED` slate, blokada szara kreskowana (`bg-hatched`), weekendy w odcieniu `sand`, dziś w `primary` |
-| widok w przygotowaniu | `ComingSoonPage` (`app/pages`) | `EmptyState` dla tras z kolejnych etapów |
 
 ## Układ obszarów
 
