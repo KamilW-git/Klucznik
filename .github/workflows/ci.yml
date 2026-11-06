@@ -36,11 +36,9 @@ jobs:
       # Q-23: testy jednostkowe; integracyjne w jobach test-api / test-web.
       - run: pnpm test
 
-  # --- Szkielety: włączane w kolejnych etapach (usuń `if: false`). ---
-
+  # Migracje uruchamia global-setup testów; kolejka e-maili `inline`, więc bez Redisa (H-002, H-013).
   test-api:
-    name: API – testy integracyjne (M2)
-    if: false
+    name: API – testy integracyjne
     needs: quality
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -55,21 +53,9 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U klucznik -d klucznik_test"
           --health-interval 5s --health-timeout 5s --health-retries 10
-      redis:
-        image: redis:7-alpine
-        ports: ['6379:6379']
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 5s --health-timeout 3s --health-retries 10
     env:
-      NODE_ENV: test
-      DATABASE_URL: postgresql://klucznik:klucznik-ci@localhost:5432/klucznik_test
+      # Z TEST_DATABASE_URL testy nie uruchamiają Testcontainers.
       TEST_DATABASE_URL: postgresql://klucznik:klucznik-ci@localhost:5432/klucznik_test
-      REDIS_HOST: localhost
-      REDIS_PORT: 6379
-      # Jawna wartość testowa, nie sekret produkcyjny.
-      JWT_ACCESS_SECRET: ci-test-secret-not-used-in-production-000000
-      SCHEDULER_ENABLED: false
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -78,7 +64,6 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @klucznik/api prisma:deploy
       - run: pnpm --filter @klucznik/api test:int
 
   # Q-23: testy Vitest weba (jsdom) biegną w `quality` (`pnpm test`); tu build produkcyjny Vite.
@@ -97,9 +82,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @klucznik/web build
 
+  # Eksport nie wymaga `.env` ani usług (wartości zastępcze w src/config/openapi-export-env.ts).
   contract:
-    name: Kontrakt OpenAPI (M2)
-    if: false
+    name: Kontrakt OpenAPI i klient
     needs: quality
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -120,11 +105,10 @@ jobs:
       - run: pnpm --filter @klucznik/web typecheck
 
   build:
-    name: Build (M14)
-    if: false
+    name: Build i pełny stack Docker
     needs: [quality]
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -134,8 +118,21 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm -r build
-      - name: docker compose build
+      # Na `main`: obrazy z czystego checkoutu i smoke test całego stacku (nginx → api → postgres).
+      - name: docker compose up
         if: github.ref == 'refs/heads/main'
         run: |
           cp .env.example .env
-          docker compose --profile app build
+          docker compose up --build --detach --wait --wait-timeout 240
+      - name: smoke test
+        if: github.ref == 'refs/heads/main'
+        run: |
+          curl --fail --silent --show-error http://localhost:8080/ | grep -q '<div id="root">'
+          curl --fail --silent --show-error http://localhost:8080/api/v1/health
+          curl --fail --silent --show-error -o /dev/null http://localhost:8080/o/nieistniejacy-obiekt
+      - name: logi kontenerów (po błędzie)
+        if: failure() && github.ref == 'refs/heads/main'
+        run: docker compose logs --no-color
+      - name: docker compose down
+        if: always() && github.ref == 'refs/heads/main'
+        run: docker compose down --volumes
