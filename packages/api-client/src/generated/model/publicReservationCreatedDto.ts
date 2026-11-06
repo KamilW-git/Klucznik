@@ -5,8 +5,8 @@
  * REST API systemu rezerwacji Klucznik. Konwencje: docs/architecture/api-conventions.md
  * OpenAPI spec version: 1.0
  */
-import type { PublicReservationCreatedDtoRoom } from './publicReservationCreatedDtoRoom';
 import type { PublicReservationCreatedDtoStatus } from './publicReservationCreatedDtoStatus';
+import type { PublicReservationCreatedRoomDto } from './publicReservationCreatedRoomDto';
 
 export interface PublicReservationCreatedDto {
   checkIn: string;
@@ -19,7 +19,7 @@ export interface PublicReservationCreatedDto {
   guestsCount: number;
   nights: number;
   number: string;
-  room: PublicReservationCreatedDtoRoom;
+  room: PublicReservationCreatedRoomDto;
   status: PublicReservationCreatedDtoStatus;
   /** Grosze */
   totalPrice: number;

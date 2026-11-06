@@ -100,4 +100,4 @@ Ekrany: P1–P5: [screens.md](../../apps/web/docs/screens.md). `PublicLayout`: m
 | API | Gotowe (M8, e-maile z linkiem: M9) |
 | UI | Gotowe (M12) |
 
-Zdecydowane: [Q-04](../open-questions.md#q-04), [Q-11](../open-questions.md#q-11), [Q-17](../open-questions.md#q-17). Zdecydowane też: [Q-16](../open-questions.md#q-16). Otwarte: [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia); UI realizuje rekomendacje. Kontrakt: pole `room` w `PublicReservationCreatedDto` ma schemat `PublicReservationCreatedRoomDto` od M14 ([H-016](../handoff.md#zgłoszenia)); usunięcie obejścia w UI: [H-017](../handoff.md#zgłoszenia).
+Zdecydowane: [Q-04](../open-questions.md#q-04), [Q-11](../open-questions.md#q-11), [Q-17](../open-questions.md#q-17). Zdecydowane też: [Q-16](../open-questions.md#q-16). Otwarte: [Q-19](../open-questions.md#q-19) (regulamin), [Q-20](../open-questions.md#q-20) (udogodnienia); UI realizuje rekomendacje. Kontrakt: pole `room` w `PublicReservationCreatedDto` ma schemat `PublicReservationCreatedRoomDto` od M14 ([H-016](../handoff.md#zgłoszenia)), a P4 korzysta z niego bez obejścia ([H-017](../handoff.md#zgłoszenia)).

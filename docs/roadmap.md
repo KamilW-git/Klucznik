@@ -128,7 +128,7 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 - [x] [UI] `PublicLayout`, P1–P5: [guest-booking.md](features/guest-booking.md)
 - [x] [UI] Test mobilny 375 px całego procesu
 - [x] [API] Schemat `room` w `PublicReservationCreatedDto` w kontrakcie: [H-016](handoff.md#zgłoszenia)
-- [ ] [UI] Regeneracja klienta i usunięcie strażnika typu `room` w P4: [H-017](handoff.md#zgłoszenia)
+- [x] [UI] Regeneracja klienta i usunięcie strażnika typu `room` w P4: [H-017](handoff.md#zgłoszenia)
 
 ## M13: Panel admina [UI]
 

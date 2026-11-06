@@ -15,7 +15,7 @@ import { useDocumentMeta } from '@/shared/lib/use-document-meta';
 import { buttonVariants } from '@/shared/ui/button-variants';
 import { StatusBadge } from '@/shared/ui/status-badge';
 
-import { createdRoomName, isBookingSentState } from '../booking-sent-state';
+import { isBookingSentState } from '../booking-sent-state';
 import { BookingSteps } from '../components/booking-steps';
 
 /**
@@ -32,7 +32,6 @@ export function BookingSentPage() {
     return <Navigate to={routes.public.property(property.slug)} replace />;
   }
   const { reservation } = state;
-  const roomName = createdRoomName(reservation.room);
 
   async function copyNumber() {
     try {
@@ -98,12 +97,10 @@ export function BookingSentPage() {
           Podsumowanie pobytu
         </h2>
         <dl className="grid gap-4 sm:grid-cols-2">
-          {roomName && (
-            <div className="sm:col-span-2">
-              <dt className="text-sm text-muted-foreground">Pokój</dt>
-              <dd className="text-base font-semibold">{roomName}</dd>
-            </div>
-          )}
+          <div className="sm:col-span-2">
+            <dt className="text-sm text-muted-foreground">Pokój</dt>
+            <dd className="text-base font-semibold">{reservation.room.name}</dd>
+          </div>
           <div className="flex gap-3">
             <CalendarDays className="mt-0.5 size-5 text-primary" aria-hidden="true" />
             <div>

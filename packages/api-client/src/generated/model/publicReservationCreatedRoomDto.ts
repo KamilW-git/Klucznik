@@ -6,4 +6,6 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PublicReservationCreatedDtoRoom = { [key: string]: unknown };
+export interface PublicReservationCreatedRoomDto {
+  name: string;
+}

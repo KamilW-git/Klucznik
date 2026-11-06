@@ -1,7 +1,4 @@
-import type {
-  PublicReservationCreatedDto,
-  PublicReservationCreatedDtoRoom,
-} from '@klucznik/api-client';
+import type { PublicReservationCreatedDto } from '@klucznik/api-client';
 
 /** Stan routera P3 → P4: odpowiedź `POST /public/properties/:slug/reservations` (bez tokenu). */
 export interface BookingSentState {
@@ -12,19 +9,11 @@ export interface BookingSentState {
 export function isBookingSentState(state: unknown): state is BookingSentState {
   if (typeof state !== 'object' || state === null || !('reservation' in state)) return false;
   const reservation = state.reservation;
+  if (typeof reservation !== 'object' || reservation === null) return false;
+  const candidate = reservation as Partial<PublicReservationCreatedDto>;
   return (
-    typeof reservation === 'object' &&
-    reservation !== null &&
-    typeof (reservation as Partial<PublicReservationCreatedDto>).number === 'string' &&
-    typeof (reservation as Partial<PublicReservationCreatedDto>).checkIn === 'string'
+    typeof candidate.number === 'string' &&
+    typeof candidate.checkIn === 'string' &&
+    typeof candidate.room?.name === 'string'
   );
-}
-
-/**
- * Nazwa pokoju z odpowiedzi. H-016: w `openapi.json` pole `room` jest obiektem bez schematu
- * (`{ [key]: unknown }`), choć API zwraca `{ name }` – do czasu poprawki kontraktu sprawdzamy typ.
- */
-export function createdRoomName(room: PublicReservationCreatedDtoRoom): string | null {
-  const name = room['name'];
-  return typeof name === 'string' ? name : null;
 }
