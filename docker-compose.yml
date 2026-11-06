@@ -1,7 +1,7 @@
 # Klucznik – stack lokalny. Opis: docs/architecture/infrastructure.md
 #
 # Dev (aplikacje na hoście):  docker compose up -d postgres redis mailpit  &&  pnpm dev
-# Pełny stack:                docker compose up --build   →  http://localhost:8080
+# Pełny stack:                docker compose up --build   →  http://localhost:8080 (port: WEB_PORT)
 # Dane demo (po starcie):     docker compose run --rm migrate pnpm prisma:seed
 #
 # Zmienne czytane z `.env` (wzór: .env.example). Porty są wystawione tylko na 127.0.0.1.
@@ -115,7 +115,8 @@ services:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api/v1}
     restart: unless-stopped
     ports:
-      - '127.0.0.1:8080:80'
+      # Port na hoście konfigurowalny, gdy 8080 zajmuje inny program (popraw też APP_PUBLIC_URL).
+      - '127.0.0.1:${WEB_PORT:-8080}:80'
     depends_on:
       api:
         condition: service_healthy

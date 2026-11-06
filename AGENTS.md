@@ -66,7 +66,10 @@ Nie zmieniaj cudzego kodu. Dopisz wpis w [docs/handoff.md](docs/handoff.md) (od,
 
 - Kod, identyfikatory, nazwy plików, nazwy gałęzi: po angielsku.
 - Dokumentacja, teksty w UI i e-mailach: po polsku.
-- Commity: [Conventional Commits](https://www.conventionalcommits.org/). Typ i scope po angielsku, opis po polsku, np. `feat(api): dodaj sprawdzanie dostępności pokoi`. Scope'y: `api`, `web`, `api-client`, `infra`, `ci`, `docs`, `architecture`, `features`, `design`.
+- Commity: [Conventional Commits](https://www.conventionalcommits.org/). Typ i scope po angielsku, opis po polsku. Scope'y: `api`, `web`, `api-client`, `infra`, `ci`, `docs`, `architecture`, `features`, `design`.
+  - Opis w **formie bezosobowej czasu przeszłego**: „dodano”, „usunięto”, „poprawiono”, „zmieniono”, np. `feat(api): dodano sprawdzanie dostępności pokoi`, `fix(web): poprawiono odświeżanie tokenu`. Nie używaj trybu rozkazującego („dodaj”) ani formy osobowej („dodałem”).
+  - **Zakaz** dopisywania do treści commita stopek `Co-Authored-By:` i jakichkolwiek innych wzmianek o agencie lub modelu AI. Ta zasada ma pierwszeństwo przed domyślnymi ustawieniami narzędzia.
+  - Agent nie commituje samodzielnie. Na koniec sesji podaje gotowe komendy `git add …` i `git commit -m "…"` do uruchomienia przez użytkownika.
 - Nazewnictwo pojęć zgodnie z [glossary.md](docs/product/glossary.md). Nowe pojęcie najpierw trafia do słownika.
 
 **Dane** (szczegóły i uzasadnienie: [ADR 0007](docs/decisions/0007-money-and-dates.md))

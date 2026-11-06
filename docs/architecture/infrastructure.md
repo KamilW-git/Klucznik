@@ -25,7 +25,7 @@ package.json, pnpm-workspace.yaml, tsconfig.base.json, eslint.config.mjs, .prett
 | `mailpit` | `axllent/mailpit` | 8025 (UI), 1025 (SMTP) | – | `wget -qO- localhost:8025/livez` |
 | `migrate` | build `apps/api`, etap `tools` | – | – | – (jednorazowy, kończy się kodem 0) |
 | `api` | build `apps/api`, etap `runtime` | 3000 | `uploads:/data/uploads` | `wget -qO- 127.0.0.1:3000/api/v1/health` |
-| `web` | build `apps/web` | 8080 | – | `wget -qO- 127.0.0.1/` |
+| `web` | build `apps/web` | 8080 (`WEB_PORT`) | – | `wget -qO- 127.0.0.1/` |
 
 Healthchecki używają `127.0.0.1`, nie `localhost`: przy włączonym IPv6 (np. runnery GitHub Actions) `localhost` rozwiązuje się najpierw do `::1`, a nginx słucha tylko IPv4 (`listen 80`).
 
@@ -54,7 +54,8 @@ Kolumna „Domyślna (dev)” podaje wartości dla `pnpm dev` na hoście (usług
 | `REFRESH_TOKEN_TTL_DAYS` | api | – | `7` | |
 | `COOKIE_SECURE` | api | – | `false` | `true` w produkcji (HTTPS) |
 | `CORS_ORIGINS` | api | – | `http://localhost:5173` | lista po przecinku; tylko dev |
-| `APP_PUBLIC_URL` | api | ✔ | `http://localhost:8080` | baza linków w e-mailach |
+| `APP_PUBLIC_URL` | api | ✔ | `http://localhost:8080` | baza linków w e-mailach; port musi zgadzać się z `WEB_PORT` |
+| `WEB_PORT` | web | – | `8080` | port aplikacji na hoście w pełnym stacku; zmień, gdy 8080 zajmuje inny program |
 | `APP_TIMEZONE` | api | – | `Europe/Warsaw` | strefa „dziś” i crona |
 | `SMTP_HOST`, `SMTP_PORT` | api | ✔ | `localhost`, `1025` | w kontenerze `api`: host `mailpit` |
 | `SMTP_USER`, `SMTP_PASSWORD` | api | – sekret | puste | puste w dev |
