@@ -9,13 +9,12 @@ describe('assertNoFutureReservations', () => {
   });
 
   it('BR-10: throws HAS_FUTURE_RESERVATIONS with the count for the UI', () => {
-    const error = (() => {
-      try {
-        assertNoFutureReservations(3);
-      } catch (e) {
-        return e;
-      }
-    })();
+    let error: unknown;
+    try {
+      assertNoFutureReservations(3);
+    } catch (e) {
+      error = e;
+    }
 
     expect(error).toBeInstanceOf(HasFutureReservationsError);
     expect(error).toMatchObject({ code: 'HAS_FUTURE_RESERVATIONS', details: { count: 3 } });
