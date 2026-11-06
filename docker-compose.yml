@@ -100,7 +100,8 @@ services:
       mailpit:
         condition: service_healthy
     healthcheck:
-      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/api/v1/health']
+      # 127.0.0.1, nie localhost: przy włączonym IPv6 (runnery CI) localhost to najpierw ::1.
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:3000/api/v1/health']
       interval: 10s
       timeout: 3s
       retries: 5
@@ -119,7 +120,8 @@ services:
       api:
         condition: service_healthy
     healthcheck:
-      test: ['CMD', 'wget', '-qO-', 'http://localhost/']
+      # nginx słucha tylko IPv4 (`listen 80`), więc 127.0.0.1 zamiast localhost (::1).
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1/']
       interval: 10s
       timeout: 3s
       retries: 5

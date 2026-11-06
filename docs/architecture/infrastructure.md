@@ -24,8 +24,10 @@ package.json, pnpm-workspace.yaml, tsconfig.base.json, eslint.config.mjs, .prett
 | `redis` | `redis:7-alpine` | 6379 | `redisdata:/data` | `redis-cli ping` |
 | `mailpit` | `axllent/mailpit` | 8025 (UI), 1025 (SMTP) | – | `wget -qO- localhost:8025/livez` |
 | `migrate` | build `apps/api`, etap `tools` | – | – | – (jednorazowy, kończy się kodem 0) |
-| `api` | build `apps/api`, etap `runtime` | 3000 | `uploads:/data/uploads` | `wget -qO- localhost:3000/api/v1/health` |
-| `web` | build `apps/web` | 8080 | – | `wget -qO- localhost/` |
+| `api` | build `apps/api`, etap `runtime` | 3000 | `uploads:/data/uploads` | `wget -qO- 127.0.0.1:3000/api/v1/health` |
+| `web` | build `apps/web` | 8080 | – | `wget -qO- 127.0.0.1/` |
+
+Healthchecki używają `127.0.0.1`, nie `localhost`: przy włączonym IPv6 (np. runnery GitHub Actions) `localhost` rozwiązuje się najpierw do `::1`, a nginx słucha tylko IPv4 (`listen 80`).
 
 - Pełny stack z czystego klonu: `cp .env.example .env` i `docker compose up --build`, aplikacja pod `http://localhost:8080`, Mailpit pod `http://localhost:8025`.
 - `migrate` wykonuje `prisma migrate deploy` po starcie `postgres`. `api` czeka na jego zakończenie (`service_completed_successfully`) i na zdrowe `postgres`, `redis`, `mailpit`. Obraz `api` zawiera tylko zależności produkcyjne, a CLI Prismy i `tsx` są w obrazie `tools`.
