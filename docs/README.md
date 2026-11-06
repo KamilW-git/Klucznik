@@ -10,6 +10,9 @@
 | [roadmap.md](roadmap.md) | etapy M0–M14, zadania z trybem sesji | start każdej sesji |
 | [handoff.md](handoff.md) | zgłoszenia między warstwami | start każdej sesji (wpisy dla swojego trybu) |
 | [open-questions.md](open-questions.md) | decyzje do podjęcia, rekomendacje `Q-xx` | gdy dokument odsyła do `Q-xx` lub coś jest niejasne |
+| [demo.md](demo.md) | scenariusz demo video i omówienie zagadnień z demonstracji | przed nagraniem i przed prezentacją projektu |
+
+Zrzuty ekranu do README są w [assets/screenshots/](assets/screenshots/) (aplikacja z danymi z seeda).
 
 ## Produkt (`product/`)
 
