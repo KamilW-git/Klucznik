@@ -275,6 +275,11 @@ export class PublicOccupancyDto {
   rooms: RoomOccupancyDto[];
 }
 
+export class PublicReservationCreatedRoomDto {
+  @ApiProperty({ example: 'Domek Sosna' })
+  name: string;
+}
+
 export class PublicReservationCreatedDto {
   @ApiProperty({ example: 'KL-2026-000123' })
   number: string;
@@ -282,8 +287,8 @@ export class PublicReservationCreatedDto {
   @ApiProperty({ enum: ['PENDING'] })
   status: 'PENDING';
 
-  @ApiProperty({ example: { name: 'Domek Sosna' } })
-  room: { name: string };
+  @ApiProperty({ type: PublicReservationCreatedRoomDto })
+  room: PublicReservationCreatedRoomDto;
 
   @ApiProperty({ format: 'date' })
   checkIn: string;
