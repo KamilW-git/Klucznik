@@ -138,9 +138,10 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 - [x] [API] Uzupełnienie testów do progów: [testing-strategy.md](architecture/testing-strategy.md#progi)
 - [x] [INFRA] Pełny stack `docker compose up --build` od zera (świeży klon) + job `build` w CI
-- [ ] [DOCS] README: uruchomienie, funkcjonalności, ERD, API, zrzuty ekranów: [README.md](../README.md)
-- [ ] [DOCS] `requirements-mapping.md`: wszystkie wiersze `DONE` z dowodami
-- [ ] [DOCS] Scenariusz i nagranie demo (3–5 min, poniżej)
+- [x] [DOCS] README: uruchomienie, funkcjonalności, ERD, API, zrzuty ekranów: [README.md](../README.md)
+- [x] [DOCS] `requirements-mapping.md`: wszystkie wiersze `DONE` z dowodami (poza tagiem i nagraniem, poniżej)
+- [x] [DOCS] Scenariusz demo (3–5 min): [demo.md](demo.md)
+- [ ] [DOCS] Nagranie demo (użytkownik) i link w README
 - [ ] [DOCS] Tag `v1.0.0` + link do wersji ocenianej w README
 
 ### Scenariusz demo (3–5 min)
