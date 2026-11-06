@@ -115,7 +115,7 @@ Decyzja: [Q-01](../open-questions.md#q-01) (zdecydowane 2026-10-09, zgodnie z re
 **Nie można usunąć ani dezaktywować pokoju ani obiektu z przyszłymi aktywnymi rezerwacjami** (`PENDING`/`CONFIRMED` z `checkOut > today`). Usuwanie jest miękkie (`deletedAt`).
 
 - Implementacja: `modules/rooms/application/rooms.service.ts` i `modules/properties/application/properties.service.ts` przed `DELETE` oraz `PATCH { isActive: false }` wywołują `reservationsRepository.countFutureActive(...)`; `details: { "count": 3 }`.
-- Testy: integracja `rooms.e2e-spec.ts` (`DELETE` pokoju z rezerwacją → 409; bez rezerwacji → 204 i pokój znika z list).
+- Testy: unit `has-future-reservations.error.spec.ts` (`assertNoFutureReservations`, `details.count`) i `rooms.service.spec.ts` (fake repo: zamek przed sprawdzeniem, brak zapisu przy przyszłych rezerwacjach); integracja `rooms.e2e-spec.ts` (`DELETE` pokoju z rezerwacją → 409; bez rezerwacji → 204 i pokój znika z list).
 
 ## BR-11
 
@@ -123,14 +123,14 @@ Decyzja: [Q-01](../open-questions.md#q-01) (zdecydowane 2026-10-09, zgodnie z re
 
 - Implementacja: repozytorium wykonuje `UPDATE … WHERE id = :id AND version = :version` i ustawia `version = version + 1`. Gdy zmieniono 0 wierszy, rzuca `VersionConflictError`. Odpowiedź zawiera nową `version`.
 - UI pokazuje „Ktoś w międzyczasie zmienił tę rezerwację – odśwież dane”.
-- Testy: unit serwisu z fake repo; integracja: dwa `PATCH` z tą samą `version` → 200, potem 409.
+- Testy: unit `reservations.service.spec.ts` (fake repo: stara `version`, przegrany wyścig zapisu, brak zmian); integracja: dwa `PATCH` z tą samą `version` → 200, potem 409.
 
 ## BR-12
 
 **Izolacja danych:** właściciel widzi i modyfikuje tylko zasoby swoich obiektów. Cudzy zasób → **404**, żeby nie ujawniać, że istnieje. Brak roli (np. `OWNER` na `/admin/**`) → **403**.
 
 - Implementacja: `RolesGuard` + `@Roles()` (403); w `application/` polityka `OwnershipPolicy` i zapytania z filtrem `ownerId` ([ADR 0008](../decisions/0008-multi-tenancy-ownership.md)). `ADMIN` omija filtr.
-- Testy: integracja `isolation.e2e-spec.ts` (owner B: `GET /reservations/:idA` → 404, `PATCH /rooms/:idA` → 404, lista bez cudzych danych; `OWNER` → `GET /admin/owners` → 403).
+- Testy: unit `roles.guard.spec.ts` (403 dla roli spoza `@Roles()`, fail-closed bez dekoratora); integracja `isolation.e2e-spec.ts` (owner B: `GET /reservations/:idA` → 404, `PATCH /rooms/:idA` → 404, lista bez cudzych danych; `OWNER` → `GET /admin/owners` → 403).
 
 ## BR-13
 

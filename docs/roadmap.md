@@ -136,7 +136,7 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 
 ## M14: Finalizacja [DOCS/INFRA]
 
-- [ ] [API] Uzupełnienie testów do progów: [testing-strategy.md](architecture/testing-strategy.md#progi)
+- [x] [API] Uzupełnienie testów do progów: [testing-strategy.md](architecture/testing-strategy.md#progi)
 - [ ] [INFRA] Pełny stack `docker compose up --build` od zera (świeży klon) + job `build` w CI
 - [ ] [DOCS] README: uruchomienie, funkcjonalności, ERD, API, zrzuty ekranów: [README.md](../README.md)
 - [ ] [DOCS] `requirements-mapping.md`: wszystkie wiersze `DONE` z dowodami

@@ -100,6 +100,7 @@ Ekrany: O4 (lista + drawer), O5 (nowa rezerwacja ręczna), O2 (akcje na pulpicie
 | Gość: upsert po e-mailu, nowy bez e-maila, `{ id }` innego obiektu → 404 | int | Q-03, Q-04, BR-12 |
 | `confirm` anulowanej → 409 | int | BR-06 |
 | `PATCH` ze starą `version` → 409 `VERSION_CONFLICT` | int | BR-11 |
+| `ReservationsService.update` (fake repo): nowa `version` i zdarzenie `UPDATED`; stara `version` i przegrany wyścig zapisu → `VERSION_CONFLICT` bez zapisu; brak zmian → bez zapisu | unit | BR-11 |
 | Owner B → `GET /reservations/:idA` → 404; lista bez cudzych rezerwacji | int | BR-12 |
 | Filtry: `status`, `q`, `from`/`to` | int | – |
 | Drawer: alert konfliktu wersji, akcje zależne od statusu | ui | BR-06, BR-11 |

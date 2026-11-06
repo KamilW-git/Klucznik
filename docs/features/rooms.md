@@ -73,6 +73,7 @@ Ekrany: O6 (lista pokoi), O7 zakładka „Informacje”: [screens.md](../../apps
 | Owner B → `/rooms/:idA` → 404 | int | BR-12 |
 | `DELETE` z przyszłą rezerwacją → 409 `HAS_FUTURE_RESERVATIONS` | int | BR-10 |
 | `PATCH isActive=false` z przyszłą rezerwacją → 409 | int | BR-10 |
+| `RoomsService` (fake repo): zamek przed sprawdzeniem, brak `softDelete`/`update` przy przyszłych rezerwacjach, inne zmiany bez sprawdzenia | unit | BR-10 |
 | Usunięty pokój znika z dostępności publicznej | int | BR-13 |
 | Formularz: konwersja zł → grosze, walidacja | ui | – |
 

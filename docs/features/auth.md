@@ -68,6 +68,7 @@ Ekrany: O1 (logowanie): [screens.md](../../apps/web/docs/screens.md).
 | Refresh rotuje token; stary token ponownie → 401 i unieważnienie wszystkich | int | – |
 | `GET /auth/me` bez tokenu → 401 | int | – |
 | `OWNER` na `/admin/owners` → 403 | int | BR-12 |
+| `RolesGuard`: rola spoza `@Roles()` → 403, nadpisanie na metodzie, trasa bez `@Roles()`/`@Public()` → 403 (fail-closed), brak użytkownika → 403 | unit | BR-12 |
 | `TokenService`: wygasły i podrobiony JWT odrzucony | unit | – |
 | Formularz logowania: walidacja, błąd 401, przekierowanie wg roli | ui | – |
 | Interceptor: równoległe 401 → jeden refresh | ui | – |

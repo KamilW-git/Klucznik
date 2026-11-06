@@ -11,7 +11,21 @@
 | Testy integracyjne REST API | 3 | ≥ 10 scenariuszy, w tym BR-01 (409), BR-12 (404/403), login |
 | Testy najważniejszej logiki | wszystkie BR | wszystkie BR |
 
-Pokrycie kodu nie jest celem samym w sobie. `domain/` powinno mieć ≥ 90% pokrycia linii, a dla reszty progu nie ustalamy.
+Pokrycie kodu nie jest celem samym w sobie. `domain/` powinno mieć ≥ 90% pokrycia linii, a dla reszty progu nie ustalamy. Progu nie wymuszamy w konfiguracji Jest: nie dopisujemy testów tylko dla procentu (np. konstruktorów zdarzeń i klas błędów bez logiki).
+
+### Stan (M14, 2026-11-06)
+
+| Próg | Wynik |
+|-|-|
+| Testy jednostkowe API | 262 przypadki w 24 plikach; każda reguła BR-01…BR-13 ma test jednostkowy (BR-10, BR-11 i BR-12 w warstwie `application` i w guardzie, na fake repozytoriach) |
+| Testy integracyjne API | 262 przypadki w 19 plikach, w tym wszystkie scenariusze z [tabeli MVP](#minimalny-zestaw-scenariuszy-integracyjnych-mvp) |
+| Pokrycie linii `domain/` | 93,1% (311/334) |
+
+Pomiar: raport tekstowy pokazuje pokrycie każdego katalogu `*/domain`; wynik łączny to suma linii tych katalogów.
+
+```bash
+pnpm --filter @klucznik/api test --coverage --coverageReporters=text
+```
 
 ## Piramida
 
