@@ -1,0 +1,19 @@
+# Kontekst builda obrazów api i web to root repo (docs/architecture/infrastructure.md).
+# Zależności i artefakty powstają w obrazie, a sekrety nigdy do niego nie trafiają.
+
+**/node_modules
+**/dist
+**/coverage
+**/uploads
+apps/api/src/infrastructure/prisma/generated
+
+.env
+.env.*
+!.env.example
+
+.git
+.github
+.claude
+**/*.log
+docs
+design

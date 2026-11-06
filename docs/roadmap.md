@@ -7,7 +7,7 @@
 |-|-|-|-|
 | M0 | DOCS | Dokumentacja i wytyczne | gotowe |
 | M1 | INFRA | Szkielet monorepo, lint/format, Docker Compose, CI | gotowe |
-| M2 | API | Bootstrap API | gotowe (API), Docker i CI: INFRA |
+| M2 | API | Bootstrap API | gotowe (Docker i CI: M14) |
 | M3 | API | Schemat Prisma, migracje, seed | gotowe |
 | M4 | API | Auth, role, zarządzanie właścicielami | gotowe |
 | M5 | API | Obiekty, pokoje, zdjęcia, izolacja | gotowe |
@@ -19,7 +19,7 @@
 | M11 | UI | Panel Gospodarza | gotowe |
 | M12 | UI | Strona publiczna i proces rezerwacji | gotowe |
 | M13 | UI | Panel admina | gotowe |
-| M14 | DOCS/INFRA | Testy do progów, README, demo, `v1.0.0` | – |
+| M14 | DOCS/INFRA | Testy do progów, README, demo, `v1.0.0` | w toku (API i INFRA gotowe, zostały DOCS) |
 
 ## M0: Dokumentacja
 
@@ -49,7 +49,7 @@ Spec: [http-layer.md](../apps/api/docs/http-layer.md), [integrations.md](../apps
 - [x] [API] Swagger `/api/docs` + skrypt `openapi:export` + `ErrorResponseDto`, `Paginated<T>`, `PaginationQuery`, `SortQuery`
 - [x] [API] `Clock` (`SystemClock`, `FixedClock`), `CalendarDate`, `stay-range`, `date-range` + testy (BR-01, BR-04)
 - [x] [API] Health check (`/health`, w M2 liveness: [Q-27](open-questions.md#q-27)), Jest + konfiguracja testów integracyjnych (Testcontainers, [Q-26](open-questions.md#q-26))
-- [ ] [INFRA] Dockerfile `api`, kontener `api` w compose, joby CI `test-api` i `contract`: [H-001…H-003](handoff.md#zgłoszenia)
+- [x] [INFRA] Dockerfile `api`, kontener `api` w compose, joby CI `test-api` i `contract`: [H-001…H-003](handoff.md#zgłoszenia)
 
 ## M3: Schemat i migracje [API]
 
@@ -112,7 +112,7 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 - [x] [UI] Layouty, ochrona tras, `AuthProvider`, interceptor refresh, mapa błędów: [data-and-auth.md](../apps/web/docs/data-and-auth.md)
 - [x] [UI] Ekran logowania O1: [auth.md](features/auth.md)
 - [x] [INFRA] Job CI `test-web` (build weba; testy Vitest w `quality`, [Q-23](open-questions.md#q-23)) i krok aktualności `src/generated` w `contract` (sesja UI M10 za zgodą właściciela: [H-014](handoff.md#zgłoszenia))
-- [ ] [INFRA] Dockerfile `web` (nginx + proxy `/api`): [H-015](handoff.md#zgłoszenia), razem z Dockerfile `api` ([H-001](handoff.md#zgłoszenia))
+- [x] [INFRA] Dockerfile `web` (nginx + proxy `/api`): [H-015](handoff.md#zgłoszenia), razem z Dockerfile `api` ([H-001](handoff.md#zgłoszenia))
 
 ## M11: Panel Gospodarza [UI]
 
@@ -137,7 +137,7 @@ Spec: [data-model.md](architecture/data-model.md), [persistence-layer.md](../app
 ## M14: Finalizacja [DOCS/INFRA]
 
 - [x] [API] Uzupełnienie testów do progów: [testing-strategy.md](architecture/testing-strategy.md#progi)
-- [ ] [INFRA] Pełny stack `docker compose up --build` od zera (świeży klon) + job `build` w CI
+- [x] [INFRA] Pełny stack `docker compose up --build` od zera (świeży klon) + job `build` w CI
 - [ ] [DOCS] README: uruchomienie, funkcjonalności, ERD, API, zrzuty ekranów: [README.md](../README.md)
 - [ ] [DOCS] `requirements-mapping.md`: wszystkie wiersze `DONE` z dowodami
 - [ ] [DOCS] Scenariusz i nagranie demo (3–5 min, poniżej)

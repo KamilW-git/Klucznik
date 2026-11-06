@@ -1,7 +1,8 @@
 # Klucznik – stack lokalny. Opis: docs/architecture/infrastructure.md
 #
 # Dev (aplikacje na hoście):  docker compose up -d postgres redis mailpit  &&  pnpm dev
-# Pełny stack (od M2/M10):    docker compose --profile app up --build
+# Pełny stack:                docker compose up --build   →  http://localhost:8080
+# Dane demo (po starcie):     docker compose run --rm migrate pnpm prisma:seed
 #
 # Zmienne czytane z `.env` (wzór: .env.example). Porty są wystawione tylko na 127.0.0.1.
 
@@ -53,14 +54,27 @@ services:
       timeout: 3s
       retries: 5
 
-  # --- Aplikacje: szkielety, włączane profilem `app`. ---
-  # Dockerfile `api` powstaje w M2, `web` w M10 (docs/roadmap.md). Do tego czasu usługi są pomijane.
+  # --- Aplikacje ---
 
-  api:
-    profiles: [app]
+  # Jednorazowo `prisma migrate deploy` przed startem `api`; obraz `tools` służy też do seeda.
+  migrate:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
+      target: tools
+    restart: 'no'
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-klucznik}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-klucznik}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: runtime
     restart: unless-stopped
     env_file: .env
     environment:
@@ -69,12 +83,16 @@ services:
       REDIS_HOST: redis
       SMTP_HOST: mailpit
       STORAGE_LOCAL_PATH: /data/uploads
+      # Jeden origin za nginx (usługa `web`), więc CORS niepotrzebny.
+      CORS_ORIGINS: ''
     ports:
       - '127.0.0.1:3000:3000'
     volumes:
       # Zdjęcia przetrwają restart i przebudowę kontenera (docs/features/photos.md).
       - uploads:/data/uploads
     depends_on:
+      migrate:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
@@ -89,10 +107,11 @@ services:
       start_period: 20s
 
   web:
-    profiles: [app]
     build:
       context: .
       dockerfile: apps/web/Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api/v1}
     restart: unless-stopped
     ports:
       - '127.0.0.1:8080:80'

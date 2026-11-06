@@ -6,9 +6,10 @@
 ## Struktura plików (tworzy sesja `INFRA`)
 
 ```
-docker-compose.yml          pełny stack (api, web, postgres, redis, mailpit)
+docker-compose.yml          pełny stack (postgres, redis, mailpit, migrate, api, web)
+.dockerignore               kontekst builda bez node_modules, dist, .env i dokumentacji
 .env.example                wzór zmiennych (bez prawdziwych sekretów)
-apps/api/Dockerfile         multi-stage: deps → build → runtime (node:lts-alpine, użytkownik non-root)
+apps/api/Dockerfile         multi-stage na node:24-alpine: build → tools (migracje, seed) / prod-deps → runtime (non-root)
 apps/web/Dockerfile         multi-stage: build Vite → nginx:alpine
 apps/web/nginx.conf         SPA fallback, proxy /api → api:3000, cache statyków, nagłówki
 .github/workflows/ci.yml    lint, typecheck, testy, build
@@ -22,12 +23,14 @@ package.json, pnpm-workspace.yaml, tsconfig.base.json, eslint.config.mjs, .prett
 | `postgres` | `postgres:16-alpine` | 5432 | `pgdata:/var/lib/postgresql/data` | `pg_isready -U $POSTGRES_USER` |
 | `redis` | `redis:7-alpine` | 6379 | `redisdata:/data` | `redis-cli ping` |
 | `mailpit` | `axllent/mailpit` | 8025 (UI), 1025 (SMTP) | – | `wget -qO- localhost:8025/livez` |
-| `api` | build `apps/api` | 3000 | `uploads:/data/uploads` | `wget -qO- localhost:3000/api/v1/health` |
+| `migrate` | build `apps/api`, etap `tools` | – | – | – (jednorazowy, kończy się kodem 0) |
+| `api` | build `apps/api`, etap `runtime` | 3000 | `uploads:/data/uploads` | `wget -qO- localhost:3000/api/v1/health` |
 | `web` | build `apps/web` | 8080 | – | `wget -qO- localhost/` |
 
-- `api` czeka na `postgres` i `redis` (`depends_on: condition: service_healthy`), a przy starcie wykonuje `prisma migrate deploy`.
-- `web` czeka na `api`. nginx przekazuje `/api/` do `http://api:3000`, więc aplikacja działa pod jednym originem ([overview.md](overview.md#diagram-komponentów)).
-- Seed danych demo uruchamiamy ręcznie: `docker compose exec api pnpm prisma:seed`.
+- Pełny stack z czystego klonu: `cp .env.example .env` i `docker compose up --build`, aplikacja pod `http://localhost:8080`, Mailpit pod `http://localhost:8025`.
+- `migrate` wykonuje `prisma migrate deploy` po starcie `postgres`. `api` czeka na jego zakończenie (`service_completed_successfully`) i na zdrowe `postgres`, `redis`, `mailpit`. Obraz `api` zawiera tylko zależności produkcyjne, a CLI Prismy i `tsx` są w obrazie `tools`.
+- `web` czeka na `api`. nginx przekazuje `/api/` do `http://api:3000` z `X-Forwarded-For` (API ma `trust proxy`, więc limity żądań liczą IP klienta), więc aplikacja działa pod jednym originem ([overview.md](overview.md#diagram-komponentów)). nginx serwuje też SPA (fallback na `index.html`), długi cache dla `/assets/*` i nagłówki bezpieczeństwa (CSP `'self'`).
+- Seed danych demo uruchamiamy ręcznie po starcie stacku: `docker compose run --rm migrate pnpm prisma:seed`.
 - Dev bez kontenerów aplikacji: `docker compose up -d postgres redis mailpit` + `pnpm dev`. Vite proxy przekazuje `/api` do `localhost:3000`.
 
 ## Zmienne środowiskowe
@@ -72,11 +75,11 @@ Kolumna „Domyślna (dev)” podaje wartości dla `pnpm dev` na hoście (usług
 
 | Job | Kroki |
 |-|-|
-| `quality` | checkout → pnpm (cache) → `pnpm install --frozen-lockfile` → `pnpm lint` → `pnpm format:check` → `pnpm typecheck` |
-| `test-api` | service `postgres:16` → `prisma migrate deploy` → `pnpm --filter @klucznik/api test` → `test:int` (z `TEST_DATABASE_URL`; kolejka e-maili inline, więc bez Redisa) |
+| `quality` | checkout → pnpm (cache) → `pnpm install --frozen-lockfile` → `pnpm lint` → `pnpm format:check` → `pnpm typecheck` → `pnpm test` (testy jednostkowe wszystkich pakietów) |
+| `test-api` | service `postgres:16` → `pnpm --filter @klucznik/api test:int` (z `TEST_DATABASE_URL`, migracje w global-setup testów; kolejka e-maili inline, więc bez Redisa) |
 | `test-web` | `pnpm --filter @klucznik/web build` (build produkcyjny Vite); testy Vitest weba biegną w `quality` przez `pnpm test` ([Q-23](../open-questions.md#q-23)) |
 | `contract` | `pnpm --filter @klucznik/api openapi:export` → `git diff --exit-code packages/api-client/openapi.json` (kontrakt aktualny) → `pnpm --filter @klucznik/api-client generate` → `git diff --exit-code packages/api-client/src/generated` (klient aktualny) → typecheck web |
-| `build` | `pnpm -r build` + `docker compose build` (na `main`) |
+| `build` | `pnpm -r build`; na `main` dodatkowo `docker compose up --build --wait` z `.env.example` i smoke test przez nginx (SPA, `/api/v1/health`, fallback trasy), potem `down --volumes` |
 
 Sekrety testowe (np. `JWT_ACCESS_SECRET`) są generowane w workflow (`openssl rand`) albo ustawione w `env:` jako jawne wartości testowe. Nie są to sekrety produkcyjne.
 
