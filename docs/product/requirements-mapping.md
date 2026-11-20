@@ -81,7 +81,7 @@ Każdy z nich ma rzeczywiste zastosowanie, a nie tylko zainstalowaną bibliotek�
 
 | Wymaganie | Realizacja | Etap | Status |
 |-|-|-|-|
-| Link do repo + commit/tag końcowy | https://github.com/KamilW-git/Klucznik, tag `v1.0.0` (po nagraniu demo) | M14 | WIP |
+| Link do repo + commit/tag końcowy | https://github.com/KamilW-git/Klucznik, tag `v1.0.0` | M14 | DONE |
 | Historia commitów | małe commity w Conventional Commits: [AGENTS.md](../../AGENTS.md#5-zasady-globalne) | ciągle | DONE |
 | README: opis projektu | [README.md](../../README.md#opis-projektu) | M14 | DONE |
 | README: technologie | [README.md](../../README.md#technologie) | M14 | DONE |

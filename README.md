@@ -5,7 +5,7 @@
 > System rezerwacji i zarządzania dla małych obiektów noclegowych: pensjonatów, domków letniskowych, pokoi gościnnych i agroturystyk.
 > Projekt zaliczeniowy z przedmiotu ZTPAI, a jednocześnie projekt portfolio i baza produktu multi-tenant.
 
-**Wersja oceniana:** TODO (tag `v1.0.0`) · **Demo video:** [klucznik-demo.mp4](docs/assets/demo/klucznik-demo.mp4) · **Repozytorium:** https://github.com/KamilW-git/Klucznik
+**Wersja oceniana:** tag [`v1.0.0`](https://github.com/KamilW-git/Klucznik/releases/tag/v1.0.0) · **Demo video:** [klucznik-demo.mp4](docs/assets/demo/klucznik-demo.mp4) · **Repozytorium:** https://github.com/KamilW-git/Klucznik
 
 ## Opis projektu
 
