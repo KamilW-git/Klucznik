@@ -89,7 +89,7 @@ Każdy z nich ma rzeczywiste zastosowanie, a nie tylko zainstalowaną bibliotek�
 | README: funkcjonalności | [README.md](../../README.md#główne-funkcjonalności) (ze zrzutami ekranu) | M14 | DONE |
 | README: ERD | diagram Mermaid w [README.md](../../README.md#model-danych-erd), pełny model w [data-model.md](../architecture/data-model.md#erd) | M14 | DONE |
 | README: dokumentacja API | tabela endpointów, Swagger `/api/docs`, `openapi.json`: [README.md](../../README.md#dokumentacja-rest-api) | M14 | DONE |
-| Demo video 3–5 min | scenariusz: [demo.md](../demo.md); nagranie: link w README | M14 | WIP |
+| Demo video 3–5 min | scenariusz: [demo.md](../demo.md); nagranie: [klucznik-demo.mp4](../assets/demo/klucznik-demo.mp4), link w README | M14 | DONE |
 
 ### Zagadnienia na obronę
 
